@@ -1,4 +1,9 @@
 #include <algorithm>
+#include <boost/exception/exception.hpp>
+#include <boost/program_options.hpp>
+#include <boost/program_options/errors.hpp>
+#include <boost/program_options/options_description.hpp>
+#include <boost/program_options/parsers.hpp>
 #include <cassert>
 #include <charconv>
 #include <fmt/format.h>
@@ -69,16 +74,63 @@ std::vector<std::vector<unsigned>> getElfCalories(auto &getNextLine) {
   }
 }
 
+namespace po = boost::program_options;
+
 } // namespace
 
 int main(int argc, const char *const argv[]) {
-  if (argc != 2) {
-    std::cerr << "Usage: " << argv[0] << " INPUT" << std::endl;
+  po::options_description desc("Usage: day1 INPUT\n\n"
+                               "Allowed options:");
+  desc.add_options()("help,h", "produce help message")("verbose,v",
+                                                       "enable debug logging");
+
+  po::options_description hidden("Hidden");
+  hidden.add_options()("input-file", po::value<std::string>());
+
+  po::options_description cmdline("Cmd");
+  cmdline.add(desc).add(hidden);
+
+  po::positional_options_description p;
+  p.add("input-file", 1);
+
+  po::variables_map vm;
+  try {
+    po::store(po::command_line_parser{argc, argv}
+                  .options(cmdline)
+                  .positional(p)
+                  .run(),
+              vm);
+  } catch (const po::error &error) {
+    std::cerr << error.what() << std::endl << std::endl;
+    std::cerr << desc << std::endl;
     return 1;
   }
-  spdlog::set_level(spdlog::level::debug);
+  po::notify(vm);
+
+  if (vm.contains("help")) {
+    std::cout << desc << std::endl;
+    return 0;
+  }
+
+  if (vm.contains("verbose")) {
+    spdlog::set_level(spdlog::level::debug);
+  }
+
+  if (!vm.contains("input-file")) {
+    std::cerr << "INPUT file is needed\n\n";
+    std::cerr << desc << std::endl;
+    return 1;
+  }
+
   spdlog::debug("Starting");
-  auto file = std::ifstream{argv[1]};
+
+  auto filePath = vm["input-file"].as<std::string>();
+  auto file = std::ifstream{filePath};
+  if (!file.is_open()) {
+    std::cerr << filePath << " doesn't exist" << std::endl;
+    return 1;
+  }
+
   auto getNextLine = [&file]() { return readLine(file); };
   auto allCalories = getElfCalories(getNextLine);
 
