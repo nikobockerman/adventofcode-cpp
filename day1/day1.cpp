@@ -89,8 +89,7 @@ int main(int argc, const char *const argv[]) {
                  });
 
   auto result = std::max_element(sumCalories.cbegin(), sumCalories.cend());
-  auto index = std::distance(sumCalories.cbegin(), result);
-  std::cout << "Elf index: " << index << "; value: " << *result << std::endl;
+  std::cout << "Result:" << std::endl << *result << std::endl;
 
   return 0;
 }
