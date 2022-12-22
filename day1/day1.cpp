@@ -20,29 +20,37 @@
 #include <system_error>
 #include <vector>
 
+using namespace std::string_literals;
+
 namespace {
 
-std::optional<std::string> readLine(std::istream &stream) {
+auto readLine(std::istream &stream) -> std::optional<std::string> {
   std::string line;
   if (std::getline(stream, line)) {
     spdlog::debug("Read line: {}", line);
-    return std::move(line);
+    return line;
   }
   spdlog::debug("EOL");
   return std::nullopt;
 }
 
-template <typename T> T convert(const std::string &str) {
-  assert(!str.empty());
+template <typename T> auto convert(const std::string &str) -> T {
+  if (str.empty()) {
+    throw std::runtime_error("Empty string to convert");
+  }
 
-  T value;
-  auto [ptr, ec]{std::from_chars(str.data(), str.data() + str.size(), value)};
-  assert(ec == std::errc());
+  T value{};
+  // NOLINTNEXTLINE(cppcoreguidelines-pro-bounds-pointer-arithmetic)
+  const auto *pastEnd = str.data() + str.size();
+  auto [ptr, ec]{std::from_chars(str.data(), pastEnd, value)};
+  if (ec != std::errc()) {
+    throw std::runtime_error("Conversion failed");
+  }
   spdlog::debug("Converted {} to {}", str, value);
   return value;
 }
 
-std::vector<unsigned> getSingleElfCalories(auto &getNextLine) {
+auto getSingleElfCalories(auto &getNextLine) -> std::vector<unsigned> {
   std::vector<unsigned> values;
   while (true) {
     auto line = getNextLine();
@@ -62,7 +70,7 @@ std::vector<unsigned> getSingleElfCalories(auto &getNextLine) {
   }
 }
 
-std::vector<std::vector<unsigned>> getElfCalories(auto &getNextLine) {
+auto getElfCalories(auto &getNextLine) -> std::vector<std::vector<unsigned>> {
   std::vector<std::vector<unsigned>> values;
   while (true) {
     auto elfValues = getSingleElfCalories(getNextLine);
@@ -78,7 +86,7 @@ namespace po = boost::program_options;
 
 } // namespace
 
-int main(int argc, const char *const argv[]) {
+auto main(int argc, const char *const argv[]) -> int {
   po::options_description desc("Usage: day1 INPUT\n\n"
                                "Allowed options:");
   desc.add_options()("help,h", "produce help message")("verbose,v",
