@@ -29,6 +29,7 @@ def main():
             "--update",
             f"--output-folder={str(conan_install_dir)}",
             f"--install-folder={str(conan_install_dir)}",
+            "--build=missing",
             str(repo),
         ]
     )
