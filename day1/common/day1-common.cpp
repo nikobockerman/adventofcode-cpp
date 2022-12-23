@@ -1,5 +1,6 @@
 #include "day1-common.hpp"
 
+#include "convert.hpp"
 #include "file-reader.hpp"
 
 #include <charconv>
@@ -8,22 +9,6 @@
 #include <spdlog/spdlog.h>
 
 namespace {
-
-template <typename T> auto convert(const std::string &str) -> T {
-  if (str.empty()) {
-    throw std::runtime_error("Empty string to convert");
-  }
-
-  T value{};
-  // NOLINTNEXTLINE(cppcoreguidelines-pro-bounds-pointer-arithmetic)
-  const auto *pastEnd = str.data() + str.size();
-  auto [ptr, ec]{std::from_chars(str.data(), pastEnd, value)};
-  if (ec != std::errc()) {
-    throw std::runtime_error("Conversion failed");
-  }
-  spdlog::debug("Converted {} to {}", str, value);
-  return value;
-}
 
 auto getSingleElfCalories(auto &getNextLine) -> std::vector<unsigned> {
   std::vector<unsigned> values;
