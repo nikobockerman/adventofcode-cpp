@@ -6,7 +6,7 @@ import pathlib
 import subprocess
 import sys
 
-results = [["day1/d1p1", "day1/input", "69836"]]
+results = [["day1/d1p1", "day1/input", "69836"], ["day1/d1p2", "day1/input", "207968"]]
 
 
 def run(args):

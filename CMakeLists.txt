@@ -8,4 +8,6 @@ find_package(Boost REQUIRED)
 find_package(fmt REQUIRED)
 find_package(spdlog REQUIRED)
 
+add_subdirectory(common)
+
 add_subdirectory(day1)

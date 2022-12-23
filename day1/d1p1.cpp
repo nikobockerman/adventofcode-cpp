@@ -1,5 +1,7 @@
 #include "day1-common.hpp"
 
+#include "program.hpp"
+
 #include <algorithm>
 #include <iostream>
 
@@ -16,7 +18,7 @@ auto main(int argc, const char *const argv[]) -> int {
     break;
   }
 
-  auto calorieSums = program->resolveCalorieSums();
+  auto calorieSums = resolveCalorieSums(program->inputFile());
 
   auto result = std::max_element(calorieSums.cbegin(), calorieSums.cend());
   std::cout << "Result:" << std::endl << *result << std::endl;
