@@ -11,3 +11,4 @@ find_package(spdlog REQUIRED)
 add_subdirectory(common)
 
 add_subdirectory(day1)
+add_subdirectory(day2)
