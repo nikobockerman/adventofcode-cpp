@@ -10,6 +10,7 @@ results = [
     ["day1/d1p1", "day1/input", "69836"],
     ["day1/d1p2", "day1/input", "207968"],
     ["day2/d2p1", "day2/input", "8890"],
+    ["day2/d2p2", "day2/input", "10238"],
 ]
 
 
