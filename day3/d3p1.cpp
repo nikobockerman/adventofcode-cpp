@@ -1,6 +1,8 @@
 #include "file-reader.hpp"
 #include "program.hpp"
 
+#include "day3-common.hpp"
+
 #include <algorithm>
 #include <cctype>
 #include <iostream>
@@ -64,66 +66,6 @@ auto getAllSharedItems(auto &getNextLine) {
   return sharedItems;
 }
 
-auto lowerCaseValue(char c) -> unsigned { return c - 'a'; }
-
-auto isLowerCase(char c) {
-  constexpr unsigned maxLowerCaseValue{'z' - 'a'};
-  auto value = lowerCaseValue(c);
-  return value <= maxLowerCaseValue;
-}
-
-auto lowerCasePriority(char c) {
-  constexpr unsigned minPriority{1};
-  constexpr unsigned maxPriority{26};
-
-  auto result = lowerCaseValue(c) + minPriority;
-  if (result < minPriority || result > maxPriority) {
-    throw std::runtime_error("Invalid value");
-  }
-  return result;
-}
-
-auto upperCaseValue(char c) -> unsigned { return c - 'A'; }
-
-auto isUpperCase(char c) {
-  constexpr unsigned maxUpperCaseValue{'Z' - 'A'};
-  auto value = upperCaseValue(c);
-  return value <= maxUpperCaseValue;
-}
-
-auto upperCasePriority(char c) {
-  constexpr unsigned minPriority{27};
-  constexpr unsigned maxPriority{52};
-
-  auto result = upperCaseValue(c) + minPriority;
-  if (result < minPriority || result > maxPriority) {
-    throw std::runtime_error("Invalid value");
-  }
-  return result;
-}
-
-auto priority(char sharedItem) -> unsigned {
-  if (isLowerCase(sharedItem)) {
-    return lowerCasePriority(sharedItem);
-  }
-  if (isUpperCase(sharedItem)) {
-    return upperCasePriority(sharedItem);
-  }
-  throw std::runtime_error("Invalid character");
-}
-
-auto sumScore(std::istream &input) -> unsigned {
-  auto getNextLine = [&input]() { return ::readLine(input); };
-
-  auto sharedItems = getAllSharedItems(getNextLine);
-
-  std::vector<unsigned> priorities;
-  std::transform(sharedItems.cbegin(), sharedItems.cend(),
-                 std::back_inserter(priorities),
-                 [](char c) { return priority(c); });
-  return std::accumulate(priorities.cbegin(), priorities.cend(), 0);
-}
-
 } // namespace
 
 auto main(int argc, const char *const argv[]) -> int {
@@ -137,7 +79,12 @@ auto main(int argc, const char *const argv[]) -> int {
     break;
   }
 
-  auto sum = sumScore(program->inputFile());
+  auto getNextLine = [&input = program->inputFile()]() {
+    return ::readLine(input);
+  };
+  auto sharedItems = getAllSharedItems(getNextLine);
+
+  auto sum = sumScore(sharedItems);
   std::cout << "Result:" << std::endl << sum << std::endl;
 
   return 0;
