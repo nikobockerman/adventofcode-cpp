@@ -6,7 +6,7 @@
 using namespace std::string_literals;
 
 auto main(int argc, const char *const argv[]) -> int {
-  auto [state, program] = Program::create("day1", {argc, argv});
+  auto [state, program] = Program::create("d1p1", {argc, argv});
   switch (state) {
   case State::Help:
     return 0;
