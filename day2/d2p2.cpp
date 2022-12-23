@@ -4,6 +4,7 @@
 #include <algorithm>
 #include <iostream>
 #include <numeric>
+#include <stdexcept>
 
 namespace {
 
@@ -16,6 +17,7 @@ auto losingType(Type opponent) {
   case Type::Rock:
     return Type::Scissors;
   }
+  throw std::runtime_error("Unknown opponent type for losing");
 }
 
 auto winningType(Type opponent) {
@@ -27,6 +29,7 @@ auto winningType(Type opponent) {
   case Type::Rock:
     return Type::Paper;
   }
+  throw std::runtime_error("Unknown opponent type for winning");
 }
 
 auto parseMe(Type opponent, char move) {

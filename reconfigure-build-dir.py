@@ -38,15 +38,16 @@ def main():
         shutil.rmtree(build_dir)
 
     env = os.environ.copy()
-    flags = "-Wall -Wextra"
-    env["CFLAGS"] = flags
-    env["CXXFLAGS"] = flags
+    flags = ["-Wall", "-Wextra"]
     cmd_args = []
     if args.flavor == "clang":
         env["CC"] = "clang-13"
         env["CXX"] = "clang++-13"
     elif args.flavor == "tidy":
         cmd_args += ["-DCMAKE_CXX_CLANG_TIDY=clang-tidy-13"]
+        flags += ["-Werror"]
+    env["CFLAGS"] = " ".join(flags)
+    env["CXXFLAGS"] = " ".join(flags)
 
     build_dir.parent.mkdir(exist_ok=True)
     run_cmd(

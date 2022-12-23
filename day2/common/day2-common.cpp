@@ -18,6 +18,7 @@ auto typeScore(Type type) -> unsigned {
   case Type::Scissors:
     return 3;
   }
+  throw std::runtime_error("Unknown type for score");
 }
 
 auto battleScore(Type opponent, Type me) -> unsigned {
@@ -38,6 +39,7 @@ auto battleScore(Type opponent, Type me) -> unsigned {
     case Type::Rock:
       return me == Type::Paper;
     }
+    throw std::runtime_error("Unknown opponent type for win check");
   };
 
   return iWin() ? scoreWin : scoreLoss;
