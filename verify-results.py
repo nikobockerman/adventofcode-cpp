@@ -26,13 +26,20 @@ def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("-v", "--verbose", action="store_true")
     parser.add_argument("-x", action="store_true", help="End on first failure")
+    parser.add_argument(
+        "flavor",
+        choices=["clang", "tidy"],
+        default="clang",
+        nargs="?",
+        help="Select flavor for binaries. Default=clang",
+    )
     args = parser.parse_args()
 
     if args.verbose:
         logging.basicConfig(level=logging.DEBUG)
 
     repo = pathlib.Path(__file__).parent.resolve()
-    build = repo / "build" / "clang"
+    build = repo / "build" / args.flavor
 
     exit_code = 0
     for data in results:
