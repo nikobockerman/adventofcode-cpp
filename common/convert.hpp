@@ -1,11 +1,13 @@
 #pragma once
 
-#include <charconv>
 #include <spdlog/spdlog.h>
+
+#include <charconv>
 #include <stdexcept>
 #include <string_view>
 
-template <typename T> auto convert(const std::string_view &str) -> T {
+template <typename T>
+auto convert(const std::string_view &str) -> T {
   if (str.empty()) {
     throw std::runtime_error("Empty string to convert");
   }

@@ -5,7 +5,7 @@
 #include <utility>
 
 class Section {
-public:
+ public:
   unsigned start;
   unsigned end;
 };

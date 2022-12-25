@@ -1,8 +1,7 @@
-#include "day4-common.hpp"
-
-#include "program.hpp"
-
 #include <iostream>
+
+#include "day4-common.hpp"
+#include "program.hpp"
 
 namespace {
 
@@ -18,17 +17,17 @@ auto areSeparate(auto &sectionPair) {
 
 auto overlap(auto &sectionPair) { return !areSeparate(sectionPair); }
 
-} // namespace
+}  // namespace
 
 auto main(int argc, const char *const argv[]) -> int {
   auto [state, program] = Program::create("d4p2", {argc, argv});
   switch (state) {
-  case State::Help:
-    return 0;
-  case State::Fail:
-    return 1;
-  case State::Ok:
-    break;
+    case State::Help:
+      return 0;
+    case State::Fail:
+      return 1;
+    case State::Ok:
+      break;
   }
 
   auto count = countSectionPairsIf(program->inputFile(),

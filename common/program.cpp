@@ -1,7 +1,8 @@
 #include "program.hpp"
 
-#include <iostream>
 #include <spdlog/spdlog.h>
+
+#include <iostream>
 
 namespace po = boost::program_options;
 using namespace std::string_literals;
@@ -15,7 +16,7 @@ auto generic_options() -> boost::program_options::options_description {
   return generic;
 }
 
-} // namespace
+}  // namespace
 
 auto Program::create(std::string_view name,
                      boost::program_options::command_line_parser parser)

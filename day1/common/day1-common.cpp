@@ -1,12 +1,13 @@
 #include "day1-common.hpp"
 
-#include "convert.hpp"
-#include "file-reader.hpp"
+#include <fmt/ranges.h>
+#include <spdlog/spdlog.h>
 
 #include <charconv>
-#include <fmt/ranges.h>
 #include <numeric>
-#include <spdlog/spdlog.h>
+
+#include "convert.hpp"
+#include "file-reader.hpp"
 
 namespace {
 
@@ -42,7 +43,7 @@ auto getElfCalories(auto &getNextLine) -> std::vector<std::vector<unsigned>> {
   }
 }
 
-} // namespace
+}  // namespace
 
 auto resolveCalorieSums(std::istream &input) -> std::vector<unsigned> {
   auto getNextLine = [&input]() { return ::readLine(input); };

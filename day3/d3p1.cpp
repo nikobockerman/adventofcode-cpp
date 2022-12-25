@@ -1,7 +1,4 @@
-#include "file-reader.hpp"
-#include "program.hpp"
-
-#include "day3-common.hpp"
+#include <spdlog/spdlog.h>
 
 #include <algorithm>
 #include <cctype>
@@ -9,10 +6,13 @@
 #include <iterator>
 #include <numeric>
 #include <set>
-#include <spdlog/spdlog.h>
 #include <stdexcept>
 #include <string_view>
 #include <utility>
+
+#include "day3-common.hpp"
+#include "file-reader.hpp"
+#include "program.hpp"
 
 namespace {
 
@@ -66,17 +66,17 @@ auto getAllSharedItems(auto &getNextLine) {
   return sharedItems;
 }
 
-} // namespace
+}  // namespace
 
 auto main(int argc, const char *const argv[]) -> int {
   auto [state, program] = Program::create("d3p1", {argc, argv});
   switch (state) {
-  case State::Help:
-    return 0;
-  case State::Fail:
-    return 1;
-  case State::Ok:
-    break;
+    case State::Help:
+      return 0;
+    case State::Fail:
+      return 1;
+    case State::Ok:
+      break;
   }
 
   auto getNextLine = [&input = program->inputFile()]() {

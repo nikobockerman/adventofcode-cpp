@@ -1,9 +1,9 @@
 #include "day4-common.hpp"
 
+#include <spdlog/spdlog.h>
+
 #include "convert.hpp"
 #include "file-reader.hpp"
-
-#include <spdlog/spdlog.h>
 
 namespace {
 
@@ -27,7 +27,7 @@ auto getSectionPair(std::string_view line) -> std::pair<Section, Section> {
           getSection(line.substr(pairSeparator + 1))};
 }
 
-} // namespace
+}  // namespace
 
 auto countSectionPairsIf(
     std::istream &input,

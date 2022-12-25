@@ -10,7 +10,7 @@
 enum class State { Ok, Help, Fail };
 
 class Program {
-public:
+ public:
   static auto create(std::string_view name,
                      boost::program_options::command_line_parser parser)
       -> std::pair<State, std::optional<Program>>;
@@ -23,7 +23,7 @@ public:
   auto operator=(const Program &) -> Program & = delete;
   auto operator=(Program &&) -> Program & = delete;
 
-private:
+ private:
   explicit Program(std::ifstream file);
 
   std::ifstream _file;

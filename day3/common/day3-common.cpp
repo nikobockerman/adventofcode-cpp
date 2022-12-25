@@ -53,7 +53,7 @@ auto priority(char sharedItem) -> unsigned {
   throw std::runtime_error("Invalid character");
 }
 
-} // namespace
+}  // namespace
 
 auto sumScore(const std::vector<char> &items) -> unsigned {
   std::vector<unsigned> priorities;

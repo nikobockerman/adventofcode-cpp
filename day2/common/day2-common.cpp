@@ -1,22 +1,23 @@
 #include "day2-common.hpp"
 
-#include "file-reader.hpp"
+#include <fmt/ranges.h>
+#include <spdlog/spdlog.h>
 
 #include <charconv>
-#include <fmt/ranges.h>
 #include <numeric>
-#include <spdlog/spdlog.h>
+
+#include "file-reader.hpp"
 
 namespace {
 
 auto typeScore(Type type) -> unsigned {
   switch (type) {
-  case Type::Rock:
-    return 1;
-  case Type::Paper:
-    return 2;
-  case Type::Scissors:
-    return 3;
+    case Type::Rock:
+      return 1;
+    case Type::Paper:
+      return 2;
+    case Type::Scissors:
+      return 3;
   }
   throw std::runtime_error("Unknown type for score");
 }
@@ -32,12 +33,12 @@ auto battleScore(Type opponent, Type me) -> unsigned {
 
   auto iWin = [=] {
     switch (opponent) {
-    case Type::Paper:
-      return me == Type::Scissors;
-    case Type::Scissors:
-      return me == Type::Rock;
-    case Type::Rock:
-      return me == Type::Paper;
+      case Type::Paper:
+        return me == Type::Scissors;
+      case Type::Scissors:
+        return me == Type::Rock;
+      case Type::Rock:
+        return me == Type::Paper;
     }
     throw std::runtime_error("Unknown opponent type for win check");
   };
@@ -46,26 +47,26 @@ auto battleScore(Type opponent, Type me) -> unsigned {
 }
 
 class Battle {
-public:
+ public:
   Battle(Type opponent, Type me) : _opponent{opponent}, _me{me} {}
 
   [[nodiscard]] auto score() const -> unsigned {
     return typeScore(_me) + battleScore(_opponent, _me);
   }
 
-private:
+ private:
   Type _opponent;
   Type _me;
 };
 
 auto parseOpponent(char move) {
   switch (move) {
-  case 'A':
-    return Type::Rock;
-  case 'B':
-    return Type::Paper;
-  case 'C':
-    return Type::Scissors;
+    case 'A':
+      return Type::Rock;
+    case 'B':
+      return Type::Paper;
+    case 'C':
+      return Type::Scissors;
   }
   throw std::runtime_error("Unknown opponent type");
 }
@@ -96,7 +97,7 @@ auto allBattles(auto &getNextLine, auto &parseMe) -> std::vector<Battle> {
   return battles;
 }
 
-} // namespace
+}  // namespace
 
 auto sumScore(std::istream &input,
               const std::function<Type(Type, char)> &parseMe) -> unsigned {
