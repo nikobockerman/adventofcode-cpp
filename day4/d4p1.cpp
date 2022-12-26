@@ -1,5 +1,3 @@
-#include <iostream>
-
 #include "day4-common.hpp"
 #include "program.hpp"
 
@@ -15,22 +13,11 @@ auto areContained(auto &sectionPair) {
          isContained(sectionPair.second, sectionPair.first);
 }
 
+auto _main(auto input) {
+  return countSectionPairsIf(input,
+                             [](auto &pair) { return areContained(pair); });
+}
+
 }  // namespace
 
-auto main(int argc, const char *const argv[]) -> int {
-  auto [state, program] = Program::create("d4p1", {argc, argv});
-  switch (state) {
-    case State::Help:
-      return 0;
-    case State::Fail:
-      return 1;
-    case State::Ok:
-      break;
-  }
-
-  auto count = countSectionPairsIf(
-      program->inputFile(), [](auto &pair) { return areContained(pair); });
-  std::cout << "Result:" << std::endl << count << std::endl;
-
-  return 0;
-}
+SHARED_MAIN

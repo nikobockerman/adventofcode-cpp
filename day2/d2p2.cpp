@@ -1,6 +1,3 @@
-#include <algorithm>
-#include <iostream>
-#include <numeric>
 #include <stdexcept>
 
 #include "day2-common.hpp"
@@ -44,20 +41,8 @@ auto parseMe(Type opponent, char move) {
   throw std::runtime_error("Unknown me type");
 }
 
+auto _main(auto input) { return sumScore(input, parseMe); }
+
 }  // namespace
 
-auto main(int argc, const char *const argv[]) -> int {
-  auto [state, program] = Program::create("d2p2", {argc, argv});
-  switch (state) {
-    case State::Help:
-      return 0;
-    case State::Fail:
-      return 1;
-    case State::Ok:
-      break;
-  }
-
-  auto sum = sumScore(program->inputFile(), parseMe);
-  std::cout << "Result:" << std::endl << sum << std::endl;
-  return 0;
-}
+SHARED_MAIN

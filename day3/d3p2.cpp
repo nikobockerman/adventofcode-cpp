@@ -1,14 +1,9 @@
 #include <spdlog/spdlog.h>
 
 #include <algorithm>
-#include <cctype>
-#include <iostream>
-#include <iterator>
-#include <numeric>
 #include <set>
 #include <stdexcept>
-#include <string_view>
-#include <utility>
+#include <vector>
 
 #include "day3-common.hpp"
 #include "file-reader.hpp"
@@ -80,26 +75,13 @@ auto getGroupBadgeItems(auto &getNextLine) {
   return badgeItems;
 }
 
-}  // namespace
-
-auto main(int argc, const char *const argv[]) -> int {
-  auto [state, program] = Program::create("d3p2", {argc, argv});
-  switch (state) {
-    case State::Help:
-      return 0;
-    case State::Fail:
-      return 1;
-    case State::Ok:
-      break;
-  }
-
-  auto getNextLine = [&input = program->inputFile()]() {
-    return ::readLine(input);
-  };
+auto _main(auto input) {
+  auto getNextLine = [&input]() { return ::readLine(input); };
   auto groupBadgeItems = getGroupBadgeItems(getNextLine);
 
-  auto sum = sumScore(groupBadgeItems);
-  std::cout << "Result:" << std::endl << sum << std::endl;
-
-  return 0;
+  return sumScore(groupBadgeItems);
 }
+
+}  // namespace
+
+SHARED_MAIN
