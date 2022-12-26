@@ -47,7 +47,7 @@ def main():
     for data in results:
         prog = data[0]
         expected = data[-1]
-        args = data[1:-1]
+        args = ["--quiet"] + data[1:-1]
         print(f"{prog}: ", end="")
         executable = build / prog
         stdout = run([str(executable)] + args)

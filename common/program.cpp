@@ -16,7 +16,7 @@ namespace {
 auto generic_options() -> boost::program_options::options_description {
   po::options_description generic("Generic options");
   generic.add_options()("help,h", "produce help message")(
-      "verbose,v", "enable debug logging");
+      "quiet,q", "disable debug logging");
   return generic;
 }
 
@@ -70,7 +70,7 @@ auto program_private::initialize(Args args)
     return {State::Help, std::nullopt};
   }
 
-  if (variables.contains("verbose")) {
+  if (!variables.contains("quiet")) {
     spdlog::set_level(spdlog::level::debug);
   }
 
