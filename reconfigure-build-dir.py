@@ -41,10 +41,10 @@ def main():
     flags = ["-Wall", "-Wextra"]
     cmd_args = []
     if args.flavor == "clang":
-        env["CC"] = "clang-13"
-        env["CXX"] = "clang++-13"
+        env["CC"] = "clang"
+        env["CXX"] = "clang++"
     elif args.flavor == "tidy":
-        cmd_args += ["-DCMAKE_CXX_CLANG_TIDY=clang-tidy-13"]
+        cmd_args += ["-DCMAKE_CXX_CLANG_TIDY=clang-tidy"]
         flags += ["-Werror"]
     env["CFLAGS"] = " ".join(flags)
     env["CXXFLAGS"] = " ".join(flags)
