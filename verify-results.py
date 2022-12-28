@@ -15,6 +15,7 @@ results = [
     ["day3/d3p2", "2616"],
     ["day4/d4p1", "536"],
     ["day4/d4p2", "845"],
+    ["day5/d5p1", "TLFGBZHCN"],
 ]
 
 
