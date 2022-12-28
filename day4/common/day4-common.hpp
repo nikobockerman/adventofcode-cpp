@@ -1,7 +1,7 @@
 #pragma once
 
 #include <functional>
-#include <istream>
+#include <string_view>
 #include <utility>
 
 class Section {
@@ -11,6 +11,6 @@ class Section {
 };
 
 auto countSectionPairsIf(
-    std::istream &input,
+    std::string_view input,
     const std::function<bool(const std::pair<Section, Section> &)> &condition)
     -> unsigned;

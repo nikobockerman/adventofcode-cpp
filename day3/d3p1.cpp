@@ -6,12 +6,10 @@
 #include <vector>
 
 #include "day3-common.hpp"
-#include "file-reader.hpp"
 #include "program.hpp"
+#include "utils.hpp"
 
 namespace {
-
-auto modulo(auto value, auto divider) { return value % divider; }
 
 auto middle(auto rucksack) {
   if (modulo(rucksack.length(), 2) != 0) {
@@ -48,22 +46,11 @@ auto getSharedItem(auto &rucksack) {
   return intersection.at(0);
 }
 
-auto getAllSharedItems(auto &getNextLine) {
-  std::vector<char> sharedItems;
-  while (true) {
-    auto line = getNextLine();
-    if (!line.has_value()) {
-      spdlog::debug("Received no line => EOF");
-      break;
-    }
-    sharedItems.emplace_back(getSharedItem(*line));
-  }
-  return sharedItems;
-}
-
 auto _main(auto input) {
-  auto getNextLine = [&input]() { return ::readLine(input); };
-  auto sharedItems = getAllSharedItems(getNextLine);
+  auto lines = split(input, '\n');
+  std::vector<char> sharedItems;
+  std::transform(lines.begin(), lines.end(), std::back_inserter(sharedItems),
+                 [](auto line) { return getSharedItem(line); });
 
   return sumScore(sharedItems);
 }

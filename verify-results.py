@@ -7,14 +7,14 @@ import subprocess
 import sys
 
 results = [
-    ["day1/d1p1", "day1/input", "69836"],
-    ["day1/d1p2", "day1/input", "207968"],
-    ["day2/d2p1", "day2/input", "8890"],
-    ["day2/d2p2", "day2/input", "10238"],
-    ["day3/d3p1", "day3/input", "7848"],
-    ["day3/d3p2", "day3/input", "2616"],
-    ["day4/d4p1", "day4/input", "536"],
-    ["day4/d4p2", "day4/input", "845"],
+    ["day1/d1p1", "69836"],
+    ["day1/d1p2", "207968"],
+    ["day2/d2p1", "8890"],
+    ["day2/d2p2", "10238"],
+    ["day3/d3p1", "7848"],
+    ["day3/d3p2", "2616"],
+    ["day4/d4p1", "536"],
+    ["day4/d4p2", "845"],
 ]
 
 

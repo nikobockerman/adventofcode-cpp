@@ -4,6 +4,7 @@
 
 #include <boost/program_options.hpp>
 #include <filesystem>
+#include <fstream>
 #include <iostream>
 
 namespace fs = std::filesystem;
@@ -20,10 +21,27 @@ auto generic_options() -> boost::program_options::options_description {
   return generic;
 }
 
+auto readFile(const fs::path &path) -> std::optional<std::string> {
+  std::ifstream file{path, std::ios::in | std::ios::ate};
+  if (!file.is_open()) {
+    spdlog::error("Failed to open input file");
+    return std::nullopt;
+  }
+  auto size = file.tellg();
+  file.seekg(0);
+  std::string result;
+  result.resize(size);
+  if (!file.read(result.data(), size)) {
+    spdlog::error("Failed to read input file");
+    return std::nullopt;
+  }
+  return {std::move(result)};
+}
+
 }  // namespace
 
 auto program_private::initialize(Args args)
-    -> std::pair<State, std::optional<std::ifstream>> {
+    -> std::pair<State, std::optional<std::string>> {
   if (args.empty()) {
     throw std::runtime_error("At least program name required in args");
   }
@@ -81,12 +99,12 @@ auto program_private::initialize(Args args)
   }
 
   auto filePath = variables["input-file"].as<std::string>();
-  auto file = std::ifstream{filePath};
-  if (!file.is_open()) {
-    std::cerr << filePath << " doesn't exist" << std::endl;
+  auto contents = readFile(filePath);
+  if (!contents.has_value()) {
+    std::cerr << "Failed to read " << filePath << std::endl;
     return {State::Fail, std::nullopt};
   }
 
   spdlog::debug("Program started");
-  return {State::Ok, std::move(file)};
+  return {State::Ok, std::move(contents.value())};
 }

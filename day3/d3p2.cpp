@@ -6,8 +6,8 @@
 #include <vector>
 
 #include "day3-common.hpp"
-#include "file-reader.hpp"
 #include "program.hpp"
+#include "utils.hpp"
 
 namespace {
 
@@ -43,41 +43,14 @@ auto getGroupBadgeItem(auto &groupRuckSacks) -> char {
   return badge;
 }
 
-auto getGroupRuckSacks(auto &getNextLine) {
-  std::vector<std::string> groupRuckSacks;
-  while (true) {
-    auto line = getNextLine();
-    if (!line.has_value()) {
-      spdlog::debug("Received no line => EOF");
-      break;
-    }
-
-    groupRuckSacks.emplace_back(std::move(line.value()));
-    if (groupRuckSacks.size() >= 3) {
-      spdlog::debug("Received 3 ruck sacks");
-      break;
-    }
-  }
-  return groupRuckSacks;
-}
-
-auto getGroupBadgeItems(auto &getNextLine) {
-  std::vector<char> badgeItems;
-  while (true) {
-    auto groupRuckSacks = getGroupRuckSacks(getNextLine);
-    if (groupRuckSacks.empty()) {
-      spdlog::debug("No rucksacks => EOF");
-      break;
-    }
-
-    badgeItems.emplace_back(getGroupBadgeItem(groupRuckSacks));
-  }
-  return badgeItems;
-}
-
 auto _main(auto input) {
-  auto getNextLine = [&input]() { return ::readLine(input); };
-  auto groupBadgeItems = getGroupBadgeItems(getNextLine);
+  auto lines = split(input, '\n');
+  auto badgeItemGroups = group(lines, 3);
+
+  std::vector<char> groupBadgeItems;
+  std::transform(badgeItemGroups.begin(), badgeItemGroups.end(),
+                 std::back_inserter(groupBadgeItems),
+                 [](auto &group) { return getGroupBadgeItem(group); });
 
   return sumScore(groupBadgeItems);
 }

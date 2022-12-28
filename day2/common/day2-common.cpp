@@ -1,12 +1,11 @@
 #include "day2-common.hpp"
 
-#include <fmt/ranges.h>
 #include <spdlog/spdlog.h>
 
-#include <charconv>
+#include <algorithm>
 #include <numeric>
 
-#include "file-reader.hpp"
+#include "utils.hpp"
 
 namespace {
 
@@ -22,23 +21,23 @@ auto typeScore(Type type) -> unsigned {
   throw std::runtime_error("Unknown type for score");
 }
 
-auto battleScore(Type opponent, Type me) -> unsigned {
+auto battleScore(Type opponent, Type own) -> unsigned {
   constexpr unsigned scoreLoss{0};
   constexpr unsigned scoreEven{3};
   constexpr unsigned scoreWin{6};
 
-  if (opponent == me) {
+  if (opponent == own) {
     return scoreEven;
   }
 
   auto iWin = [=] {
     switch (opponent) {
       case Type::Paper:
-        return me == Type::Scissors;
+        return own == Type::Scissors;
       case Type::Scissors:
-        return me == Type::Rock;
+        return own == Type::Rock;
       case Type::Rock:
-        return me == Type::Paper;
+        return own == Type::Paper;
     }
     throw std::runtime_error("Unknown opponent type for win check");
   };
@@ -48,7 +47,7 @@ auto battleScore(Type opponent, Type me) -> unsigned {
 
 class Battle {
  public:
-  Battle(Type opponent, Type me) : _opponent{opponent}, _me{me} {}
+  Battle(Type opponent, Type own) : _opponent{opponent}, _me{own} {}
 
   [[nodiscard]] auto score() const -> unsigned {
     return typeScore(_me) + battleScore(_opponent, _me);
@@ -84,26 +83,17 @@ auto getSingleBattle(auto &line, auto &parseMe) {
   return Battle{opponent, parseMe(opponent, line[2])};
 }
 
-auto allBattles(auto &getNextLine, auto &parseMe) -> std::vector<Battle> {
-  std::vector<Battle> battles;
-  while (true) {
-    auto line = getNextLine();
-    if (!line.has_value()) {
-      spdlog::debug("Received no line => EOF");
-      break;
-    }
-    battles.emplace_back(getSingleBattle(line.value(), parseMe));
-  }
-  return battles;
-}
-
 }  // namespace
 
-auto sumScore(std::istream &input,
+auto sumScore(std::string_view input,
               const std::function<Type(Type, char)> &parseMe) -> unsigned {
-  auto getNextLine = [&input]() { return ::readLine(input); };
+  auto lines = split(input, '\n');
+  std::vector<Battle> battles;
+  std::transform(lines.begin(), lines.end(), std::back_inserter(battles),
+                 [parseMe](auto &battleLine) {
+                   return getSingleBattle(battleLine, parseMe);
+                 });
 
-  auto battles = allBattles(getNextLine, parseMe);
   std::vector<unsigned> scores;
   std::transform(battles.cbegin(), battles.cend(), std::back_inserter(scores),
                  [](auto &battle) { return battle.score(); });

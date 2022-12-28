@@ -1,42 +1,43 @@
 #include "day3-common.hpp"
 
+#include <algorithm>
 #include <numeric>
 #include <stdexcept>
 
 namespace {
 
-auto lowerCaseValue(char c) -> unsigned { return c - 'a'; }
+auto lowerCaseValue(char character) -> unsigned { return character - 'a'; }
 
-auto isLowerCase(char c) {
+auto isLowerCase(char character) {
   constexpr unsigned maxLowerCaseValue{'z' - 'a'};
-  auto value = lowerCaseValue(c);
+  auto value = lowerCaseValue(character);
   return value <= maxLowerCaseValue;
 }
 
-auto lowerCasePriority(char c) {
+auto lowerCasePriority(char character) {
   constexpr unsigned minPriority{1};
   constexpr unsigned maxPriority{26};
 
-  auto result = lowerCaseValue(c) + minPriority;
+  auto result = lowerCaseValue(character) + minPriority;
   if (result < minPriority || result > maxPriority) {
     throw std::runtime_error("Invalid value");
   }
   return result;
 }
 
-auto upperCaseValue(char c) -> unsigned { return c - 'A'; }
+auto upperCaseValue(char character) -> unsigned { return character - 'A'; }
 
-auto isUpperCase(char c) {
+auto isUpperCase(char character) {
   constexpr unsigned maxUpperCaseValue{'Z' - 'A'};
-  auto value = upperCaseValue(c);
+  auto value = upperCaseValue(character);
   return value <= maxUpperCaseValue;
 }
 
-auto upperCasePriority(char c) {
+auto upperCasePriority(char character) {
   constexpr unsigned minPriority{27};
   constexpr unsigned maxPriority{52};
 
-  auto result = upperCaseValue(c) + minPriority;
+  auto result = upperCaseValue(character) + minPriority;
   if (result < minPriority || result > maxPriority) {
     throw std::runtime_error("Invalid value");
   }
@@ -58,6 +59,6 @@ auto priority(char sharedItem) -> unsigned {
 auto sumScore(const std::vector<char> &items) -> unsigned {
   std::vector<unsigned> priorities;
   std::transform(items.cbegin(), items.cend(), std::back_inserter(priorities),
-                 [](char c) { return priority(c); });
+                 [](char character) { return priority(character); });
   return std::accumulate(priorities.cbegin(), priorities.cend(), 0);
 }

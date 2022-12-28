@@ -1,9 +1,9 @@
 #pragma once
 
 #include <functional>
-#include <istream>
+#include <string_view>
 
 enum class Type { Rock, Paper, Scissors };
 
-auto sumScore(std::istream &input,
+auto sumScore(std::string_view input,
               const std::function<Type(Type, char)> &parseMe) -> unsigned;

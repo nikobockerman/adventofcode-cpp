@@ -6,7 +6,11 @@ set(CMAKE_CXX_STANDARD 20)
 
 find_package(Boost REQUIRED)
 find_package(fmt REQUIRED)
+find_package(GTest REQUIRED)
 find_package(spdlog REQUIRED)
+
+enable_testing()
+include(GoogleTest)
 
 add_subdirectory(common)
 

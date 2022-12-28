@@ -1,58 +1,25 @@
 #include "day1-common.hpp"
 
-#include <fmt/ranges.h>
-#include <spdlog/spdlog.h>
-
-#include <charconv>
+#include <algorithm>
 #include <numeric>
 
 #include "convert.hpp"
-#include "file-reader.hpp"
+#include "utils.hpp"
 
-namespace {
+auto resolveCalorieSums(std::string_view input) -> std::vector<unsigned> {
+  auto lines = split(input, '\n');
+  auto elfCalorieLines = split(lines, [](auto line) { return line.empty(); });
 
-auto getSingleElfCalories(auto &getNextLine) -> std::vector<unsigned> {
-  std::vector<unsigned> values;
-  while (true) {
-    auto line = getNextLine();
-    if (!line.has_value()) {
-      spdlog::debug("Got EOF");
-      return values;
-    }
-
-    if (line.value().empty()) {
-      spdlog::debug("Got empty line");
-      return values;
-    }
-
-    values.emplace_back(convert<unsigned>(line.value()));
-    spdlog::debug("Added value. Now contains: {}",
-                  fmt::join(decltype(values){values}, ", "));
-  }
-}
-
-auto getElfCalories(auto &getNextLine) -> std::vector<std::vector<unsigned>> {
-  std::vector<std::vector<unsigned>> values;
-  while (true) {
-    auto elfValues = getSingleElfCalories(getNextLine);
-    if (elfValues.empty()) {
-      spdlog::debug("Received no values => EOF");
-      return values;
-    }
-    values.emplace_back(std::move(elfValues));
-  }
-}
-
-}  // namespace
-
-auto resolveCalorieSums(std::istream &input) -> std::vector<unsigned> {
-  auto getNextLine = [&input]() { return ::readLine(input); };
-  auto allCalories = getElfCalories(getNextLine);
+  auto sumCalorieLines = [](auto sum, auto calorieLine) constexpr {
+    return sum + convert<unsigned>(calorieLine);
+  };
 
   std::vector<unsigned> calorieSums;
-  std::transform(allCalories.cbegin(), allCalories.cend(),
-                 std::back_inserter(calorieSums), [](auto &calories) {
-                   return std::accumulate(calories.begin(), calories.end(), 0);
+  std::transform(elfCalorieLines.cbegin(), elfCalorieLines.cend(),
+                 std::back_inserter(calorieSums),
+                 [sumCalorieLines](auto &calories) {
+                   return std::accumulate(calories.begin(), calories.end(), 0,
+                                          sumCalorieLines);
                  });
   return calorieSums;
 }

@@ -1,14 +1,14 @@
 #pragma once
 
-#include <fstream>
 #include <iostream>
 #include <memory>
 #include <optional>
 #include <span>
+#include <string>
 #include <string_view>
 
 // Implement this function and call SHARED_MAIN macro below it
-// auto _main(std::ifstream input);
+// auto _main(std::string input);
 //
 // That function should return a result.
 
@@ -39,6 +39,6 @@ using Args = std::span<char *>;
 
 enum class State { Ok, Help, Fail };
 
-auto initialize(Args args) -> std::pair<State, std::optional<std::ifstream>>;
+auto initialize(Args args) -> std::pair<State, std::optional<std::string>>;
 
 }  // namespace program_private

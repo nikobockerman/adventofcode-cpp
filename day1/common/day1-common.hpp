@@ -1,6 +1,6 @@
 #pragma once
 
-#include <istream>
+#include <string_view>
 #include <vector>
 
-auto resolveCalorieSums(std::istream &input) -> std::vector<unsigned>;
+auto resolveCalorieSums(std::string_view input) -> std::vector<unsigned>;

@@ -3,7 +3,7 @@
 #include <spdlog/spdlog.h>
 
 #include "convert.hpp"
-#include "file-reader.hpp"
+#include "utils.hpp"
 
 namespace {
 
@@ -30,22 +30,12 @@ auto getSectionPair(std::string_view line) -> std::pair<Section, Section> {
 }  // namespace
 
 auto countSectionPairsIf(
-    std::istream &input,
+    std::string_view input,
     const std::function<bool(const std::pair<Section, Section> &)> &condition)
     -> unsigned {
-  auto getNextLine = [&input]() { return ::readLine(input); };
-  unsigned count{0};
-  while (true) {
-    auto line = getNextLine();
-    if (!line.has_value()) {
-      spdlog::debug("Received no line => EOF");
-      break;
-    }
-
-    auto pair = getSectionPair(*line);
-    if (condition(pair)) {
-      ++count;
-    }
-  }
-  return count;
+  auto lines = split(input, '\n');
+  return std::count_if(lines.begin(), lines.end(), [condition](auto line) {
+    auto pair = getSectionPair(line);
+    return condition(pair);
+  });
 }
