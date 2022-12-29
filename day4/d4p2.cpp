@@ -1,9 +1,9 @@
-#include "day4-common.hpp"
+#include "d4-common.hpp"
 #include "program.hpp"
 
 namespace {
 
-auto areSeparate(auto &sectionPair) {
+constexpr auto areSeparate(auto &sectionPair) {
   if (sectionPair.first.end < sectionPair.second.start) {
     return true;
   }
@@ -13,9 +13,9 @@ auto areSeparate(auto &sectionPair) {
   return false;
 }
 
-auto overlap(auto &sectionPair) { return !areSeparate(sectionPair); }
+constexpr auto overlap(auto &sectionPair) { return !areSeparate(sectionPair); }
 
-auto _main(auto input) {
+constexpr auto _main(auto input) {
   return countSectionPairsIf(input, [](auto &pair) { return overlap(pair); });
 }
 

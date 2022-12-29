@@ -3,8 +3,10 @@
 
 #include <algorithm>
 #include <cstddef>
+#include <iterator>
 #include <numeric>
 #include <optional>
+#include <ranges>
 #include <stack>
 #include <stdexcept>
 #include <string_view>
@@ -15,6 +17,10 @@
 #include "utils.hpp"
 
 using namespace std::string_literals;
+using namespace std::string_view_literals;
+
+namespace ranges = std::ranges;
+namespace views = std::views;
 
 namespace {
 
@@ -25,8 +31,8 @@ class Move {
  public:
   static constexpr std::size_t inputIndexOffset{1};
 
-  Move(std::size_t amount, std::size_t inputIndexFromStack,
-       std::size_t inputIndexToStack)
+  constexpr Move(std::size_t amount, std::size_t inputIndexFromStack,
+                 std::size_t inputIndexToStack)
       : _amount{amount},
         _indexFromStack{inputIndexFromStack - inputIndexOffset},
         _indexToStack{inputIndexToStack - inputIndexOffset} {
@@ -35,9 +41,11 @@ class Move {
     }
   }
 
-  [[nodiscard]] auto amount() const { return _amount; }
-  [[nodiscard]] auto indexFromStack() const { return _indexFromStack; }
-  [[nodiscard]] auto indexToStack() const { return _indexToStack; }
+  [[nodiscard]] constexpr auto amount() const { return _amount; }
+  [[nodiscard]] constexpr auto indexFromStack() const {
+    return _indexFromStack;
+  }
+  [[nodiscard]] constexpr auto indexToStack() const { return _indexToStack; }
 
  private:
   std::size_t _amount;
@@ -45,19 +53,32 @@ class Move {
   std::size_t _indexToStack;
 };
 
+constexpr auto constructStacks(auto &&stacksView) -> std::vector<Stack> {
+  auto stacks = std::vector<Stack>{};
+  for (auto stackView : stacksView) {
+    auto commonStackView = stackView | views::common;
+    stacks.emplace_back(commonStackView.begin(), commonStackView.end());
+  }
+  return stacks;
+}
+
 class Stage {
  public:
-  Stage(std::vector<Stack> stacks) : _stacks{std::move(stacks)} {}
+  constexpr explicit Stage(auto &&stacksView)
+      : _stacks{constructStacks(std::move(stacksView))} {}
 
-  [[nodiscard]] auto stacks() const -> auto & { return _stacks; }
+  constexpr explicit Stage(std::vector<Stack> stacks)
+      : _stacks{std::move(stacks)} {}
 
-  [[nodiscard]] auto applyMove(const Move &move) const -> Stage;
+  [[nodiscard]] constexpr auto stacks() const -> auto & { return _stacks; }
+
+  [[nodiscard]] constexpr auto applyMove(const Move &move) const -> Stage;
 
  private:
   std::vector<Stack> _stacks;
 
-  [[nodiscard]] auto applySingleMove(auto indexFrom, auto indexTo) const
-      -> Stage {
+  [[nodiscard]] constexpr auto applySingleMove(auto indexFrom,
+                                               auto indexTo) const -> Stage {
     auto &fromStack = _stacks.at(indexFrom);
     if (fromStack.empty()) {
       throw std::runtime_error("Moving from empty stack");
@@ -79,7 +100,7 @@ class Stage {
         newStacks.emplace_back(_stacks.at(i));
       }
     }
-    return {std::move(newStacks)};
+    return Stage{std::move(newStacks)};
   }
 };
 
@@ -135,7 +156,7 @@ struct formatter<Move> {
 
 namespace {
 
-[[nodiscard]] auto Stage::applyMove(const Move &move) const -> Stage {
+[[nodiscard]] constexpr auto Stage::applyMove(const Move &move) const -> Stage {
   std::optional<Stage> result;
   const Stage *current{this};
   for (auto i = move.amount(); i > 0; --i) {
@@ -147,87 +168,76 @@ namespace {
   return result.value();
 }
 
-auto parseCrate(auto crateChar) -> std::optional<Crate> {
-  if (crateChar == ' ') {
-    return std::nullopt;
-  }
-  return crateChar;
+constexpr auto countStacks(auto &&stackIdLine) -> std::size_t {
+  return ranges::count_if(stackIdLine,
+                          [](auto character) { return character != ' '; });
 }
 
-auto countStacks(auto stackIdLine) -> std::size_t {
-  return std::count_if(stackIdLine.begin(), stackIdLine.end(),
-                       [](char character) { return character != ' '; });
-}
+constexpr auto crateCharIndex(auto stackIndex) { return 1 + 4 * stackIndex; }
 
-auto crateCharIndex(auto stackIndex) { return 1 + 4 * stackIndex; }
-
-auto loadStage(auto lines) -> Stage {
+constexpr auto loadStage(auto &&linesView) -> Stage {
+  auto &&linesCommonView = linesView | views::common;
+  auto lines = std::vector(linesCommonView.begin(), linesCommonView.end());
   auto stackCount = countStacks(lines.back());
+  spdlog::debug("Stack count: {}", stackCount);
 
-  std::vector<Stack> stacks{};
-  stacks.reserve(stackCount);
+  auto crateLinesView = lines | views::reverse | views::drop(1);
+  const auto crateLines =
+      std::vector(crateLinesView.begin(), crateLinesView.end());
+  const auto crateLinesCount = crateLines.size();
 
-  for (std::size_t index{}; index < stackCount; ++index) {
-    stacks.emplace_back(std::accumulate(
-        lines.rbegin() + 1, lines.rend(), Stack{},
-        [index](auto stack, auto line) {
-          auto crate = parseCrate(line.at(crateCharIndex(index)));
-          if (crate) {
-            stack.push(*crate);
-          }
-          return stack;
-        }));
-  }
-  return {std::move(stacks)};
+  auto stacksView =
+      views::iota(std::size_t{}, stackCount) |
+      views::transform([](auto counter) { return crateCharIndex(counter); }) |
+      views::transform([crateLinesCount, &crateLines](auto index) {
+        return crateLines | views::transform([index](const auto &line) {
+                 return *ranges::next(line.begin(), index);
+               }) |
+               views::take_while(
+                   [](auto crateChar) { return crateChar != ' '; }) |
+               views::transform(
+                   [](auto crateChar) { return Crate{crateChar}; });
+      });
+
+  return Stage{std::move(stacksView)};
 }
 
-auto splitMoveLine(auto str) { return split(str, ' '); }
-
-auto parseMove(std::string_view line) {
-  constexpr std::size_t expectedPartsSize{6};
-  constexpr auto indexMoveStr{0};
-  constexpr auto indexFromStr{2};
-  constexpr auto indexToStr{4};
-
-  auto parts = splitMoveLine(line);
-  if (parts.size() != expectedPartsSize || parts.at(indexMoveStr) != "move" ||
-      parts.at(indexFromStr) != "from" || parts.at(indexToStr) != "to") {
-    throw std::runtime_error("Unexpected move line");
-  }
-
+constexpr auto parseMove(auto &&line) {
   constexpr auto indexAmount{1};
   constexpr auto indexFrom{3};
   constexpr auto indexTo{5};
-  return Move{convert<std::size_t>(parts.at(indexAmount)),
-              convert<std::size_t>(parts.at(indexFrom)),
-              convert<std::size_t>(parts.at(indexTo))};
+
+  auto parts = line | views::split(" "sv);
+  return Move{convert<std::size_t>(*ranges::next(parts.begin(), indexAmount)),
+              convert<std::size_t>(*ranges::next(parts.begin(), indexFrom)),
+              convert<std::size_t>(*ranges::next(parts.begin(), indexTo))};
 }
 
-auto loadMoves(auto lines) {
-  std::vector<Move> moves;
-  std::transform(lines.begin(), lines.end(), std::back_inserter(moves),
-                 [](auto line) { return parseMove(line); });
-  return moves;
+constexpr auto loadMoves(auto &&lines) {
+  return lines | views::transform([](auto &&line) {
+           spdlog::debug("DEBUG");
+           spdlog::debug("Parsing move: {}", line);
+           return parseMove(line);
+         });
 }
 
-auto splitInputParts(auto &lines) -> std::tuple<std::vector<std::string_view>,
-                                                std::vector<std::string_view>> {
-  auto parts = split(lines, [](auto line) { return line.empty(); });
+auto _main(std::string_view input) {
+  auto &&partsView =
+      input | views::split("\n\n"sv) | views::transform([](auto part) {
+        return part | views::split("\n"sv) |
+               views::take_while([](auto line) { return !line.empty(); });
+      });
+  auto parts = std::vector(partsView.begin(), partsView.end());
   if (parts.size() != 2) {
     throw std::runtime_error("Incorrect parts");
   }
-  return {std::move(parts.at(0)), std::move(parts.at(1))};
-}
 
-auto _main(auto input) {
-  auto lines = split(input, '\n');
-  auto [stageLines, moveLines] = splitInputParts(lines);
-  auto stage = loadStage(stageLines);
-  auto moves = loadMoves(moveLines);
+  auto stage = loadStage(parts.at(0) | views::all);
+  auto moves = loadMoves(parts.at(1) | views::all) | views::common;
 
   spdlog::info("Initial stage: {}", stage);
   auto finalStage = std::accumulate(
-      moves.begin(), moves.end(), stage,
+      moves.begin(), moves.end(), std::move(stage),
       [](const auto &prev, const auto &move) {
         spdlog::debug("Performing move ({}); Stage: {}", move, prev);
         auto next = prev.applyMove(move);

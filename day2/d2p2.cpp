@@ -1,11 +1,11 @@
 #include <stdexcept>
 
-#include "day2-common.hpp"
+#include "d2-common.hpp"
 #include "program.hpp"
 
 namespace {
 
-auto losingType(Type opponent) {
+constexpr auto losingType(Type opponent) {
   switch (opponent) {
     case Type::Paper:
       return Type::Rock;
@@ -17,7 +17,7 @@ auto losingType(Type opponent) {
   throw std::runtime_error("Unknown opponent type for losing");
 }
 
-auto winningType(Type opponent) {
+constexpr auto winningType(Type opponent) {
   switch (opponent) {
     case Type::Paper:
       return Type::Scissors;
@@ -29,7 +29,7 @@ auto winningType(Type opponent) {
   throw std::runtime_error("Unknown opponent type for winning");
 }
 
-auto parseMe(Type opponent, char move) {
+constexpr auto parseMe(Type opponent, char move) {
   switch (move) {
     case 'X':
       return losingType(opponent);
@@ -41,7 +41,7 @@ auto parseMe(Type opponent, char move) {
   throw std::runtime_error("Unknown me type");
 }
 
-auto _main(auto input) { return sumScore(input, parseMe); }
+constexpr auto _main(auto input) { return sumScore(input, parseMe); }
 
 }  // namespace
 

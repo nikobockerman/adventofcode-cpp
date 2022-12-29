@@ -8,7 +8,7 @@
 #include <string_view>
 
 // Implement this function and call SHARED_MAIN macro below it
-// auto _main(std::string input);
+// auto _main(std::string_view input);
 //
 // That function should return a result.
 
@@ -28,7 +28,7 @@
         break;                                                            \
     }                                                                     \
                                                                           \
-    auto result = _main(std::move(input.value()));                        \
+    auto result = _main(std::string_view{input.value()});                 \
     std::cout << "Result:" << std::endl << result << std::endl;           \
     return 0;                                                             \
   }

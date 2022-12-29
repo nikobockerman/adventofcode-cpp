@@ -1,20 +1,23 @@
-#include "day3-common.hpp"
+#pragma once
 
-#include <algorithm>
 #include <numeric>
+#include <ranges>
 #include <stdexcept>
+#include <vector>
 
-namespace {
+namespace detail {
 
-auto lowerCaseValue(char character) -> unsigned { return character - 'a'; }
+constexpr auto lowerCaseValue(char character) -> unsigned {
+  return character - 'a';
+}
 
-auto isLowerCase(char character) {
+constexpr auto isLowerCase(char character) {
   constexpr unsigned maxLowerCaseValue{'z' - 'a'};
   auto value = lowerCaseValue(character);
   return value <= maxLowerCaseValue;
 }
 
-auto lowerCasePriority(char character) {
+constexpr auto lowerCasePriority(char character) {
   constexpr unsigned minPriority{1};
   constexpr unsigned maxPriority{26};
 
@@ -25,15 +28,17 @@ auto lowerCasePriority(char character) {
   return result;
 }
 
-auto upperCaseValue(char character) -> unsigned { return character - 'A'; }
+constexpr auto upperCaseValue(char character) -> unsigned {
+  return character - 'A';
+}
 
-auto isUpperCase(char character) {
+constexpr auto isUpperCase(char character) {
   constexpr unsigned maxUpperCaseValue{'Z' - 'A'};
   auto value = upperCaseValue(character);
   return value <= maxUpperCaseValue;
 }
 
-auto upperCasePriority(char character) {
+constexpr auto upperCasePriority(char character) {
   constexpr unsigned minPriority{27};
   constexpr unsigned maxPriority{52};
 
@@ -44,7 +49,7 @@ auto upperCasePriority(char character) {
   return result;
 }
 
-auto priority(char sharedItem) -> unsigned {
+constexpr auto priority(char sharedItem) -> unsigned {
   if (isLowerCase(sharedItem)) {
     return lowerCasePriority(sharedItem);
   }
@@ -54,11 +59,12 @@ auto priority(char sharedItem) -> unsigned {
   throw std::runtime_error("Invalid character");
 }
 
-}  // namespace
+}  // namespace detail
 
-auto sumScore(const std::vector<char> &items) -> unsigned {
-  std::vector<unsigned> priorities;
-  std::transform(items.cbegin(), items.cend(), std::back_inserter(priorities),
-                 [](char character) { return priority(character); });
-  return std::accumulate(priorities.cbegin(), priorities.cend(), 0);
+constexpr auto sumScore(auto &&items) -> unsigned {
+  auto priorities = items | std::views::transform([](auto character) {
+                      return detail::priority(character);
+                    }) |
+                    std::views::common;
+  return std::accumulate(priorities.begin(), priorities.end(), 0);
 }

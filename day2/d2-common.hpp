@@ -1,15 +1,17 @@
-#include "day2-common.hpp"
+#pragma once
 
-#include <spdlog/spdlog.h>
-
-#include <algorithm>
+#include <functional>
 #include <numeric>
+#include <stdexcept>
+#include <string_view>
 
 #include "utils.hpp"
 
-namespace {
+enum class Type { Rock, Paper, Scissors };
 
-auto typeScore(Type type) -> unsigned {
+namespace detail {
+
+constexpr auto typeScore(Type type) -> unsigned {
   switch (type) {
     case Type::Rock:
       return 1;
@@ -21,7 +23,7 @@ auto typeScore(Type type) -> unsigned {
   throw std::runtime_error("Unknown type for score");
 }
 
-auto battleScore(Type opponent, Type own) -> unsigned {
+constexpr auto battleScore(Type opponent, Type own) -> unsigned {
   constexpr unsigned scoreLoss{0};
   constexpr unsigned scoreEven{3};
   constexpr unsigned scoreWin{6};
@@ -47,9 +49,9 @@ auto battleScore(Type opponent, Type own) -> unsigned {
 
 class Battle {
  public:
-  Battle(Type opponent, Type own) : _opponent{opponent}, _me{own} {}
+  constexpr Battle(Type opponent, Type own) : _opponent{opponent}, _me{own} {}
 
-  [[nodiscard]] auto score() const -> unsigned {
+  [[nodiscard]] constexpr auto score() const -> unsigned {
     return typeScore(_me) + battleScore(_opponent, _me);
   }
 
@@ -58,7 +60,7 @@ class Battle {
   Type _me;
 };
 
-auto parseOpponent(char move) {
+constexpr auto parseOpponent(char move) {
   switch (move) {
     case 'A':
       return Type::Rock;
@@ -70,9 +72,8 @@ auto parseOpponent(char move) {
   throw std::runtime_error("Unknown opponent type");
 }
 
-auto getSingleBattle(auto &line, auto &parseMe) {
-  spdlog::debug("Parsing line: {}", line);
-  if (line.length() != 3) {
+constexpr auto getSingleBattle(const auto &line, auto &parseMe) {
+  if (line.size() != 3) {
     throw std::runtime_error("Unexpected line length");
   }
   if (line[1] != ' ') {
@@ -83,19 +84,18 @@ auto getSingleBattle(auto &line, auto &parseMe) {
   return Battle{opponent, parseMe(opponent, line[2])};
 }
 
-}  // namespace
+}  // namespace detail
 
-auto sumScore(std::string_view input,
-              const std::function<Type(Type, char)> &parseMe) -> unsigned {
-  auto lines = split(input, '\n');
-  std::vector<Battle> battles;
-  std::transform(lines.begin(), lines.end(), std::back_inserter(battles),
-                 [parseMe](auto &battleLine) {
-                   return getSingleBattle(battleLine, parseMe);
-                 });
+constexpr auto sumScore(std::string_view input,
+                        const std::function<Type(Type, char)> &parseMe)
+    -> unsigned {
+  auto scores =
+      splitLinesUntilEmpty(input) |
+      std::views::transform([&parseMe](auto &&line) {
+        return detail::getSingleBattle(line, parseMe);
+      }) |
+      std::views::transform([](auto &&battle) { return battle.score(); }) |
+      std::views::common;
 
-  std::vector<unsigned> scores;
-  std::transform(battles.cbegin(), battles.cend(), std::back_inserter(scores),
-                 [](auto &battle) { return battle.score(); });
   return std::accumulate(scores.begin(), scores.end(), 0U);
 }

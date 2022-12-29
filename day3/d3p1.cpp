@@ -1,44 +1,49 @@
 #include <spdlog/spdlog.h>
 
 #include <algorithm>
+#include <ranges>
 #include <set>
 #include <stdexcept>
 #include <vector>
 
-#include "day3-common.hpp"
+#include "d3-common.hpp"
 #include "program.hpp"
 #include "utils.hpp"
 
+using namespace std::string_view_literals;
+
+namespace ranges = std::ranges;
+namespace views = std::views;
+
 namespace {
 
-auto middle(auto rucksack) {
-  if (modulo(rucksack.length(), 2) != 0) {
+constexpr auto middle(const auto &rucksack) {
+  if (modulo(rucksack.size(), 2) != 0) {
     throw std::runtime_error("Uneven length");
   }
-  return rucksack.length() / 2;
+  return rucksack.size() / 2;
 }
 
-auto getCompartments(std::string_view rucksack)
-    -> std::pair<std::string_view, std::string_view> {
+constexpr auto getCompartments(const auto &rucksack) {
   const auto mid = middle(rucksack);
 
-  return {rucksack.substr(0, mid), rucksack.substr(mid)};
+  return std::make_pair(rucksack | views::take(mid),
+                        rucksack | views::drop(mid));
 }
 
-auto getSharedItem(auto &rucksack) {
+constexpr auto getSharedItem(auto &&rucksack) {
   if (rucksack.empty()) {
     throw std::runtime_error("Empty rucksack");
   }
 
-  auto [first, second] = getCompartments(rucksack);
-  std::set<char> firstItems{first.cbegin(), first.cend()};
-  std::set<char> secondItems{second.cbegin(), second.cend()};
+  auto [firstItems, secondItems] = getCompartments(rucksack);
+  auto first = vectorSet(std::move(firstItems));
+  auto second = vectorSet(std::move(secondItems));
 
-  std::vector<char> intersection;
-  std::set_intersection(firstItems.begin(), firstItems.end(),
-                        secondItems.begin(), secondItems.end(),
-                        std::back_inserter(intersection));
+  auto intersection = std::vector<char>{};
+  ranges::set_intersection(first, second, std::back_inserter(intersection));
 
+  spdlog::debug("Intersection: {}", fmt::join(intersection, ","));
   if (intersection.size() != 1) {
     throw std::runtime_error("Unexpected number of intersections");
   }
@@ -46,13 +51,10 @@ auto getSharedItem(auto &rucksack) {
   return intersection.at(0);
 }
 
-auto _main(auto input) {
-  auto lines = split(input, '\n');
-  std::vector<char> sharedItems;
-  std::transform(lines.begin(), lines.end(), std::back_inserter(sharedItems),
-                 [](auto line) { return getSharedItem(line); });
-
-  return sumScore(sharedItems);
+constexpr auto _main(auto input) {
+  return sumScore(
+      splitLinesUntilEmpty(input) |
+      views::transform([](auto &&line) { return getSharedItem(line); }));
 }
 
 }  // namespace

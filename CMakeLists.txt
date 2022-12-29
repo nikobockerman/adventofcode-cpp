@@ -1,8 +1,8 @@
 cmake_minimum_required(VERSION 3.18)
 
-project(adventofcode2022 VERSION 0.1.0 LANGUAGES C CXX)
+project(adventofcode2022 VERSION 0.1.0 LANGUAGES CXX)
 
-set(CMAKE_CXX_STANDARD 20)
+set(CMAKE_CXX_STANDARD 23)
 
 find_package(Boost REQUIRED)
 find_package(fmt REQUIRED)

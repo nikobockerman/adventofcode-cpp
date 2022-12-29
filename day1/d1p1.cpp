@@ -1,16 +1,12 @@
 #include <algorithm>
+#include <ranges>
 
-#include "day1-common.hpp"
+#include "d1-common.hpp"
 #include "program.hpp"
-
-using namespace std::string_literals;
 
 namespace {
 
-auto _main(auto input) {
-  auto calorieSums = resolveCalorieSums(input);
-  return *std::max_element(calorieSums.cbegin(), calorieSums.cend());
-}
+auto _main(auto input) { return std::ranges::max(resolveCalorieSums(input)); }
 
 }  // namespace
 

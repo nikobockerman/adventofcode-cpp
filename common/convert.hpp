@@ -1,24 +1,26 @@
 #pragma once
 
-#include <spdlog/spdlog.h>
-
 #include <charconv>
+#include <ranges>
 #include <stdexcept>
-#include <string_view>
+#include <type_traits>
 
-template <typename T>
-auto convert(const std::string_view &str) -> T {
-  if (str.empty()) {
+template <typename TResult, typename TRange>
+  requires(std::ranges::contiguous_range<TRange> &&
+           std::ranges::sized_range<TRange> &&
+           std::is_same_v<std::ranges::range_value_t<TRange>, char>)
+auto convert(TRange &&range) -> TResult {
+  if (std::ranges::empty(range)) {
     throw std::runtime_error("Empty string to convert");
   }
 
-  T value{};
+  TResult value{};
   // NOLINTNEXTLINE(cppcoreguidelines-pro-bounds-pointer-arithmetic)
-  const auto *pastEnd = str.data() + str.size();
-  auto [ptr, ec]{std::from_chars(str.data(), pastEnd, value)};
+  const auto *begin = range.begin();
+  const auto *pastEnd = &*range.end();
+  auto [ptr, ec]{std::from_chars(begin, pastEnd, value)};
   if (ec != std::errc()) {
     throw std::runtime_error("Conversion failed");
   }
-  spdlog::debug("Converted {} to {}", str, value);
   return value;
 }

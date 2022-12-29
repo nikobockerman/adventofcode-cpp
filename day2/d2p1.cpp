@@ -1,9 +1,9 @@
-#include "day2-common.hpp"
+#include "d2-common.hpp"
 #include "program.hpp"
 
 namespace {
 
-auto parseMe(char move) {
+constexpr auto parseMe(char move) {
   switch (move) {
     case 'X':
       return Type::Rock;
