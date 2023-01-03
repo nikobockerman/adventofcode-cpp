@@ -14,7 +14,7 @@ namespace ranges = std::ranges;
 namespace {
 
 auto _main(auto input) {
-  auto calorieSums = resolveCalorieSums(input) | toVector;
+  auto calorieSums = resolveCalorieSums(input) | ranges::to<std::vector>();
   spdlog::debug("Initial: {}", fmt::join(calorieSums, ","));
 
   constexpr std::size_t interestedSize{3};

@@ -18,8 +18,9 @@ namespace views = std::views;
 namespace {
 
 constexpr auto getGroupBadgeItem(auto &&groupRuckSacks) -> char {
-  if (groupRuckSacks.size() != 3) {
-    spdlog::debug("Invalid group size: {}", groupRuckSacks.size());
+  auto size = ranges::distance(groupRuckSacks);
+  if (size != 3) {
+    spdlog::debug("Invalid group size: {}", size);
     throw std::runtime_error("Invalid group size");
   }
 
@@ -48,7 +49,7 @@ constexpr auto _main(auto input) {
   constexpr std::size_t groupSize{3};
 
   return sumScore(
-      splitLinesUntilEmpty(input) | customChunkView(groupSize) |
+      splitLinesUntilEmpty(input) | views::chunk(groupSize) |
       views::transform([](auto &&group) { return getGroupBadgeItem(group); }));
 }
 

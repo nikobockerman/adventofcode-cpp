@@ -35,8 +35,7 @@ constexpr auto getSectionPair(auto &&line) {
 
 constexpr auto countSectionPairsIf(
     std::string_view input,
-    const std::function<bool(const std::pair<Section, Section> &)> &condition)
-    -> unsigned {
+    const std::function<bool(const std::pair<Section, Section> &)> &condition) {
   auto pairs =
       splitLinesUntilEmpty(input) | std::views::transform([](auto &&line) {
         return detail::getSectionPair(line);

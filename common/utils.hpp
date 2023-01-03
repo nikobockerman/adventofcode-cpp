@@ -32,7 +32,7 @@ constexpr auto splitLinesUntilEmpty(auto&& range) {
 }
 
 #ifdef __cpp_lib_ranges_to_container
-#error "Use std::ranges::to<std::vector> directly instead"
+//#error "Use std::ranges::to<std::vector> directly instead"
 #else
 // Note: use of __adaptor may mean that this only works with GCC 12.2.0.
 struct _ToVector : public std::views::__adaptor::_RangeAdaptorClosure {
@@ -48,7 +48,7 @@ inline constexpr _ToVector toVector;
 #endif
 
 constexpr auto vectorSet(auto&& range) {
-  auto vector = range | toVector;
+  auto vector = range | std::ranges::to<std::vector>();
   std::ranges::sort(vector);
   auto ret = std::ranges::unique(vector);
   vector.erase(ret.begin(), ret.end());
@@ -56,7 +56,7 @@ constexpr auto vectorSet(auto&& range) {
 }
 
 #ifdef __cpp_lib_ranges_chunk
-#error "Use views::chunk directly"
+//#error "Use views::chunk directly"
 #else
 struct _CustomChunkView
     : public std::views::__adaptor::_RangeAdaptor<_CustomChunkView> {

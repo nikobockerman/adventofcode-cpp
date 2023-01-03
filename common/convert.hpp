@@ -15,8 +15,7 @@ auto convert(TRange &&range) -> TResult {
   }
 
   TResult value{};
-  // NOLINTNEXTLINE(cppcoreguidelines-pro-bounds-pointer-arithmetic)
-  const auto *begin = range.begin();
+  const auto *begin = &*range.begin();
   const auto *pastEnd = &*range.end();
   auto [ptr, ec]{std::from_chars(begin, pastEnd, value)};
   if (ec != std::errc()) {

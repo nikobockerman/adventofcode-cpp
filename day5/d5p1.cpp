@@ -118,9 +118,9 @@ struct formatter<Stack> {
   template <typename FormatContext>
   auto format(const Stack &stack, FormatContext &ctx) const {
     if (stack.empty()) {
-      return format_to(ctx.out(), "Empty");
+      return fmt::format_to(ctx.out(), "Empty");
     }
-    return format_to(ctx.out(), "[{}:{}]", stack.size(), stack.top());
+    return fmt::format_to(ctx.out(), "[{}:{}]", stack.size(), stack.top());
   }
 };
 
@@ -133,7 +133,7 @@ struct formatter<Stage> {
 
   template <typename FormatContext>
   auto format(const Stage &stage, FormatContext &ctx) const {
-    return format_to(ctx.out(), "{}", fmt::join(stage.stacks(), ","));
+    return fmt::format_to(ctx.out(), "{}", fmt::join(stage.stacks(), ","sv));
   }
 };
 
@@ -146,9 +146,9 @@ struct formatter<Move> {
 
   template <typename FormatContext>
   auto format(const Move &move, FormatContext &ctx) const {
-    return format_to(ctx.out(), "{} from {} to {}", move.amount(),
-                     move.indexFromStack() + Move::inputIndexOffset,
-                     move.indexToStack() + Move::inputIndexOffset);
+    return fmt::format_to(ctx.out(), "{} from {} to {}", move.amount(),
+                          move.indexFromStack() + Move::inputIndexOffset,
+                          move.indexToStack() + Move::inputIndexOffset);
   }
 };
 

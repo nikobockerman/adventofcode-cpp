@@ -66,8 +66,8 @@ auto program_private::initialize(Args args)
   po::positional_options_description positional;
   positional.add("input-file", 1);
   po::options_description hidden("");
-  hidden.add_options()(
-      "input-file", po::value<std::string>()->default_value(defaultInputFile));
+  hidden.add_options()("input-file", po::value<std::string>()->default_value(
+                                         defaultInputFile.string()));
 
   po::options_description parsedOptions("");
   parsedOptions.add(generic).add(hidden);
