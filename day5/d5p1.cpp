@@ -4,7 +4,6 @@
 #include <numeric>
 #include <optional>
 #include <ranges>
-#include <stack>
 #include <stdexcept>
 #include <string_view>
 #include <vector>
@@ -21,7 +20,7 @@ namespace views = std::views;
 namespace {
 
 using Crate = char;
-using Stack = std::stack<Crate>;
+using Stack = std::vector<Crate>;
 
 class Move {
  public:
@@ -49,26 +48,18 @@ class Move {
   std::size_t _indexToStack;
 };
 
-constexpr auto constructStacks(auto &&stacksView) -> std::vector<Stack> {
-  auto stacks = std::vector<Stack>{};
-  for (auto stackView : stacksView) {
-    auto commonStackView = stackView | views::common;
-    stacks.emplace_back(commonStackView.begin(), commonStackView.end());
-  }
-  return stacks;
-}
-
 class Stage {
  public:
   constexpr explicit Stage(auto &&stacksView)
-      : _stacks{constructStacks(std::move(stacksView))} {}
+      : _stacks{stacksView | ranges::to<std::vector<Stack>>()} {}
 
   constexpr explicit Stage(std::vector<Stack> stacks)
       : _stacks{std::move(stacks)} {}
 
   [[nodiscard]] constexpr auto stacks() const -> auto & { return _stacks; }
 
-  [[nodiscard]] constexpr auto applyMove(const Move &move) const -> Stage;
+  [[nodiscard]] RUNTIME_CONSTEXPR auto applyMove(const Move &move) const
+      -> Stage;
 
  private:
   std::vector<Stack> _stacks;
@@ -80,18 +71,18 @@ class Stage {
       throw std::runtime_error("Moving from empty stack");
     }
 
-    Crate movedCrate{fromStack.top()};
+    Crate movedCrate{fromStack.back()};
 
     std::vector<Stack> newStacks;
     for (decltype(_stacks)::size_type i{}; i < _stacks.size(); ++i) {
       if (i == indexFrom) {
         Stack stack{_stacks.at(i)};
-        stack.pop();
-        newStacks.push_back(std::move(stack));
+        stack.pop_back();
+        newStacks.emplace_back(std::move(stack));
       } else if (i == indexTo) {
         Stack stack{_stacks.at(i)};
-        stack.push(movedCrate);
-        newStacks.push_back(std::move(stack));
+        stack.emplace_back(movedCrate);
+        newStacks.emplace_back(std::move(stack));
       } else {
         newStacks.emplace_back(_stacks.at(i));
       }
@@ -116,7 +107,7 @@ struct formatter<Stack> {
     if (stack.empty()) {
       return fmt::format_to(ctx.out(), "Empty");
     }
-    return fmt::format_to(ctx.out(), "[{}:{}]", stack.size(), stack.top());
+    return fmt::format_to(ctx.out(), "[{}:{}]", stack.size(), stack.back());
   }
 };
 
@@ -152,14 +143,15 @@ struct formatter<Move> {
 
 namespace {
 
-[[nodiscard]] constexpr auto Stage::applyMove(const Move &move) const -> Stage {
+[[nodiscard]] RUNTIME_CONSTEXPR auto Stage::applyMove(const Move &move) const
+    -> Stage {
   std::optional<Stage> result;
   const Stage *current{this};
   for (auto i = move.amount(); i > 0; --i) {
     result =
         current->applySingleMove(move.indexFromStack(), move.indexToStack());
     current = &result.value();
-    spdlog::debug("Intermediate stage: {}", *current);
+    logd("Intermediate stage: {}", *current);
   }
   return result.value();
 }
@@ -171,11 +163,11 @@ constexpr auto countStacks(auto &&stackIdLine) -> std::size_t {
 
 constexpr auto crateCharIndex(auto stackIndex) { return 1 + 4 * stackIndex; }
 
-constexpr auto loadStage(auto &&linesView) -> Stage {
+RUNTIME_CONSTEXPR auto loadStage(auto &&linesView) -> Stage {
   auto &&linesCommonView = linesView | views::common;
   auto lines = std::vector(linesCommonView.begin(), linesCommonView.end());
   auto stackCount = countStacks(lines.back());
-  spdlog::debug("Stack count: {}", stackCount);
+  logd("Stack count: {}", stackCount);
 
   auto crateLinesView = lines | views::reverse | views::drop(1);
   const auto crateLines =
@@ -209,15 +201,15 @@ constexpr auto parseMove(auto &&line) {
               convert<std::size_t>(*ranges::next(parts.begin(), indexTo))};
 }
 
-constexpr auto loadMoves(auto &&lines) {
+RUNTIME_CONSTEXPR auto loadMoves(auto &&lines) {
   return lines | views::transform([](auto &&line) {
-           spdlog::debug("DEBUG");
-           spdlog::debug("Parsing move: {}", line);
+           logd("DEBUG");
+           logd("Parsing move: {}", line);
            return parseMove(line);
          });
 }
 
-auto solve() {
+RUNTIME_CONSTEXPR auto solve() {
   auto &&partsView =
       input | views::split("\n\n"sv) | views::transform([](auto part) {
         return part | views::split("\n"sv) |
@@ -231,20 +223,20 @@ auto solve() {
   auto stage = loadStage(parts.at(0) | views::all);
   auto moves = loadMoves(parts.at(1) | views::all) | views::common;
 
-  spdlog::info("Initial stage: {}", stage);
-  auto finalStage = std::accumulate(
-      moves.begin(), moves.end(), std::move(stage),
-      [](const auto &prev, const auto &move) {
-        spdlog::debug("Performing move ({}); Stage: {}", move, prev);
-        auto next = prev.applyMove(move);
-        spdlog::debug("Move performed ({}); Stage: {}", move, next);
-        return next;
-      });
+  logi("Initial stage: {}", stage);
+  auto finalStage =
+      std::accumulate(moves.begin(), moves.end(), std::move(stage),
+                      [](const auto &prev, const auto &move) {
+                        logd("Performing move ({}); Stage: {}", move, prev);
+                        auto next = prev.applyMove(move);
+                        logd("Move performed ({}); Stage: {}", move, next);
+                        return next;
+                      });
 
   const auto &stacks = finalStage.stacks();
   return std::accumulate(
       stacks.begin(), stacks.end(), ""s,
-      [](const auto &prev, const auto &stack) { return prev + stack.top(); });
+      [](const auto &prev, const auto &stack) { return prev + stack.back(); });
 }
 
 }  // namespace
