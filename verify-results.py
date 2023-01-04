@@ -58,7 +58,6 @@ def main():
         dir = data[0]
         prog = data[1]
         expected = data[-1]
-        arguments = ["--quiet", str(build / dir / "input")]
         print(f"{prog}: ", end="")
         executable = build / dir
         if args.build_type:
@@ -66,7 +65,7 @@ def main():
         executable = executable / prog
         if platform.system() == "Windows":
             executable = executable.with_suffix(".exe")
-        stdout = run([str(executable)] + arguments)
+        stdout = run([str(executable)])
         result = stdout.splitlines()[-1].strip()
         logging.debug("Result:   %s", result)
         logging.debug("Expected: %s", expected)
