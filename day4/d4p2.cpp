@@ -20,7 +20,7 @@ constexpr auto overlap(auto &sectionPair) { return !areSeparate(sectionPair); }
 
 auto main() -> int {
   enableDebugLogging();
-  RUNTIME_CONSTEXPR auto result =
+  constexpr auto result =
       countSectionPairsIf(input, [](auto &pair) { return overlap(pair); });
   printResult(result);
   return 0;
