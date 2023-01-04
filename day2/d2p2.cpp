@@ -46,7 +46,8 @@ constexpr auto parseMe(Type opponent, char move) {
 
 auto main() -> int {
   enableDebugLogging();
-  RUNTIME_CONSTEXPR auto result = sumScore(input, parseMe);
+  constexpr auto result = sumScore(
+      input, [](auto opponent, auto move) { return parseMe(opponent, move); });
   printResult(result);
   return 0;
 }

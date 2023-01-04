@@ -1,6 +1,5 @@
 #pragma once
 
-#include <functional>
 #include <numeric>
 #include <stdexcept>
 #include <string_view>
@@ -86,8 +85,7 @@ constexpr auto getSingleBattle(const auto &line, auto &parseMe) {
 
 }  // namespace detail
 
-constexpr auto sumScore(std::string_view input,
-                        const std::function<Type(Type, char)> &parseMe)
+constexpr auto sumScore(std::string_view input, const auto &parseMe)
     -> unsigned {
   auto scores =
       splitLinesUntilEmpty(input) |

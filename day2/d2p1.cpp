@@ -22,7 +22,7 @@ constexpr auto parseMe(char move) {
 
 auto main() -> int {
   enableDebugLogging();
-  RUNTIME_CONSTEXPR auto result =
+  constexpr auto result =
       sumScore(input, [](auto, auto move) { return parseMe(move); });
   printResult(result);
   return 0;
