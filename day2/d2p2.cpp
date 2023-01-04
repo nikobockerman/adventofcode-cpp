@@ -1,7 +1,8 @@
 #include <stdexcept>
 
+#include "common.hpp"
 #include "d2-common.hpp"
-#include "program.hpp"
+#include "input.hpp"
 
 namespace {
 
@@ -41,8 +42,11 @@ constexpr auto parseMe(Type opponent, char move) {
   throw std::runtime_error("Unknown me type");
 }
 
-constexpr auto _main(auto input) { return sumScore(input, parseMe); }
-
 }  // namespace
 
-SHARED_MAIN
+auto main() -> int {
+  enableDebugLogging();
+  RUNTIME_CONSTEXPR auto result = sumScore(input, parseMe);
+  printResult(result);
+  return 0;
+}

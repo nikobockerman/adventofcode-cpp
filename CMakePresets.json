@@ -33,11 +33,5 @@
             "configuration": "Debug"
         }
     ],
-    "testPresets": [
-        {
-            "name": "VSCompiler Debug",
-            "configurePreset": "VSCompiler",
-            "configuration": "Debug"
-        }
-    ]
+    "testPresets": []
 }

@@ -1,8 +1,6 @@
-add_subdirectory(test)
+add_library(common INTERFACE)
+target_include_directories(common INTERFACE ${CMAKE_CURRENT_LIST_DIR})
+target_link_libraries(common INTERFACE spdlog::spdlog)
 
-add_library(common program.cpp utils.cpp)
-target_include_directories(common PUBLIC ${CMAKE_CURRENT_LIST_DIR})
-target_link_libraries(common PUBLIC
-    Boost::program_options
-    spdlog::spdlog
-)
+add_library(enableRuntime INTERFACE)
+target_compile_definitions(enableRuntime INTERFACE ENABLE_RUNTIME_ALGORITHM)

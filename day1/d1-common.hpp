@@ -7,7 +7,7 @@
 #include "convert.hpp"
 #include "utils.hpp"
 
-auto resolveCalorieSums(auto &&input) {
+constexpr auto resolveCalorieSums(auto &&input) {
   constexpr std::string_view groupDelim{"\n\n"};
 
   return input | std::views::split(groupDelim) |

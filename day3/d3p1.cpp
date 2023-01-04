@@ -1,14 +1,12 @@
-#include <spdlog/spdlog.h>
-
 #include <algorithm>
 #include <ranges>
 #include <set>
 #include <stdexcept>
 #include <vector>
 
+#include "common.hpp"
 #include "d3-common.hpp"
-#include "program.hpp"
-#include "utils.hpp"
+#include "input.hpp"
 
 using namespace std::string_view_literals;
 
@@ -31,7 +29,7 @@ constexpr auto getCompartments(const auto &rucksack) {
                         rucksack | views::drop(mid));
 }
 
-constexpr auto getSharedItem(auto &&rucksack) {
+RUNTIME_CONSTEXPR auto getSharedItem(auto &&rucksack) {
   if (rucksack.empty()) {
     throw std::runtime_error("Empty rucksack");
   }
@@ -43,7 +41,7 @@ constexpr auto getSharedItem(auto &&rucksack) {
   auto intersection = std::vector<char>{};
   ranges::set_intersection(first, second, std::back_inserter(intersection));
 
-  spdlog::debug("Intersection: {}", fmt::join(intersection, ","));
+  logd("Intersection: {}", fmt::join(intersection, ","));
   if (intersection.size() != 1) {
     throw std::runtime_error("Unexpected number of intersections");
   }
@@ -51,12 +49,14 @@ constexpr auto getSharedItem(auto &&rucksack) {
   return intersection.at(0);
 }
 
-constexpr auto _main(auto input) {
-  return sumScore(
-      splitLinesUntilEmpty(input) |
-      views::transform([](auto &&line) { return getSharedItem(line); }));
-}
-
 }  // namespace
 
-SHARED_MAIN
+auto main() -> int {
+  enableDebugLogging();
+  RUNTIME_CONSTEXPR auto result =
+      sumScore(splitLinesUntilEmpty(input) | views::transform([](auto &&line) {
+                 return getSharedItem(line);
+               }));
+  printResult(result);
+  return 0;
+}

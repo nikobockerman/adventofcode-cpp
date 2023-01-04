@@ -1,14 +1,12 @@
-#include <spdlog/spdlog.h>
-
 #include <algorithm>
 #include <ranges>
 #include <set>
 #include <stdexcept>
 #include <vector>
 
+#include "common.hpp"
 #include "d3-common.hpp"
-#include "program.hpp"
-#include "utils.hpp"
+#include "input.hpp"
 
 using namespace std::string_view_literals;
 
@@ -17,10 +15,10 @@ namespace views = std::views;
 
 namespace {
 
-constexpr auto getGroupBadgeItem(auto &&groupRuckSacks) -> char {
+RUNTIME_CONSTEXPR auto getGroupBadgeItem(auto &&groupRuckSacks) -> char {
   auto size = ranges::distance(groupRuckSacks);
   if (size != 3) {
-    spdlog::debug("Invalid group size: {}", size);
+    logd("Invalid group size: {}", size);
     throw std::runtime_error("Invalid group size");
   }
 
@@ -41,11 +39,11 @@ constexpr auto getGroupBadgeItem(auto &&groupRuckSacks) -> char {
   }
 
   auto badge = intersection.at(0);
-  spdlog::debug("Group badge found: {}", badge);
+  logd("Group badge found: {}", badge);
   return badge;
 }
 
-constexpr auto _main(auto input) {
+constexpr auto solve() {
   constexpr std::size_t groupSize{3};
 
   return sumScore(
@@ -55,4 +53,9 @@ constexpr auto _main(auto input) {
 
 }  // namespace
 
-SHARED_MAIN
+auto main() -> int {
+  enableDebugLogging();
+  RUNTIME_CONSTEXPR auto result = solve();
+  printResult(result);
+  return 0;
+}

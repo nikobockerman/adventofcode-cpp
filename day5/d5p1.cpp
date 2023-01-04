@@ -1,6 +1,3 @@
-#include <fmt/ranges.h>
-#include <spdlog/spdlog.h>
-
 #include <algorithm>
 #include <cstddef>
 #include <iterator>
@@ -12,9 +9,8 @@
 #include <string_view>
 #include <vector>
 
-#include "convert.hpp"
-#include "program.hpp"
-#include "utils.hpp"
+#include "common.hpp"
+#include "input.hpp"
 
 using namespace std::string_literals;
 using namespace std::string_view_literals;
@@ -221,7 +217,7 @@ constexpr auto loadMoves(auto &&lines) {
          });
 }
 
-auto _main(std::string_view input) {
+auto solve() {
   auto &&partsView =
       input | views::split("\n\n"sv) | views::transform([](auto part) {
         return part | views::split("\n"sv) |
@@ -253,4 +249,9 @@ auto _main(std::string_view input) {
 
 }  // namespace
 
-SHARED_MAIN
+auto main() -> int {
+  enableDebugLogging();
+  RUNTIME_CONSTEXPR auto result = solve();
+  printResult(result);
+  return 0;
+}

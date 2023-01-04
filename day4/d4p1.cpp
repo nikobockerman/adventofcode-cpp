@@ -1,5 +1,6 @@
+#include "common.hpp"
 #include "d4-common.hpp"
-#include "program.hpp"
+#include "input.hpp"
 
 namespace {
 
@@ -13,11 +14,12 @@ constexpr auto areContained(auto &sectionPair) {
          isContained(sectionPair.second, sectionPair.first);
 }
 
-constexpr auto _main(auto input) {
-  return countSectionPairsIf(input,
-                             [](auto &pair) { return areContained(pair); });
-}
-
 }  // namespace
 
-SHARED_MAIN
+auto main() -> int {
+  enableDebugLogging();
+  RUNTIME_CONSTEXPR auto result =
+      countSectionPairsIf(input, [](auto &pair) { return areContained(pair); });
+  printResult(result);
+  return 0;
+}

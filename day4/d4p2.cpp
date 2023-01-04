@@ -1,5 +1,6 @@
+#include "common.hpp"
 #include "d4-common.hpp"
-#include "program.hpp"
+#include "input.hpp"
 
 namespace {
 
@@ -15,10 +16,12 @@ constexpr auto areSeparate(auto &sectionPair) {
 
 constexpr auto overlap(auto &sectionPair) { return !areSeparate(sectionPair); }
 
-constexpr auto _main(auto input) {
-  return countSectionPairsIf(input, [](auto &pair) { return overlap(pair); });
-}
-
 }  // namespace
 
-SHARED_MAIN
+auto main() -> int {
+  enableDebugLogging();
+  RUNTIME_CONSTEXPR auto result =
+      countSectionPairsIf(input, [](auto &pair) { return overlap(pair); });
+  printResult(result);
+  return 0;
+}
