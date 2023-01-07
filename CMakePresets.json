@@ -4,7 +4,7 @@
         {
             "name": "VSCompiler",
             "displayName": "VS Compiler",
-            "description": "Configure using VS 17 2022 Compiler and Release conan dependencies",
+            "description": "Configure using VS 17 2022 Compiler and Release conan dependencies. Uses Conan toolchain from conan-install/vscompiler/",
             "generator": "Visual Studio 17 2022",
             "cacheVariables": {
                 "CMAKE_MAP_IMPORTED_CONFIG_DEBUG": "Release",
@@ -12,7 +12,7 @@
                 "CMAKE_MAP_IMPORTED_CONFIG_RELWITHDEBINFO": "Release",
                 "CMAKE_CXX_FLAGS": "/W4 /WX /EHsc"
             },
-            "toolchainFile": "${sourceDir}\\conan-install\\conan_toolchain.cmake",
+            "toolchainFile": "${sourceDir}\\conan-install\\vscompiler\\conan_toolchain.cmake",
             "binaryDir": "${sourceDir}\\build\\vscompiler",
             "warnings": {
                 "dev": true,

@@ -11,11 +11,12 @@
 #include "common.hpp"
 #include "input.hpp"
 
+namespace ranges = std::ranges;
+namespace views = std::views;
 using namespace std::string_literals;
 using namespace std::string_view_literals;
 
-namespace ranges = std::ranges;
-namespace views = std::views;
+using T2022_day5 = TestFixture;
 
 namespace {
 
@@ -73,21 +74,33 @@ class Stage {
 
     Crate movedCrate{fromStack.back()};
 
-    std::vector<Stack> newStacks;
-    for (decltype(_stacks)::size_type i{}; i < _stacks.size(); ++i) {
+#ifdef __cpp_lib_ranges_zip
+#warning "Zip exists: verify the statement works"
+    return Stage{
+        views::zip(views::iota(std::size_t{}), decltype(_stacks){_stacks}) |
+        views::transform([movedCrate, indexFrom, indexTo](auto enum_stack) {
+          auto [i, stack] = std::move(enum_stack);
+          if (i == indexFrom) {
+            stack.pop_back();
+          } else if (i == indexTo) {
+            stack.emplace_back(movedCrate);
+          }
+          return stack;
+        }) |
+        ranges::to<std::vector>()};
+#else
+    std::vector<Stack> stacks;
+    for (std::size_t i{}; auto stack : _stacks) {
       if (i == indexFrom) {
-        Stack stack{_stacks.at(i)};
         stack.pop_back();
-        newStacks.emplace_back(std::move(stack));
       } else if (i == indexTo) {
-        Stack stack{_stacks.at(i)};
         stack.emplace_back(movedCrate);
-        newStacks.emplace_back(std::move(stack));
-      } else {
-        newStacks.emplace_back(_stacks.at(i));
       }
+      stacks.emplace_back(std::move(stack));
+      ++i;
     }
-    return Stage{std::move(newStacks)};
+    return Stage{std::move(stacks)};
+#endif
   }
 };
 
@@ -164,14 +177,12 @@ constexpr auto countStacks(auto &&stackIdLine) -> std::size_t {
 constexpr auto crateCharIndex(auto stackIndex) { return 1 + 4 * stackIndex; }
 
 RUNTIME_CONSTEXPR auto loadStage(auto &&linesView) -> Stage {
-  auto &&linesCommonView = linesView | views::common;
-  auto lines = std::vector(linesCommonView.begin(), linesCommonView.end());
+  auto lines = linesView | views::common | ranges::to<std::vector>();
   auto stackCount = countStacks(lines.back());
   logd("Stack count: {}", stackCount);
 
-  auto crateLinesView = lines | views::reverse | views::drop(1);
-  const auto crateLines =
-      std::vector(crateLinesView.begin(), crateLinesView.end());
+  auto crateLines =
+      lines | views::reverse | views::drop(1) | ranges::to<std::vector>();
   const auto crateLinesCount = crateLines.size();
 
   auto stacksView =
@@ -191,14 +202,12 @@ RUNTIME_CONSTEXPR auto loadStage(auto &&linesView) -> Stage {
 }
 
 constexpr auto parseMove(auto &&line) {
-  constexpr auto indexAmount{1};
-  constexpr auto indexFrom{3};
-  constexpr auto indexTo{5};
-
-  auto parts = line | views::split(" "sv);
-  return Move{convert<std::size_t>(*ranges::next(parts.begin(), indexAmount)),
-              convert<std::size_t>(*ranges::next(parts.begin(), indexFrom)),
-              convert<std::size_t>(*ranges::next(parts.begin(), indexTo))};
+  auto parts = line | views::split(" "sv) | views::drop(1) | views::stride(2) |
+               views::take(3) | views::transform([](auto &&value) {
+                 return convert<std::size_t>(value);
+               }) |
+               ranges::to<std::vector>();
+  return Move{parts.at(0), parts.at(1), parts.at(2)};
 }
 
 RUNTIME_CONSTEXPR auto loadMoves(auto &&lines) {
@@ -209,7 +218,7 @@ RUNTIME_CONSTEXPR auto loadMoves(auto &&lines) {
          });
 }
 
-RUNTIME_CONSTEXPR auto solve() {
+RUNTIME_CONSTEXPR auto solve1() {
   auto &&partsView =
       input | views::split("\n\n"sv) | views::transform([](auto part) {
         return part | views::split("\n"sv) |
@@ -241,9 +250,7 @@ RUNTIME_CONSTEXPR auto solve() {
 
 }  // namespace
 
-auto main() -> int {
-  enableDebugLogging();
-  RUNTIME_CONSTEXPR auto result = solve();
-  printResult(result);
-  return 0;
+TEST_F(T2022_day5, part1) {
+  RUNTIME_CONSTEXPR auto result = solve1();
+  EXPECT_EQ(result, "TLFGBZHCN"sv);
 }
