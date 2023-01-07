@@ -49,60 +49,7 @@ class Move {
   std::size_t _indexToStack;
 };
 
-class Stage {
- public:
-  constexpr explicit Stage(auto &&stacksView)
-      : _stacks{stacksView | ranges::to<std::vector<Stack>>()} {}
-
-  constexpr explicit Stage(std::vector<Stack> stacks)
-      : _stacks{std::move(stacks)} {}
-
-  [[nodiscard]] constexpr auto stacks() const -> auto & { return _stacks; }
-
-  [[nodiscard]] RUNTIME_CONSTEXPR auto applyMove(const Move &move) const
-      -> Stage;
-
- private:
-  std::vector<Stack> _stacks;
-
-  [[nodiscard]] constexpr auto applySingleMove(auto indexFrom,
-                                               auto indexTo) const -> Stage {
-    auto &fromStack = _stacks.at(indexFrom);
-    if (fromStack.empty()) {
-      throw std::runtime_error("Moving from empty stack");
-    }
-
-    Crate movedCrate{fromStack.back()};
-
-#ifdef __cpp_lib_ranges_zip
-#warning "Zip exists: verify the statement works"
-    return Stage{
-        views::zip(views::iota(std::size_t{}), decltype(_stacks){_stacks}) |
-        views::transform([movedCrate, indexFrom, indexTo](auto enum_stack) {
-          auto [i, stack] = std::move(enum_stack);
-          if (i == indexFrom) {
-            stack.pop_back();
-          } else if (i == indexTo) {
-            stack.emplace_back(movedCrate);
-          }
-          return stack;
-        }) |
-        ranges::to<std::vector>()};
-#else
-    std::vector<Stack> stacks;
-    for (std::size_t i{}; auto stack : _stacks) {
-      if (i == indexFrom) {
-        stack.pop_back();
-      } else if (i == indexTo) {
-        stack.emplace_back(movedCrate);
-      }
-      stacks.emplace_back(std::move(stack));
-      ++i;
-    }
-    return Stage{std::move(stacks)};
-#endif
-  }
-};
+using Stage = std::vector<Stack>;
 
 }  // namespace
 
@@ -133,7 +80,7 @@ struct formatter<Stage> {
 
   template <typename FormatContext>
   auto format(const Stage &stage, FormatContext &ctx) const {
-    return fmt::format_to(ctx.out(), "{}", fmt::join(stage.stacks(), ","sv));
+    return fmt::format_to(ctx.out(), "{}", fmt::join(stage, ","sv));
   }
 };
 
@@ -156,19 +103,6 @@ struct formatter<Move> {
 
 namespace {
 
-[[nodiscard]] RUNTIME_CONSTEXPR auto Stage::applyMove(const Move &move) const
-    -> Stage {
-  std::optional<Stage> result;
-  const Stage *current{this};
-  for (auto i = move.amount(); i > 0; --i) {
-    result =
-        current->applySingleMove(move.indexFromStack(), move.indexToStack());
-    current = &result.value();
-    logd("Intermediate stage: {}", *current);
-  }
-  return result.value();
-}
-
 constexpr auto countStacks(auto &&stackIdLine) -> std::size_t {
   return ranges::count_if(stackIdLine,
                           [](auto character) { return character != ' '; });
@@ -185,20 +119,19 @@ RUNTIME_CONSTEXPR auto loadStage(auto &&linesView) -> Stage {
       lines | views::reverse | views::drop(1) | ranges::to<std::vector>();
   const auto crateLinesCount = crateLines.size();
 
-  auto stacksView =
-      views::iota(std::size_t{}, stackCount) |
-      views::transform([](auto counter) { return crateCharIndex(counter); }) |
-      views::transform([crateLinesCount, &crateLines](auto index) {
-        return crateLines | views::transform([index](const auto &line) {
-                 return *ranges::next(line.begin(), index);
-               }) |
-               views::take_while(
-                   [](auto crateChar) { return crateChar != ' '; }) |
-               views::transform(
-                   [](auto crateChar) { return Crate{crateChar}; });
-      });
-
-  return Stage{std::move(stacksView)};
+  return views::iota(std::size_t{}, stackCount) |
+         views::transform(
+             [](auto counter) { return crateCharIndex(counter); }) |
+         views::transform([crateLinesCount, &crateLines](auto index) {
+           return crateLines | views::transform([index](const auto &line) {
+                    return *ranges::next(line.begin(), index);
+                  }) |
+                  views::take_while(
+                      [](auto crateChar) { return crateChar != ' '; }) |
+                  views::transform(
+                      [](auto crateChar) { return Crate{crateChar}; });
+         }) |
+         ranges::to<Stage>();
 }
 
 constexpr auto parseMove(auto &&line) {
@@ -218,33 +151,87 @@ RUNTIME_CONSTEXPR auto loadMoves(auto &&lines) {
          });
 }
 
-RUNTIME_CONSTEXPR auto solve1() {
-  auto &&partsView =
-      input | views::split("\n\n"sv) | views::transform([](auto part) {
+constexpr auto loadParts(auto &&range) {
+  auto parts =
+      range | views::split("\n\n"sv) | views::transform([](auto part) {
         return part | views::split("\n"sv) |
                views::take_while([](auto line) { return !line.empty(); });
-      });
-  auto parts = std::vector(partsView.begin(), partsView.end());
+      }) |
+      ranges::to<std::vector>();
   if (parts.size() != 2) {
     throw std::runtime_error("Incorrect parts");
   }
 
-  auto stage = loadStage(parts.at(0) | views::all);
-  auto moves = loadMoves(parts.at(1) | views::all) | views::common;
+  return std::make_tuple(loadStage(parts.at(0) | views::all),
+                         loadMoves(parts.at(1) | views::all));
+}
 
+[[nodiscard]] constexpr auto applySingleMove(auto prevStage, auto indexFrom,
+                                             auto indexTo) -> Stage {
+  auto &fromStack = prevStage.at(indexFrom);
+  if (fromStack.empty()) {
+    throw std::runtime_error("Moving from empty stack");
+  }
+
+  Crate movedCrate{fromStack.back()};
+
+#ifdef __cpp_lib_ranges_zip
+#warning "Zip exists: verify the statement works"
+  return Stage{
+      views::zip(views::iota(std::size_t{}), std::move(prevStage)) |
+      views::transform([movedCrate, indexFrom, indexTo](auto enum_stack) {
+        auto [i, stack] = std::move(enum_stack);
+        if (i == indexFrom) {
+          stack.pop_back();
+        } else if (i == indexTo) {
+          stack.emplace_back(movedCrate);
+        }
+        return stack;
+      }) |
+      ranges::to<Stage>()};
+#else
+  Stage stage;
+  for (std::size_t i{}; auto &stack : prevStage) {
+    if (i == indexFrom) {
+      stack.pop_back();
+    } else if (i == indexTo) {
+      stack.emplace_back(movedCrate);
+    }
+    stage.emplace_back(std::move(stack));
+    ++i;
+  }
+  return stage;
+#endif
+}
+
+[[nodiscard]] RUNTIME_CONSTEXPR auto applyMoveOneByOne(Stage stage,
+                                                       const Move &move)
+    -> Stage {
+  auto count = views::iota(std::size_t{}, move.amount());
+  return std::accumulate(
+      count.begin(), count.end(), std::move(stage), [&move](auto prev, auto) {
+        auto stack = applySingleMove(std::move(prev), move.indexFromStack(),
+                                     move.indexToStack());
+        logd("Intermediate stage: {}", stack);
+        return stack;
+      });
+}
+
+RUNTIME_CONSTEXPR auto solve1() {
+  auto [stage, movesView] = loadParts(input);
+  auto moves = movesView | views::common;
   logi("Initial stage: {}", stage);
   auto finalStage =
       std::accumulate(moves.begin(), moves.end(), std::move(stage),
-                      [](const auto &prev, const auto &move) {
+                      [](auto prev, const auto &move) {
                         logd("Performing move ({}); Stage: {}", move, prev);
-                        auto next = prev.applyMove(move);
+                        auto next = applyMoveOneByOne(std::move(prev), move);
                         logd("Move performed ({}); Stage: {}", move, next);
                         return next;
                       });
 
-  const auto &stacks = finalStage.stacks();
   return std::accumulate(
-      stacks.begin(), stacks.end(), ""s,
+      finalStage.begin(), finalStage.end(), ""s,
       [](const auto &prev, const auto &stack) { return prev + stack.back(); });
 }
 
@@ -253,4 +240,54 @@ RUNTIME_CONSTEXPR auto solve1() {
 TEST_F(T2022_day5, part1) {
   RUNTIME_CONSTEXPR auto result = solve1();
   EXPECT_EQ(result, "TLFGBZHCN"sv);
+}
+
+namespace {
+
+[[nodiscard]] constexpr auto applyMoveInSingle(Stage prevStage,
+                                               const Move &move) -> Stage {
+  auto &movedFromStack = prevStage.at(move.indexFromStack());
+  Stack movedCrates{};
+  {
+    auto movedIt = std::next(movedFromStack.begin(),
+                             movedFromStack.size() - move.amount());
+    std::move(movedIt, movedFromStack.end(), std::back_inserter(movedCrates));
+    movedFromStack.erase(movedIt, movedFromStack.end());
+  }
+
+  Stage stage;
+  for (std::size_t i{}; auto &stack : prevStage) {
+    if (i == move.indexToStack()) {
+      std::move(movedCrates.begin(), movedCrates.end(),
+                std::back_inserter(stack));
+    }
+    stage.emplace_back(std::move(stack));
+    ++i;
+  }
+  return stage;
+}
+
+RUNTIME_CONSTEXPR auto solve2() {
+  auto [stage, movesView] = loadParts(input);
+  auto moves = movesView | views::common;
+  logi("Initial stage: {}", stage);
+  auto finalStage =
+      std::accumulate(moves.begin(), moves.end(), std::move(stage),
+                      [](auto prev, const auto &move) {
+                        logd("Performing move ({}); Stage: {}", move, prev);
+                        auto next = applyMoveInSingle(std::move(prev), move);
+                        logd("Move performed ({}); Stage: {}", move, next);
+                        return next;
+                      });
+
+  return std::accumulate(
+      finalStage.begin(), finalStage.end(), ""s,
+      [](const auto &prev, const auto &stack) { return prev + stack.back(); });
+}
+
+}  // namespace
+
+TEST_F(T2022_day5, part2) {
+  RUNTIME_CONSTEXPR auto result = solve2();
+  EXPECT_EQ(result, "QRQFHFWCL"sv);
 }
