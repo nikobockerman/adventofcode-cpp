@@ -16,18 +16,12 @@ class Section {
 };
 
 constexpr auto getSection(auto &&range) -> Section {
-  auto values = range | views::split("-"sv) | ranges::to<std::vector>();
-  if (values.size() != 2) {
-    throw std::runtime_error("No value separator found");
-  }
+  auto values = range | views::split('-') | ranges::to<std::vector>();
   return {convert<unsigned>(values.at(0)), convert<unsigned>(values.at(1))};
 }
 
 constexpr auto getSectionPair(auto &&line) {
-  auto pairs = line | views::split(","sv) | ranges::to<std::vector>();
-  if (pairs.size() != 2) {
-    throw std::runtime_error("No pair found");
-  }
+  auto pairs = line | views::split(',') | ranges::to<std::vector>();
   return std::make_pair(getSection(pairs.at(0)), getSection(pairs.at(1)));
 }
 
