@@ -10,7 +10,7 @@
                 "CMAKE_MAP_IMPORTED_CONFIG_DEBUG": "Release",
                 "CMAKE_MAP_IMPORTED_CONFIG_MINSIZEREL": "Release",
                 "CMAKE_MAP_IMPORTED_CONFIG_RELWITHDEBINFO": "Release",
-                "CMAKE_CXX_FLAGS": "/W4 /WX /EHsc"
+                "CMAKE_CXX_FLAGS_INIT": "/W4 /WX /EHsc"
             },
             "toolchainFile": "${sourceDir}\\conan-install\\vscompiler\\conan_toolchain.cmake",
             "binaryDir": "${sourceDir}\\build\\vscompiler",
