@@ -69,11 +69,11 @@ constexpr auto priority(char sharedItem) -> unsigned {
 }
 
 constexpr auto sumScore(auto &&items) -> unsigned {
-  auto priorities =
-      items |
-      views::transform([](auto character) { return priority(character); }) |
-      views::common;
-  return std::accumulate(priorities.begin(), priorities.end(), 0);
+  return ranges::fold_left_first(items | views::transform([](auto character) {
+                                   return priority(character);
+                                 }),
+                                 std::plus())
+      .value();
 }
 
 constexpr auto middle(const auto &rucksack) {

@@ -111,7 +111,7 @@ constexpr auto countStacks(auto &&stackIdLine) -> std::size_t {
 constexpr auto crateCharIndex(auto stackIndex) { return 1 + 4 * stackIndex; }
 
 RUNTIME_CONSTEXPR auto loadStage(auto &&linesView) -> Stage {
-  auto lines = linesView | views::common | ranges::to<std::vector>();
+  auto lines = linesView | ranges::to<std::vector>();
   auto stackCount = countStacks(lines.back());
   logd("Stack count: {}", stackCount);
 
@@ -207,31 +207,29 @@ constexpr auto loadParts(auto &&range) {
 [[nodiscard]] RUNTIME_CONSTEXPR auto applyMoveOneByOne(Stage stage,
                                                        const Move &move)
     -> Stage {
-  auto count = views::iota(std::size_t{}, move.amount());
-  return std::accumulate(
-      count.begin(), count.end(), std::move(stage), [&move](auto prev, auto) {
-        auto stack = applySingleMove(std::move(prev), move.indexFromStack(),
-                                     move.indexToStack());
-        logd("Intermediate stage: {}", stack);
-        return stack;
-      });
+  return ranges::fold_left(views::iota(std::size_t{}, move.amount()),
+                           std::move(stage), [&move](auto prev, auto) {
+                             auto stack = applySingleMove(std::move(prev),
+                                                          move.indexFromStack(),
+                                                          move.indexToStack());
+                             logd("Intermediate stage: {}", stack);
+                             return stack;
+                           });
 }
 
 RUNTIME_CONSTEXPR auto solve1() {
-  auto [stage, movesView] = loadParts(input);
-  auto moves = movesView | views::common;
+  auto [stage, moves] = loadParts(input);
   logi("Initial stage: {}", stage);
-  auto finalStage =
-      std::accumulate(moves.begin(), moves.end(), std::move(stage),
-                      [](auto prev, const auto &move) {
-                        logd("Performing move ({}); Stage: {}", move, prev);
-                        auto next = applyMoveOneByOne(std::move(prev), move);
-                        logd("Move performed ({}); Stage: {}", move, next);
-                        return next;
-                      });
+  auto finalStage = ranges::fold_left(
+      moves, std::move(stage), [](auto prev, const auto &move) {
+        logd("Performing move ({}); Stage: {}", move, prev);
+        auto next = applyMoveOneByOne(std::move(prev), move);
+        logd("Move performed ({}); Stage: {}", move, next);
+        return next;
+      });
 
-  return std::accumulate(
-      finalStage.begin(), finalStage.end(), ""s,
+  return ranges::fold_left(
+      finalStage, ""s,
       [](const auto &prev, const auto &stack) { return prev + stack.back(); });
 }
 
@@ -268,20 +266,18 @@ namespace {
 }
 
 RUNTIME_CONSTEXPR auto solve2() {
-  auto [stage, movesView] = loadParts(input);
-  auto moves = movesView | views::common;
+  auto [stage, moves] = loadParts(input);
   logi("Initial stage: {}", stage);
-  auto finalStage =
-      std::accumulate(moves.begin(), moves.end(), std::move(stage),
-                      [](auto prev, const auto &move) {
-                        logd("Performing move ({}); Stage: {}", move, prev);
-                        auto next = applyMoveInSingle(std::move(prev), move);
-                        logd("Move performed ({}); Stage: {}", move, next);
-                        return next;
-                      });
+  auto finalStage = ranges::fold_left(
+      moves, std::move(stage), [](auto prev, const auto &move) {
+        logd("Performing move ({}); Stage: {}", move, prev);
+        auto next = applyMoveInSingle(std::move(prev), move);
+        logd("Move performed ({}); Stage: {}", move, next);
+        return next;
+      });
 
-  return std::accumulate(
-      finalStage.begin(), finalStage.end(), ""s,
+  return ranges::fold_left(
+      finalStage, ""s,
       [](const auto &prev, const auto &stack) { return prev + stack.back(); });
 }
 

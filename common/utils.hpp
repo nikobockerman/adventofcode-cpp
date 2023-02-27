@@ -5,10 +5,6 @@
 #include <string_view>
 #include <vector>
 
-#ifdef __cpp_lib_ranges_fold
-#warning "Replace most std::accumulate usages with std::ranges::fold"
-#endif
-
 template <typename TValue, typename TDivider>
 constexpr auto modulo(TValue value, TDivider divider) -> TValue {
   return value % divider;

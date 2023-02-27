@@ -17,13 +17,13 @@ namespace {
 constexpr auto resolveCalorieSums(auto &&input) {
   return input | views::split("\n\n"sv) |
          views::transform([](auto calorieLines) {
-           auto calorieValues = splitLinesUntilEmpty(calorieLines) |
-                                views::transform([](auto calorieLine) {
-                                  return convert<unsigned>(calorieLine);
-                                }) |
-                                views::common;
-           return std::accumulate(calorieValues.begin(), calorieValues.end(),
-                                  0U);
+           return ranges::fold_left_first(
+                      splitLinesUntilEmpty(calorieLines) |
+                          views::transform([](auto calorieLine) {
+                            return convert<unsigned>(calorieLine);
+                          }),
+                      std::plus())
+               .value();
          });
 }
 
@@ -46,7 +46,9 @@ RUNTIME_CONSTEXPR auto solve2() {
   ranges::nth_element(calorieSums, pastInteresting, std::greater<>());
   logd("Partitioned: {}", fmt::join(calorieSums, ","));
 
-  return std::accumulate(calorieSums.begin(), pastInteresting, 0);
+  return ranges::fold_left_first(calorieSums.begin(), pastInteresting,
+                                 std::plus())
+      .value();
 }
 
 }  // namespace
