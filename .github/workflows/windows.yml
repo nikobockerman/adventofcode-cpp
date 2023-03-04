@@ -2,7 +2,7 @@ name: CMake with Conan dependencies
 
 on:
   push:
-    branches: ["main"]
+    branches: ["nikobockerman-patch-1"]
   pull_request:
     branches: ["main"]
 
@@ -22,7 +22,7 @@ jobs:
           . venv/Scripts/activate
           pip install conan
           conan profile detect
-          conan install . -pr:h default -pr:b default -s:h build_type=${{env.BUILD_TYPE}} -s:h compiler.cppstd=23 -c:h tools.cmake.cmake_layout:build_folder_vars="['settings.compiler']" --build=missing
+          conan install . -pr:h default -pr:b default -s:h build_type=${{env.BUILD_TYPE}} -s:h compiler.cppstd=23 -s:h compiler.update=5 -c:h tools.cmake.cmake_layout:build_folder_vars="['settings.compiler']" --build=missing
 
       - name: Configure CMake
         run: cmake --preset MSVC
