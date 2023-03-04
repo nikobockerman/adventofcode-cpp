@@ -1,0 +1,45 @@
+name: CI - Build and test
+
+on:
+  push:
+    branches: ["main"]
+  pull_request:
+    branches: ["main"]
+
+jobs:
+  build-and-test:
+    strategy:
+      matrix:
+        build_type:
+          - Debug
+          - Release
+        compiler:
+          - MSVC
+
+    runs-on: windows-latest
+
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install poetry
+        run: pipx install poetry
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.x'
+          cache: 'poetry'
+      - name: Install python deps including conan
+        run: poetry install
+
+      - name: Detect default conan profile
+        run: poetry run conan profile detect
+
+      - name: Install conan dependencies
+        run: poetry run conan install . -pr:h default -pr:b default -s:h build_type=${{matrix.build_type}} -s:h compiler.cppstd=23 -c:h tools.cmake.cmake_layout:build_folder_vars="['settings.compiler']" --build=missing
+
+      - name: Configure CMake
+        run: cmake --preset ${{matrix.compiler}}
+
+      - name: Build
+        run: cmake --build --preset "${{matrix.compiler}} ${{matrix.build_type}}" -v
+
+      - name: Test
+        run: ctest --preset "${{matrix.compiler}} ${{matrix.build_type}}"
