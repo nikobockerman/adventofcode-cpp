@@ -2,7 +2,7 @@ name: CMake with Conan dependencies
 
 on:
   push:
-    branches: ["main"]
+    branches: ["nikobockerman-patch-1"]
   pull_request:
     branches: ["main"]
 
