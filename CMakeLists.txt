@@ -34,5 +34,15 @@ function(add_solution_library targetNameVariable sourceFile)
   set(${targetNameVariable} ${name} PARENT_SCOPE)
 endfunction()
 
+# Allow long recursive constexpr evaluations project wide
+if(CMAKE_CXX_COMPILER_ID MATCHES "MSVC")
+  add_compile_options("/constexpr:steps20000000")
+elseif(CMAKE_CXX_COMPILER_ID MATCHES "Clang")
+  add_compile_options("-fconstexpr-steps=20000000")
+endif()
+
+# Make debug builds use runtime algorithms
+link_libraries(debug enableRuntime)
+
 add_subdirectory(common)
 add_subdirectory(2022)

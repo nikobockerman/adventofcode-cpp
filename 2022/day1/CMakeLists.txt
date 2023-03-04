@@ -1,7 +1,1 @@
 add_solution_library(name 2022-day1.cpp)
-if(CMAKE_CXX_COMPILER_ID MATCHES "MSVC")
-  target_compile_options(${name} PRIVATE "/constexpr:steps2000000")
-elseif(CMAKE_CXX_COMPILER_ID MATCHES "Clang")
-  target_compile_options(${name} PRIVATE "-fconstexpr-steps=5000000")
-endif()
-#target_link_libraries(${name} PRIVATE enableRuntime)
