@@ -9,3 +9,6 @@ trim_trailing_whitespace = true
 
 [*/*/input]
 end_of_line = lf
+
+[**.py]
+indent_size = 4

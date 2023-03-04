@@ -1,71 +1,74 @@
 {
   "version": 4,
+  "include": [
+    "./ConanPresets.json"
+  ],
   "configurePresets": [
     {
-      "name": "VSCompiler",
+      "name": "MSVC",
       "displayName": "VS Compiler",
-      "description": "Configure using VS 17 2022 Compiler and Release conan dependencies. Uses Conan toolchain from conan-install/vscompiler/",
-      "generator": "Visual Studio 17 2022",
+      "description": "Conan generated preset with extra compilation flags",
+      "inherits": [
+        "conan-msvc"
+      ],
       "cacheVariables": {
-        "CMAKE_MAP_IMPORTED_CONFIG_DEBUG": "Release",
-        "CMAKE_MAP_IMPORTED_CONFIG_MINSIZEREL": "Release",
-        "CMAKE_MAP_IMPORTED_CONFIG_RELWITHDEBINFO": "Release",
         "CMAKE_CXX_FLAGS_INIT": "/W4 /WX /EHsc"
-      },
-      "toolchainFile": "${sourceDir}\\conan-install\\vscompiler\\conan_toolchain.cmake",
-      "binaryDir": "${sourceDir}\\build\\vscompiler",
-      "warnings": {
-        "dev": true,
-        "deprecated": true,
-        "uninitialized": true,
-        "unusedCli": true
-      },
-      "errors": {
-        "deprecated": true,
-        "dev": true
       }
     },
     {
       "name": "Clang",
       "displayName": "Clang",
-      "description": "Configure using Clang Compiler and Release conan dependencies. Uses Conan toolchain from conan-install/clang/",
-      "generator": "Ninja Multi-Config",
+      "description": "Conan generated preset with extra compilation flags",
+      "inherits": [
+        "conan-clang"
+      ],
       "cacheVariables": {
-        "CMAKE_MAP_IMPORTED_CONFIG_DEBUG": "Release",
-        "CMAKE_MAP_IMPORTED_CONFIG_MINSIZEREL": "Release",
-        "CMAKE_MAP_IMPORTED_CONFIG_RELWITHDEBINFO": "Release",
         "CMAKE_CXX_FLAGS_INIT": "-Wall -Wextra -Werror"
-      },
-      "toolchainFile": "${sourceDir}\\conan-install\\clang\\conan_toolchain.cmake",
-      "binaryDir": "${sourceDir}\\build\\clang",
-      "warnings": {
-        "dev": true,
-        "deprecated": true,
-        "uninitialized": true,
-        "unusedCli": true
-      },
-      "errors": {
-        "deprecated": true,
-        "dev": true
       }
     }
   ],
   "buildPresets": [
     {
-      "name": "VSCompiler Debug",
-      "configurePreset": "VSCompiler",
+      "name": "MSVC Debug",
+      "configurePreset": "MSVC",
       "configuration": "Debug"
     },
     {
-      "name": "VSCompiler Release",
-      "configurePreset": "VSCompiler",
+      "name": "MSVC Release",
+      "configurePreset": "MSVC",
       "configuration": "Release"
     },
     {
       "name": "Clang Debug",
       "configurePreset": "Clang",
       "configuration": "Debug"
+    },
+    {
+      "name": "Clang Release",
+      "configurePreset": "Clang",
+      "configuration": "Release"
     }
   ],
-  "testPresets": []
+  "testPresets": [
+    {
+      "name": "MSVC Debug",
+      "configurePreset": "MSVC",
+      "configuration": "Debug"
+    },
+    {
+      "name": "MSVC Release",
+      "configurePreset": "MSVC",
+      "configuration": "Release"
+    },
+    {
+      "name": "Clang Debug",
+      "configurePreset": "Clang",
+      "configuration": "Debug"
+    },
+    {
+      "name": "Clang Release",
+      "configurePreset": "Clang",
+      "configuration": "Release"
+    }
+  ]
 }

@@ -10,7 +10,19 @@ This project has some dependencies to other packages. Those dependencies are
 managed using `conan`. Conan generates a toolchain file that allows CMake
 project to easily find those dependencies.
 
+## Installing dependencies with Conan
+
 CMakePresets.json contains official cmake configurations and serves as an
 example for how to build this repository with CMake. These configurations assume
-that `conan install` has been executed using `-if conan-install` flag in order
-to get the `conan_toolchain.cmake` file generated to the specified directory.
+that `conan install .` has been executed by applying
+`tools.cmake.cmake_layout:build_folder_vars="['settings.compiler']"` conf option
+in order for conan to generates CMakePresets.json with expected preset names.
+
+See ConanInstall.bat for example commands to run conan install.
+
+## Building
+
+Use CMake presets for configuring and building. Or your IDE directly.
+
+**Currently only known compiler capable of building the project is MSVC from
+Visual Studio 17.5**

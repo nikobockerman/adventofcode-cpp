@@ -1,4 +1,2 @@
-/.cache/
 /build/
-/conan-install/
-CMakeUserPresets.json
+ConanPresets.json
