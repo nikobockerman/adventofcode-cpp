@@ -117,12 +117,11 @@ RUNTIME_CONSTEXPR auto loadStage(auto &&linesView) -> Stage {
 
   auto crateLines =
       lines | views::reverse | views::drop(1) | ranges::to<std::vector>();
-  const auto crateLinesCount = crateLines.size();
 
   return views::iota(std::size_t{}, stackCount) |
          views::transform(
              [](auto counter) { return crateCharIndex(counter); }) |
-         views::transform([crateLinesCount, &crateLines](auto index) {
+         views::transform([&crateLines](auto index) {
            return crateLines | views::transform([index](const auto &line) {
                     return *ranges::next(line.begin(), index);
                   }) |
