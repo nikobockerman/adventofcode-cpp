@@ -24,6 +24,9 @@ jobs:
           conan profile detect
           conan install . -pr:h default -pr:b default -s:h build_type=${{env.BUILD_TYPE}} -s:h compiler.cppstd=23 -s:h compiler.update=5 -c:h tools.cmake.cmake_layout:build_folder_vars="['settings.compiler']" --build=missing
 
+      - name: Introspect
+        run: cat build/msvc/generators/conan_toolchain.cmake
+
       - name: Configure CMake
         run: cmake --preset MSVC
 
