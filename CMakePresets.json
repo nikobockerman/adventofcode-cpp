@@ -13,7 +13,8 @@
       ],
       "cacheVariables": {
         "CMAKE_CXX_FLAGS_INIT": "/W4 /WX /EHsc"
-      }
+      },
+      "toolset": "version=14.35"
     },
     {
       "name": "Clang",
