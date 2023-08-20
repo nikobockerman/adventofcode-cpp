@@ -1,0 +1,29 @@
+// For format details, see https://aka.ms/devcontainer.json. For config options, see the
+// README at: https://github.com/devcontainers/templates/tree/main/src/cpp
+{
+	"name": "C++",
+	"build": {
+		"dockerfile": "Dockerfile"
+	},
+	"containerEnv": {
+		"CONAN_HOME": "/conan"
+	},
+	"mounts": [
+		{
+			"source": "adventofcode-conan-cache",
+			"target": "/conan/p",
+			"type": "volume"
+		}
+	],
+	"onCreateCommand": ".devcontainer/on-create.sh",
+	"postAttachCommand": ".devcontainer/post-attach.sh",
+	"customizations": {
+		"vscode": {
+			"extensions": [
+				"ms-python.python",
+				"ms-python.black-formatter",
+				"timonwong.shellcheck"
+			]
+		}
+	}
+}

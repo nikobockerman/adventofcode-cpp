@@ -7,7 +7,12 @@
     {
       "name": "MSVC",
       "displayName": "VS Compiler",
-      "description": "Conan generated preset with extra compilation flags",
+      "condition": {
+        "type": "equals",
+        "lhs": "${hostSystemName}",
+        "rhs": "Windows"
+      },
+      "description": "Main - VisualStudio preset with Conan generated toolchain",
       "inherits": [
         "conan-msvc"
       ],
@@ -18,9 +23,20 @@
     {
       "name": "Clang",
       "displayName": "Clang",
-      "description": "Conan generated preset with extra compilation flags",
+      "description": "Main - Clang preset with Conan generated toolchain",
       "inherits": [
         "conan-clang"
+      ],
+      "cacheVariables": {
+        "CMAKE_CXX_FLAGS_INIT": "-Wall -Wextra -Werror"
+      }
+    },
+    {
+      "name": "Gcc",
+      "displayName": "Gcc",
+      "description": "Main - Gcc preset with Conan generated toolchain",
+      "inherits": [
+        "conan-gcc"
       ],
       "cacheVariables": {
         "CMAKE_CXX_FLAGS_INIT": "-Wall -Wextra -Werror"
@@ -46,6 +62,11 @@
     {
       "name": "Clang Release",
       "configurePreset": "Clang",
+      "configuration": "Release"
+    },
+    {
+      "name": "Gcc Release",
+      "configurePreset": "Gcc",
       "configuration": "Release"
     }
   ],
