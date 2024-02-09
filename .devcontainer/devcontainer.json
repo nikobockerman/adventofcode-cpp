@@ -1,29 +1,26 @@
-// For format details, see https://aka.ms/devcontainer.json. For config options, see the
-// README at: https://github.com/devcontainers/templates/tree/main/src/cpp
 {
-	"name": "C++",
-	"build": {
-		"dockerfile": "Dockerfile"
-	},
-	"containerEnv": {
-		"CONAN_HOME": "/conan"
-	},
-	"mounts": [
-		{
-			"source": "adventofcode-conan-cache",
-			"target": "/conan/p",
-			"type": "volume"
-		}
-	],
-	"onCreateCommand": ".devcontainer/on-create.sh",
-	"postAttachCommand": ".devcontainer/post-attach.sh",
-	"customizations": {
-		"vscode": {
-			"extensions": [
-				"ms-python.python",
-				"ms-python.black-formatter",
-				"timonwong.shellcheck"
-			]
-		}
-	}
+  "name": "C++ using conan by poetry",
+  "image": "mcr.microsoft.com/devcontainers/cpp:bookworm",
+  "containerEnv": {
+    "POETRY_VIRTUALENVS_IN_PROJECT": "true"
+  },
+  "features": {
+    "ghcr.io/devcontainers/features/python:latest": {
+      "toolsToInstall": "poetry"
+    },
+    "ghcr.io/marcozac/devcontainer-features/shellcheck:latest": {},
+    "./features/conan-persistent-package-cache": {},
+    "./features/poetry-persistent-cache": {}
+  },
+  "onCreateCommand": "sh .devcontainer/onCreate.sh",
+  "postStartCommand": "sh .devcontainer/postStart.sh",
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "ms-python.python",
+        "ms-python.black-formatter",
+        "timonwong.shellcheck"
+      ]
+    }
+  }
 }

@@ -20,7 +20,7 @@ class AdventOfCodeCppRecipe(ConanFile):
     exports_sources = "CMakeLists.txt", "2022/*", "common/*", "input.in.hpp"
 
     def requirements(self):
-        self.requires("fmt/[~10.0.0]")
+        self.requires("fmt/[^10.0.0]")
         self.requires("spdlog/[^1.11.0]")
         self.requires("gtest/[^1.12.1]")
 

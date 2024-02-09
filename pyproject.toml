@@ -1,0 +1,20 @@
+[tool.poetry]
+name = "adventofcode-cpp"
+version = "0.0.1"
+description = "Tools needed for this project"
+authors = ["Niko Böckerman <git.585wj@slmail.me>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.11"
+conan = "^2.0.10"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.pyright]
+reportMissingTypeStubs = false
+reportOptionalCall = false
+reportUnknownMemberType = false
+reportUnknownVariableType = false
