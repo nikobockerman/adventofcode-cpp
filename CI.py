@@ -1,25 +1,31 @@
 import subprocess
+from typing import Any, Iterable
 
 
-def run(cmd, **kwargs):
+def run(
+    cmd: list[str], *, capture_output: bool = False, text: bool = False
+) -> subprocess.CompletedProcess[Any]:
     print(f"Run: {cmd}")
-    return subprocess.run(cmd, check=True, **kwargs)
+    return subprocess.run(cmd, check=True, capture_output=capture_output, text=text)
 
 
-def parse_preset_name_lines(output):
-    lines = [line.strip() for line in output.strip().splitlines()]
-    return [
-        line.strip() for line in lines if line and not line.startswith("Available ")
-    ]
+def parse_preset_name_lines(output: str) -> Iterable[str]:
+    for line in (line.strip() for line in output.strip().splitlines()):
+        if not line or line.startswith("Available "):
+            continue
+        yield line
 
 
-def parse_preset_names(output):
-    lines = parse_preset_name_lines(output)
-    return [l.strip(' "') for l in lines]
+def parse_preset_names(output: str) -> Iterable[str]:
+    for line in parse_preset_name_lines(output):
+        yield line.strip(' "')
 
 
-def filter_presets(presets):
-    return [p for p in presets if any([p.startswith(prefix) for prefix in ["MSVC"]])]
+def filter_presets(presets: Iterable[str]) -> Iterable[str]:
+    for preset in presets:
+        if not preset.startswith("MSVC"):
+            continue
+        yield preset
 
 
 def main():
