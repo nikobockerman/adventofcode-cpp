@@ -1,0 +1,24 @@
+version: '3'
+
+vars:
+  PROFILE: default
+  BUILD_TYPE: Release
+
+tasks:
+  install:poetry:
+    description: Install python tools and dependencies
+    cmds:
+      - poetry install --no-root
+    run: once
+
+  install:conan:
+    description: Install conan dependencies
+    #deps:
+    #  - task: install:poetry
+    cmds:
+      - sh conan-install.sh "{{.PROFILE}}" "{{.BUILD_TYPE}}"
+
+  clean:
+    description: Clean build artifacts
+    cmds:
+      - rm -rf build
