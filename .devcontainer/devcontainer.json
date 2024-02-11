@@ -1,16 +1,12 @@
 {
   "name": "C++ using conan by poetry",
-  "image": "mcr.microsoft.com/devcontainers/cpp:bookworm",
+  "build": {
+    "dockerfile": "Dockerfile"
+  },
   "containerEnv": {
     "POETRY_VIRTUALENVS_IN_PROJECT": "true"
   },
   "features": {
-    "ghcr.io/devcontainers-community/features/llvm": {
-      "version": "17"
-    },
-    "ghcr.io/devcontainers/features/python:latest": {
-      "toolsToInstall": "poetry"
-    },
     "ghcr.io/marcozac/devcontainer-features/shellcheck:latest": {},
     "ghcr.io/audacioustux/devcontainers/taskfile:latest": {},
     "./features/conan-persistent-package-cache": {},
@@ -23,6 +19,9 @@
       "extensions": [
         "ms-python.python",
         "ms-python.black-formatter",
+        "ms-python.vscode-pylance",
+        "ms-vscode.cpptools",
+        "ms-vscode.cmake-tools",
         "timonwong.shellcheck"
       ]
     }

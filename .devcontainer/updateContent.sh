@@ -23,6 +23,9 @@ for repo_profile_path in "$repo_profiles_dir"/*; do
 done
 
 # Install conan dependencies
+task PROFILE=dev-gcc-13 \
+    install:conan BUILD_TYPE=Debug \
+    install:conan BUILD_TYPE=Release
 task PROFILE=dev-clang-17 \
     install:conan BUILD_TYPE=Debug \
     install:conan BUILD_TYPE=Release
