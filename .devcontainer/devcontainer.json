@@ -20,8 +20,7 @@
         "ms-python.python",
         "ms-python.black-formatter",
         "ms-python.vscode-pylance",
-        "ms-vscode.cpptools",
-        "ms-vscode.cmake-tools",
+        "ms-vscode.cpptools-extension-pack",
         "timonwong.shellcheck"
       ]
     }
