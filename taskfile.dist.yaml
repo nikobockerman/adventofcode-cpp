@@ -13,8 +13,8 @@ tasks:
 
   install:conan:
     description: Install conan dependencies
-    #deps:
-    #  - task: install:poetry
+    deps:
+      - task: install:poetry
     cmds:
       - sh conan-install.sh "{{.PROFILE}}" "{{.BUILD_TYPE}}"
 
