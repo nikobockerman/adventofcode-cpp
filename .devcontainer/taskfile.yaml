@@ -1,0 +1,29 @@
+version: '3'
+
+includes:
+  root:
+    taskfile: ../taskfile.dist.yaml
+    dir: ../
+
+output: group
+
+tasks:
+  install:all:
+    description: Install dependencies for all profiles supported in devcontainer
+    deps:
+      - task: root:install:conan
+        vars:
+          PROFILE: dev-gcc-13
+          BUILD_TYPE: Debug
+      - task: root:install:conan
+        vars:
+          PROFILE: dev-gcc-13
+          BUILD_TYPE: Release
+      - task: root:install:conan
+        vars:
+          PROFILE: dev-clang-17
+          BUILD_TYPE: Debug
+      - task: root:install:conan
+        vars:
+          PROFILE: dev-clang-17
+          BUILD_TYPE: Release
