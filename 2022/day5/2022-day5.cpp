@@ -174,8 +174,8 @@ constexpr auto loadParts(auto &&range) {
 
   Crate movedCrate{fromStack.back()};
 
-#ifdef __cpp_lib_ranges_zip
-#warning "Zip exists: verify the statement works"
+#if 0 //#ifdef __cpp_lib_ranges_zip
+#pragma message ("Needs to be fixed. MSVC in Github supports this but debugging with it is difficult")
   return Stage{
       views::zip(views::iota(std::size_t{}), std::move(prevStage)) |
       views::transform([movedCrate, indexFrom, indexTo](auto enum_stack) {
