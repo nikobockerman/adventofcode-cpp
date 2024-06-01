@@ -11,3 +11,5 @@ RUN apk add --no-cache poetry
 RUN apk add --no-cache python3
 RUN apk add --no-cache samurai
 RUN apk add --no-cache shellcheck
+
+#RUN apk add --no-cache clang18 clang18-dev

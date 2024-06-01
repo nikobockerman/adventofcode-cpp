@@ -21,9 +21,9 @@ tasks:
           BUILD_TYPE: Release
       - task: root:install:conan
         vars:
-          PROFILE: dev-clang-17
+          PROFILE: dev-clang-18
           BUILD_TYPE: Debug
       - task: root:install:conan
         vars:
-          PROFILE: dev-clang-17
+          PROFILE: dev-clang-18
           BUILD_TYPE: Release
