@@ -10,3 +10,4 @@ RUN apk add --no-cache g++
 RUN apk add --no-cache poetry
 RUN apk add --no-cache python3
 RUN apk add --no-cache samurai
+RUN apk add --no-cache shellcheck

@@ -7,7 +7,6 @@
     "POETRY_VIRTUALENVS_IN_PROJECT": "true"
   },
   "features": {
-    "ghcr.io/marcozac/devcontainer-features/shellcheck:latest": {},
     "ghcr.io/audacioustux/devcontainers/taskfile:latest": {},
     "ghcr.io/nikobockerman/devcontainer-features/poetry-persistent-cache:latest": {},
     "./features/conan-persistent-package-cache": {}
