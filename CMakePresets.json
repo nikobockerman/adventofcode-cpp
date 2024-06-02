@@ -95,6 +95,16 @@
       "name": "Clang Release",
       "configurePreset": "Clang",
       "configuration": "Release"
+    },
+    {
+      "name": "Gcc Release",
+      "configurePreset": "Gcc",
+      "configuration": "Release"
+    },
+    {
+      "name": "Gcc Debug",
+      "configurePreset": "Gcc",
+      "configuration": "Debug"
     }
   ]
 }
