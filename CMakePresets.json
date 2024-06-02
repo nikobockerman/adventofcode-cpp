@@ -28,7 +28,8 @@
         "conan-clang"
       ],
       "cacheVariables": {
-        "CMAKE_CXX_FLAGS_INIT": "-Wall -Wextra -Werror"
+        "CMAKE_CXX_FLAGS_INIT": "-Wall -Wextra -Werror",
+        "CMAKE_EXPORT_COMPILE_COMMANDS": "YES"
       }
     },
     {

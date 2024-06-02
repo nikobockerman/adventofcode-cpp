@@ -7,6 +7,7 @@ RUN apt-get update && apt-get install -y \
     && rm -rf /var/lib/apt/lists/*
 
 RUN apt-add-repository -y universe && apt-get update && apt-get install -y \
+    clangd \
     g++-14 \
     shellcheck \
     && rm -rf /var/lib/apt/lists/*
