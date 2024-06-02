@@ -1,13 +1,13 @@
-FROM mcr.microsoft.com/devcontainers/base:alpine
+FROM mcr.microsoft.com/devcontainers/cpp:noble
 
-RUN apk add --no-cache clang17
-RUN apk add --no-cache clang17-dev
-RUN apk add --no-cache libc++
-RUN apk add --no-cache libc++-dev
-RUN apk add --no-cache cmake
-RUN apk add --no-cache gcc
-RUN apk add --no-cache g++
-RUN apk add --no-cache poetry
-RUN apk add --no-cache python3
-RUN apk add --no-cache samurai
-RUN apk add --no-cache shellcheck
+RUN apt-get update && apt-get install -y \
+    libc++-dev \
+    python3-poetry \
+    software-properties-common \
+    && rm -rf /var/lib/apt/lists/*
+
+RUN apt-add-repository -y universe && apt-get update && apt-get install -y \
+    clangd \
+    g++-14 \
+    shellcheck \
+    && rm -rf /var/lib/apt/lists/*

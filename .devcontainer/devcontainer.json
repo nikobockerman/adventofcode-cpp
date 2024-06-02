@@ -17,6 +17,7 @@
     "vscode": {
       "extensions": [
         "github.vscode-github-actions",
+        "llvm-vs-code-extensions.vscode-clangd",
         "ms-azuretools.vscode-docker",
         "ms-python.python",
         "ms-python.black-formatter",

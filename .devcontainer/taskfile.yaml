@@ -13,17 +13,17 @@ tasks:
     deps:
       - task: root:install:conan
         vars:
-          PROFILE: dev-gcc-13
+          PROFILE: dev-gcc
           BUILD_TYPE: Debug
       - task: root:install:conan
         vars:
-          PROFILE: dev-gcc-13
+          PROFILE: dev-gcc
           BUILD_TYPE: Release
       - task: root:install:conan
         vars:
-          PROFILE: dev-clang-17
+          PROFILE: dev-clang
           BUILD_TYPE: Debug
       - task: root:install:conan
         vars:
-          PROFILE: dev-clang-17
+          PROFILE: dev-clang
           BUILD_TYPE: Release

@@ -1,3 +1,4 @@
 /build/
 ConanPresets.json
 /.venv/
+/.cache/
