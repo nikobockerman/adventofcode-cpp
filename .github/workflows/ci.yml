@@ -38,11 +38,15 @@ jobs:
         run: poetry install
 
       - name: Detect default conan profile
-        run: poetry run conan profile detect
+        run: |
+          poetry run conan profile detect
+          poetry run conan profile show -pr:a default
 
       - name: Install conan profile
         if: matrix.host_profile != 'default'
-        run: cp .github/conan-profiles/${{matrix.host_profile}} ~/.conan2/profiles/
+        run: |
+          cp .github/conan-profiles/${{matrix.host_profile}} ~/.conan2/profiles/
+          poetry run conan profile show -pr:h ${{matrix.host_profile}} -pr:b default -vvv
 
       - name: Install conan dependencies
         run: poetry run conan install . -pr:h ${{matrix.host_profile}} -pr:b default -s:h build_type=${{matrix.build_type}} -s:h compiler.cppstd=23 -c:h tools.cmake.cmake_layout:build_folder_vars="['settings.compiler']" --build=missing
