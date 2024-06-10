@@ -2,3 +2,4 @@
 ConanPresets.json
 /.venv/
 /.cache/
+/.vscode/launch.json
