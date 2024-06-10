@@ -1,18 +1,18 @@
 {
-  "version": 4,
+  "version": 8,
   "include": [
     "./ConanPresets.json"
   ],
   "configurePresets": [
     {
       "name": "MSVC",
-      "displayName": "VS Compiler",
+      "displayName": "MS Visual Studio Compiler",
+      "description": "Main - Visual Studio Compiler preset with Conan generated toolchain",
       "condition": {
         "type": "equals",
         "lhs": "${hostSystemName}",
         "rhs": "Windows"
       },
-      "description": "Main - VisualStudio preset with Conan generated toolchain",
       "inherits": [
         "conan-msvc"
       ],
@@ -21,91 +21,174 @@
       }
     },
     {
-      "name": "Clang",
-      "displayName": "Clang",
-      "description": "Main - Clang preset with Conan generated toolchain",
-      "inherits": [
-        "conan-clang"
-      ],
-      "cacheVariables": {
-        "CMAKE_CXX_FLAGS_INIT": "-Wall -Wextra -Werror",
-        "CMAKE_EXPORT_COMPILE_COMMANDS": "YES"
-      }
-    },
-    {
-      "name": "Gcc",
-      "displayName": "Gcc",
-      "description": "Main - Gcc preset with Conan generated toolchain",
-      "inherits": [
-        "conan-gcc"
-      ],
+      "hidden": true,
+      "name": "ClangGccFlags",
       "cacheVariables": {
         "CMAKE_CXX_FLAGS_INIT": "-Wall -Wextra -Werror"
       }
+    },
+    {
+      "name": "Clang",
+      "displayName": "Clang Windows",
+      "description": "Main - Clang Windows preset with Conan generated toolchain and Multi-Config generator",
+      "condition": {
+        "type": "equals",
+        "lhs": "${hostSystemName}",
+        "rhs": "Windows"
+      },
+      "inherits": [
+        "conan-clang",
+        "ClangGccFlags"
+      ]
+    },
+    {
+      "name": "GccDebug",
+      "displayName": "Gcc Debug",
+      "description": "Main - Gcc Debug preset with Conan generated toolchain",
+      "condition": {
+        "type": "equals",
+        "lhs": "${hostSystemName}",
+        "rhs": "Linux"
+      },
+      "inherits": [
+        "conan-gcc-debug",
+        "ClangGccFlags"
+      ]
+    },
+    {
+      "name": "GccRelease",
+      "displayName": "Gcc Release",
+      "description": "Main - Gcc Release preset with Conan generated toolchain",
+      "condition": {
+        "type": "equals",
+        "lhs": "${hostSystemName}",
+        "rhs": "Linux"
+      },
+      "inherits": [
+        "conan-gcc-release",
+        "ClangGccFlags"
+      ]
+    },
+    {
+      "name": "ClangDebug",
+      "displayName": "Clang Debug",
+      "description": "Main - Clang Debug preset with Conan generated toolchain",
+      "condition": {
+        "type": "equals",
+        "lhs": "${hostSystemName}",
+        "rhs": "Linux"
+      },
+      "inherits": [
+        "conan-clang-debug",
+        "ClangGccFlags"
+      ]
+    },
+    {
+      "name": "ClangRelease",
+      "displayName": "Clang Release",
+      "description": "Main - Clang Release preset with Conan generated toolchain",
+      "condition": {
+        "type": "equals",
+        "lhs": "${hostSystemName}",
+        "rhs": "Linux"
+      },
+      "inherits": [
+        "conan-clang-release",
+        "ClangGccFlags"
+      ]
     }
   ],
   "buildPresets": [
     {
       "name": "MSVC Debug",
       "configurePreset": "MSVC",
-      "configuration": "Debug"
+      "configuration": "Debug",
+      "condition": {
+        "type": "equals",
+        "lhs": "${hostSystemName}",
+        "rhs": "Windows"
+      }
     },
     {
       "name": "MSVC Release",
       "configurePreset": "MSVC",
-      "configuration": "Release"
+      "configuration": "Release",
+      "condition": {
+        "type": "equals",
+        "lhs": "${hostSystemName}",
+        "rhs": "Windows"
+      }
     },
     {
       "name": "Clang Debug",
       "configurePreset": "Clang",
-      "configuration": "Debug"
+      "configuration": "Debug",
+      "condition": {
+        "type": "equals",
+        "lhs": "${hostSystemName}",
+        "rhs": "Windows"
+      }
     },
     {
       "name": "Clang Release",
       "configurePreset": "Clang",
-      "configuration": "Release"
+      "configuration": "Release",
+      "condition": {
+        "type": "equals",
+        "lhs": "${hostSystemName}",
+        "rhs": "Windows"
+      }
     },
     {
-      "name": "Gcc Release",
-      "configurePreset": "Gcc",
-      "configuration": "Release"
+      "name": "GccRelease",
+      "displayName": "Gcc Release",
+      "configurePreset": "GccRelease",
+      "condition": {
+        "type": "equals",
+        "lhs": "${hostSystemName}",
+        "rhs": "Linux"
+      }
     },
     {
-      "name": "Gcc Debug",
-      "configurePreset": "Gcc",
-      "configuration": "Debug"
+      "name": "GccDebug",
+      "displayName": "Gcc Debug",
+      "configurePreset": "GccDebug",
+      "condition": {
+        "type": "equals",
+        "lhs": "${hostSystemName}",
+        "rhs": "Linux"
+      }
+    },
+    {
+      "name": "ClangDebug",
+      "displayName": "Clang Debug",
+      "configurePreset": "ClangDebug",
+      "condition": {
+        "type": "equals",
+        "lhs": "${hostSystemName}",
+        "rhs": "Linux"
+      }
+    },
+    {
+      "name": "ClangRelease",
+      "displayName": "Clang Release",
+      "configurePreset": "ClangRelease",
+      "condition": {
+        "type": "equals",
+        "lhs": "${hostSystemName}",
+        "rhs": "Linux"
+      }
     }
   ],
-  "testPresets": [
+  "workflowPresets": [
     {
-      "name": "MSVC Debug",
-      "configurePreset": "MSVC",
-      "configuration": "Debug"
-    },
-    {
-      "name": "MSVC Release",
-      "configurePreset": "MSVC",
-      "configuration": "Release"
-    },
-    {
-      "name": "Clang Debug",
-      "configurePreset": "Clang",
-      "configuration": "Debug"
-    },
-    {
-      "name": "Clang Release",
-      "configurePreset": "Clang",
-      "configuration": "Release"
-    },
-    {
-      "name": "Gcc Release",
-      "configurePreset": "Gcc",
-      "configuration": "Release"
-    },
-    {
-      "name": "Gcc Debug",
-      "configurePreset": "Gcc",
-      "configuration": "Debug"
+      "name": "MSVC",
+      "steps": [
+        {
+          "type": "configure",
+          "name": "MSVC"
+        }
+      ]
     }
   ]
 }
