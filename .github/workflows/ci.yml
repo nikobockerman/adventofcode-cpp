@@ -15,10 +15,8 @@ jobs:
           - windows-latest
         build_type:
           - Debug
-          - Release
         compiler:
           - Clang
-          - MSVC
         include:
           - host_profile: default
           - compiler: Clang
@@ -29,6 +27,15 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
+      - name: DEBUG
+        run: |
+          ls "C:\Program Files\LLVM\bin\"
+          & "C:\Program Files\LLVM\bin\clang.exe" --version
+          ls "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Tools\"
+          ls "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Tools\Llvm"
+          ls "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Tools\Llvm\bin"
+          & "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Tools\Llvm\bin\clang.exe" --version
+          & "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Tools\Llvm\bin\clang-cl.exe" --version
       - name: Install poetry
         run: pipx install poetry
       - uses: actions/setup-python@v5
