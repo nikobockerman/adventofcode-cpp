@@ -123,12 +123,12 @@ files = [
 
 [[package]]
 name = "conan"
-version = "2.4.1"
+version = "2.5.0"
 description = "Conan C/C++ package manager"
 optional = false
 python-versions = ">=3.6"
 files = [
-    {file = "conan-2.4.1.tar.gz", hash = "sha256:b7f2e978233a2111294cfad89067b0b6a13aa7e05fe2a1208aab5c08dae85a55"},
+    {file = "conan-2.5.0.tar.gz", hash = "sha256:b280b4139251c4e232d23ae60f291605f023324de224ab82d2cf60dffcfb8fcb"},
 ]
 
 [package.dependencies]
@@ -401,4 +401,4 @@ socks = ["PySocks (>=1.5.6,!=1.5.7,<2.0)"]
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.11"
-content-hash = "832ee9c7f7f7f1c216a0eb4a9c4fdbc330fba862850204a9433de1eff9233c65"
+content-hash = "69d4ac17cf7057ae0f4d0ae5698454ee748163031e8def0ee3652af195d0e130"
