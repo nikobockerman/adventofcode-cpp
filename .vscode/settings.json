@@ -6,4 +6,8 @@
     "files.insertFinalNewline": true,
     "files.trimFinalNewlines": true,
     "C_Cpp.intelliSenseEngine": "disabled",
+    "cmake.loggingLevel": "debug",
+    "cmake.debugConfig": {
+        "cwd": "${workspaceFolder}"
+    }
 }

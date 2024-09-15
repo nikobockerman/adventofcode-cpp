@@ -1,111 +1,23 @@
 {
-  "version": 4,
-  "include": [
-    "./ConanPresets.json"
-  ],
+  "version": 8,
+
   "configurePresets": [
     {
-      "name": "MSVC",
-      "displayName": "VS Compiler",
-      "condition": {
-        "type": "equals",
-        "lhs": "${hostSystemName}",
-        "rhs": "Windows"
-      },
-      "description": "Main - VisualStudio preset with Conan generated toolchain",
-      "inherits": [
-        "conan-msvc"
-      ],
+      "name": "debug",
+      "toolchainFile": "$env{VCPKG_ROOT}/scripts/buildsystems/vcpkg.cmake",
+      "binaryDir": "build/debug",
+      "generator": "Ninja",
       "cacheVariables": {
-        "CMAKE_CXX_FLAGS_INIT": "/W4 /WX /EHsc"
-      }
-    },
-    {
-      "name": "Clang",
-      "displayName": "Clang",
-      "description": "Main - Clang preset with Conan generated toolchain",
-      "inherits": [
-        "conan-clang"
-      ],
-      "cacheVariables": {
-        "CMAKE_CXX_FLAGS_INIT": "-Wall -Wextra -Werror",
-        "CMAKE_EXPORT_COMPILE_COMMANDS": "YES"
-      }
-    },
-    {
-      "name": "Gcc",
-      "displayName": "Gcc",
-      "description": "Main - Gcc preset with Conan generated toolchain",
-      "inherits": [
-        "conan-gcc"
-      ],
-      "cacheVariables": {
-        "CMAKE_CXX_FLAGS_INIT": "-Wall -Wextra -Werror"
+        "CMAKE_CXX_COMPILER": "clang++",
+        "CMAKE_EXPORT_COMPILE_COMMANDS": "ON",
+        "CMAKE_BUILD_TYPE": "Debug"
       }
     }
   ],
   "buildPresets": [
     {
-      "name": "MSVC Debug",
-      "configurePreset": "MSVC",
-      "configuration": "Debug"
-    },
-    {
-      "name": "MSVC Release",
-      "configurePreset": "MSVC",
-      "configuration": "Release"
-    },
-    {
-      "name": "Clang Debug",
-      "configurePreset": "Clang",
-      "configuration": "Debug"
-    },
-    {
-      "name": "Clang Release",
-      "configurePreset": "Clang",
-      "configuration": "Release"
-    },
-    {
-      "name": "Gcc Release",
-      "configurePreset": "Gcc",
-      "configuration": "Release"
-    },
-    {
-      "name": "Gcc Debug",
-      "configurePreset": "Gcc",
-      "configuration": "Debug"
-    }
-  ],
-  "testPresets": [
-    {
-      "name": "MSVC Debug",
-      "configurePreset": "MSVC",
-      "configuration": "Debug"
-    },
-    {
-      "name": "MSVC Release",
-      "configurePreset": "MSVC",
-      "configuration": "Release"
-    },
-    {
-      "name": "Clang Debug",
-      "configurePreset": "Clang",
-      "configuration": "Debug"
-    },
-    {
-      "name": "Clang Release",
-      "configurePreset": "Clang",
-      "configuration": "Release"
-    },
-    {
-      "name": "Gcc Release",
-      "configurePreset": "Gcc",
-      "configuration": "Release"
-    },
-    {
-      "name": "Gcc Debug",
-      "configurePreset": "Gcc",
-      "configuration": "Debug"
+      "name": "debug",
+      "configurePreset": "debug"
     }
   ]
 }
