@@ -2,7 +2,6 @@ FROM mcr.microsoft.com/devcontainers/cpp:noble
 
 RUN apt-get update && apt-get install -y \
     libc++-dev \
-    python3-poetry \
     software-properties-common \
     && rm -rf /var/lib/apt/lists/*
 

@@ -1,0 +1,175 @@
+{
+  "version": 8,
+  "configurePresets": [
+    {
+      "name": "vscode-clang-debug",
+      "displayName": "VSCode: Clang Debug",
+      "binaryDir": "build/vscode-clang-debug",
+      "inherits": [
+        "vcpkg-toolchain",
+        "clang",
+        "ninja",
+        "gcc-clang-flags",
+        "configure-flags",
+        "debug",
+        "compile-commands-json"
+      ]
+    },
+    {
+      "name": "vscode-clang-release",
+      "displayName": "VSCode: Clang Release",
+      "binaryDir": "build/vscode-clang-release",
+      "inherits": [
+        "vcpkg-toolchain",
+        "clang",
+        "ninja",
+        "gcc-clang-flags",
+        "configure-flags",
+        "release",
+        "compile-commands-json"
+      ]
+    },
+    {
+      "name": "gcc-14",
+      "hidden": true,
+      "environment": {
+        "CXX": "g++-14"
+      }
+    },
+    {
+      "name": "dev-gcc-14-debug",
+      "inherits": ["ninja-debug", "gcc-14"]
+    },
+    {
+      "name": "dev-gcc-14-release",
+      "inherits": ["ninja-release", "gcc-14"]
+    }
+  ],
+  "buildPresets": [
+    {
+      "name": "vscode-clang-debug",
+      "displayName": "Debug",
+      "configurePreset": "vscode-clang-debug"
+    },
+    {
+      "name": "vscode-clang-release",
+      "displayName": "Release",
+      "configurePreset": "vscode-clang-release"
+    },
+    {
+      "name": "dev-gcc-14-debug",
+      "configurePreset": "dev-gcc-14-debug"
+    },
+    {
+      "name": "dev-gcc-14-release",
+      "configurePreset": "dev-gcc-14-release"
+    }
+  ],
+  "testPresets": [
+    {
+      "name": "vscode-clang-debug",
+      "displayName": "Debug",
+      "configurePreset": "vscode-clang-debug"
+    },
+    {
+      "name": "vscode-clang-release",
+      "displayName": "Release",
+      "configurePreset": "vscode-clang-release"
+    },
+    {
+      "name": "dev-gcc-14-debug",
+      "configurePreset": "dev-gcc-14-debug"
+    },
+    {
+      "name": "dev-gcc-14-release",
+      "configurePreset": "dev-gcc-14-release"
+    }
+  ],
+  "workflowPresets": [
+    {
+      "name": "dev-clang-debug",
+      "steps": [
+        {
+          "type": "configure",
+          "name": "clang-ninja-debug"
+        },
+        {
+          "type": "build",
+          "name": "clang-ninja-debug"
+        },
+        {
+          "type": "test",
+          "name": "clang-ninja-debug"
+        }
+      ]
+    },
+    {
+      "name": "dev-clang-release",
+      "steps": [
+        {
+          "type": "configure",
+          "name": "clang-ninja-release"
+        },
+        {
+          "type": "build",
+          "name": "clang-ninja-release"
+        },
+        {
+          "type": "test",
+          "name": "clang-ninja-release"
+        }
+      ]
+    },
+    {
+      "name": "dev-clang-libcpp-debug-wf",
+      "steps": [
+        {
+          "type": "configure",
+          "name": "clang-libcpp-ninja-debug"
+        },
+        {
+          "type": "build",
+          "name": "clang-libcpp-ninja-debug"
+        },
+        {
+          "type": "test",
+          "name": "clang-libcpp-ninja-debug"
+        }
+      ]
+    },
+    {
+      "name": "dev-gcc-14-debug",
+      "steps": [
+        {
+          "type": "configure",
+          "name": "dev-gcc-14-debug"
+        },
+        {
+          "type": "build",
+          "name": "dev-gcc-14-debug"
+        },
+        {
+          "type": "test",
+          "name": "dev-gcc-14-debug"
+        }
+      ]
+    },
+    {
+      "name": "dev-gcc-14-release",
+      "steps": [
+        {
+          "type": "configure",
+          "name": "dev-gcc-14-release"
+        },
+        {
+          "type": "build",
+          "name": "dev-gcc-14-release"
+        },
+        {
+          "type": "test",
+          "name": "dev-gcc-14-release"
+        }
+      ]
+    }
+  ]
+}

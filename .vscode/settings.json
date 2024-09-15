@@ -1,9 +1,10 @@
 {
-    "[python]": {
-        "editor.defaultFormatter": "ms-python.black-formatter"
-    },
-    "files.trimTrailingWhitespace": true,
-    "files.insertFinalNewline": true,
-    "files.trimFinalNewlines": true,
-    "C_Cpp.intelliSenseEngine": "disabled",
+  "[python]": {
+    "editor.defaultFormatter": "ms-python.black-formatter"
+  },
+  "files.trimTrailingWhitespace": true,
+  "files.insertFinalNewline": true,
+  "files.trimFinalNewlines": true,
+  "C_Cpp.intelliSenseEngine": "disabled",
+  "clangd.arguments": ["--compile-commands-dir=build/vscode-clang-debug"]
 }

@@ -1,0 +1,73 @@
+{
+  "version": 8,
+  "workflowPresets": [
+    {
+      "name": "ci-msvc-debug",
+      "steps": [
+        {
+          "type": "configure",
+          "name": "msvc"
+        },
+        {
+          "type": "build",
+          "name": "msvc-debug"
+        },
+        {
+          "type": "test",
+          "name": "msvc-debug"
+        }
+      ]
+    },
+    {
+      "name": "ci-msvc-release",
+      "steps": [
+        {
+          "type": "configure",
+          "name": "msvc"
+        },
+        {
+          "type": "build",
+          "name": "msvc-release"
+        },
+        {
+          "type": "test",
+          "name": "msvc-release"
+        }
+      ]
+    },
+    {
+      "name": "ci-clang-linux-debug",
+      "steps": [
+        {
+          "type": "configure",
+          "name": "clang-ninja-debug"
+        },
+        {
+          "type": "build",
+          "name": "clang-ninja-debug"
+        },
+        {
+          "type": "test",
+          "name": "clang-ninja-debug"
+        }
+      ]
+    },
+    {
+      "name": "ci-clang-linux-release",
+      "steps": [
+        {
+          "type": "configure",
+          "name": "clang-ninja-release"
+        },
+        {
+          "type": "build",
+          "name": "clang-ninja-release"
+        },
+        {
+          "type": "test",
+          "name": "clang-ninja-release"
+        }
+      ]
+    }
+  ]
+}
