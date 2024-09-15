@@ -1,3 +1,5 @@
+#include <fmt/ranges.h>
+
 #include <algorithm>
 #include <cstddef>
 #include <iterator>
