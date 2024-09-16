@@ -6,7 +6,7 @@
   "containerEnv": {
     "VCPKG_FORCE_SYSTEM_BINARIES": "true"
   },
-  "onCreateCommand": "onCreate.sh",
+  "onCreateCommand": "sh .devcontainer/onCreate.sh",
   "customizations": {
     "vscode": {
       "extensions": [
