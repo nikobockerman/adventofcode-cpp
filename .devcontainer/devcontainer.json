@@ -4,15 +4,9 @@
     "dockerfile": "Dockerfile"
   },
   "containerEnv": {
-    "POETRY_VIRTUALENVS_IN_PROJECT": "true"
+    "VCPKG_FORCE_SYSTEM_BINARIES": "true"
   },
-  "features": {
-    "ghcr.io/audacioustux/devcontainers/taskfile:latest": {},
-    "ghcr.io/nikobockerman/devcontainer-features/poetry-persistent-cache:latest": {},
-    "./features/conan-persistent-package-cache": {}
-  },
-  "onCreateCommand": "sh .devcontainer/onCreate.sh",
-  "updateContentCommand": "sh .devcontainer/updateContent.sh",
+  "onCreateCommand": "onCreate.sh",
   "customizations": {
     "vscode": {
       "extensions": [

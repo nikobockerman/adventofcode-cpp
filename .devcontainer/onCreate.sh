@@ -2,8 +2,10 @@
 
 set -eux
 
-# Install conan and other project dependencies in order to have conan available
-task install:poetry
+if [ -e CMakeUserPresets.json ]; then
+    echo "CMakeUserPresets.json already exists."
+    echo "Take a look at .devcontainer/CMakeUserPresets.json for prepared presets to use in devcontainer."
+    exit 0
+fi
 
-# Create a default conan profile for this container
-poetry run conan profile detect
+cp .devcontainer/CMakeUserPresets.json CMakeUserPresets.json

@@ -4,9 +4,9 @@ project(adventofcode2022 VERSION 0.1.0 LANGUAGES CXX)
 
 set(CMAKE_CXX_STANDARD 23)
 
-find_package(fmt REQUIRED)
-find_package(GTest REQUIRED)
-find_package(spdlog REQUIRED)
+find_package(fmt CONFIG REQUIRED)
+find_package(GTest CONFIG REQUIRED)
+find_package(spdlog CONFIG REQUIRED)
 
 enable_testing()
 include(GoogleTest)

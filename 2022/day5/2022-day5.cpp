@@ -1,3 +1,5 @@
+#include <fmt/ranges.h>
+
 #include <algorithm>
 #include <cstddef>
 #include <iterator>
@@ -235,7 +237,7 @@ RUNTIME_CONSTEXPR auto solve1() {
 }  // namespace
 
 TEST_F(T2022_day5, part1) {
-  RUNTIME_CONSTEXPR auto result = solve1();
+  RUNTIME_STATIC_CONSTEXPR auto result = solve1();
   EXPECT_EQ(result, "TLFGBZHCN"sv);
 }
 
@@ -283,6 +285,6 @@ RUNTIME_CONSTEXPR auto solve2() {
 }  // namespace
 
 TEST_F(T2022_day5, part2) {
-  RUNTIME_CONSTEXPR auto result = solve2();
+  RUNTIME_STATIC_CONSTEXPR auto result = solve2();
   EXPECT_EQ(result, "QRQFHFWCL"sv);
 }

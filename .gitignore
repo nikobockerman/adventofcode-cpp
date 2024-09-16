@@ -1,4 +1,4 @@
 /build/
-ConanPresets.json
-/.venv/
 /.cache/
+/vcpkg_installed/
+/CMakeUserPresets.json

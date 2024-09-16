@@ -1,111 +1,287 @@
 {
-  "version": 4,
-  "include": [
-    "./ConanPresets.json"
-  ],
+  "version": 8,
   "configurePresets": [
     {
-      "name": "MSVC",
-      "displayName": "VS Compiler",
+      "name": "ninja",
+      "generator": "Ninja",
+      "hidden": true
+    },
+    {
+      "name": "compile-commands-json",
+      "hidden": true,
+      "cacheVariables": {
+        "CMAKE_EXPORT_COMPILE_COMMANDS": "ON"
+      }
+    },
+    {
+      "name": "msvc-flags",
+      "hidden": true,
+      "environment": {
+        "PRESET_CXX_FLAGS_MSVC": "/W4 /WX /EHsc"
+      }
+    },
+    {
+      "name": "gcc-clang-flags",
+      "hidden": true,
+      "environment": {
+        "PRESET_CXX_FLAGS_GCC_CLANG": "-Wall -Wextra -Werror"
+      }
+    },
+    {
+      "name": "configure-flags",
+      "hidden": true,
+      "cacheVariables": {
+        "CMAKE_CXX_FLAGS": "$env{PRESET_CXX_FLAGS_MSVC} $env{PRESET_CXX_FLAGS_GCC_CLANG} $env{PRESET_CXX_FLAGS_CLANG_LIBCPP}"
+      }
+    },
+    {
+      "name": "clang",
+      "hidden": true,
+      "environment": {
+        "CXX": "clang++"
+      }
+    },
+    {
+      "name": "clang-libcpp",
+      "hidden": true,
+      "inherits": ["clang"],
+      "environment": {
+        "PRESET_CXX_FLAGS_CLANG_LIBCPP": "-stdlib=libc++"
+      }
+    },
+    {
+      "name": "debug",
+      "hidden": true,
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Debug"
+      }
+    },
+    {
+      "name": "release",
+      "hidden": true,
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Release"
+      }
+    },
+    {
+      "name": "vcpkg-toolchain",
+      "hidden": true,
+      "toolchainFile": "$env{VCPKG_ROOT}/scripts/buildsystems/vcpkg.cmake"
+    },
+    {
+      "name": "msvc",
+      "binaryDir": "build/msvc",
+      "inherits": ["vcpkg-toolchain", "msvc-flags", "configure-flags"],
       "condition": {
         "type": "equals",
         "lhs": "${hostSystemName}",
         "rhs": "Windows"
-      },
-      "description": "Main - VisualStudio preset with Conan generated toolchain",
+      }
+    },
+
+    {
+      "name": "ninja-debug",
+      "displayName": "Default compiler Debug",
+      "description": "Default compiler with Debug build type",
+      "binaryDir": "build/default-debug",
       "inherits": [
-        "conan-msvc"
+        "vcpkg-toolchain",
+        "ninja",
+        "gcc-clang-flags",
+        "debug",
+        "configure-flags"
       ],
-      "cacheVariables": {
-        "CMAKE_CXX_FLAGS_INIT": "/W4 /WX /EHsc"
+      "condition": {
+        "type": "equals",
+        "lhs": "${hostSystemName}",
+        "rhs": "Linux"
       }
     },
     {
-      "name": "Clang",
-      "displayName": "Clang",
-      "description": "Main - Clang preset with Conan generated toolchain",
+      "name": "ninja-release",
+      "displayName": "Default compiler Release",
+      "description": "Default compiler with Release build type",
+      "binaryDir": "build/default-release",
       "inherits": [
-        "conan-clang"
+        "vcpkg-toolchain",
+        "ninja",
+        "gcc-clang-flags",
+        "release",
+        "configure-flags"
       ],
-      "cacheVariables": {
-        "CMAKE_CXX_FLAGS_INIT": "-Wall -Wextra -Werror",
-        "CMAKE_EXPORT_COMPILE_COMMANDS": "YES"
+      "condition": {
+        "type": "equals",
+        "lhs": "${hostSystemName}",
+        "rhs": "Linux"
       }
     },
     {
-      "name": "Gcc",
-      "displayName": "Gcc",
-      "description": "Main - Gcc preset with Conan generated toolchain",
+      "name": "clang-ninja-debug",
+      "displayName": "Clang Debug",
+      "description": "Clang with Debug build type",
+      "binaryDir": "build/clang-debug",
       "inherits": [
-        "conan-gcc"
-      ],
-      "cacheVariables": {
-        "CMAKE_CXX_FLAGS_INIT": "-Wall -Wextra -Werror"
-      }
+        "vcpkg-toolchain",
+        "ninja",
+        "clang",
+        "gcc-clang-flags",
+        "debug",
+        "configure-flags"
+      ]
+    },
+    {
+      "name": "clang-ninja-release",
+      "displayName": "Clang Release",
+      "description": "Clang with Release build type",
+      "binaryDir": "build/clang-release",
+      "inherits": [
+        "vcpkg-toolchain",
+        "ninja",
+        "clang",
+        "gcc-clang-flags",
+        "release",
+        "configure-flags"
+      ]
+    },
+    {
+      "name": "clang-libcpp-ninja-debug",
+      "displayName": "Clang libc++ Debug",
+      "description": "Clang libc++ with Debug build type",
+      "binaryDir": "build/clang-debug",
+      "inherits": [
+        "vcpkg-toolchain",
+        "ninja",
+        "clang-libcpp",
+        "gcc-clang-flags",
+        "debug",
+        "configure-flags"
+      ]
+    },
+    {
+      "name": "clang-libcpp-ninja-release",
+      "displayName": "Clang libc++ Release",
+      "description": "Clang libc++ with Release build type",
+      "binaryDir": "build/clang-release",
+      "inherits": [
+        "vcpkg-toolchain",
+        "ninja",
+        "clang-libcpp",
+        "gcc-clang-flags",
+        "release",
+        "configure-flags"
+      ]
     }
   ],
   "buildPresets": [
     {
-      "name": "MSVC Debug",
-      "configurePreset": "MSVC",
-      "configuration": "Debug"
+      "name": "msvc-debug",
+      "configurePreset": "msvc",
+      "configuration": "Debug",
+      "condition": {
+        "type": "equals",
+        "lhs": "${hostSystemName}",
+        "rhs": "Windows"
+      }
     },
     {
-      "name": "MSVC Release",
-      "configurePreset": "MSVC",
-      "configuration": "Release"
+      "name": "msvc-release",
+      "configurePreset": "msvc",
+      "configuration": "Release",
+      "condition": {
+        "type": "equals",
+        "lhs": "${hostSystemName}",
+        "rhs": "Windows"
+      }
     },
     {
-      "name": "Clang Debug",
-      "configurePreset": "Clang",
-      "configuration": "Debug"
+      "name": "ninja-debug",
+      "configurePreset": "ninja-debug",
+      "condition": {
+        "type": "equals",
+        "lhs": "${hostSystemName}",
+        "rhs": "Linux"
+      }
     },
     {
-      "name": "Clang Release",
-      "configurePreset": "Clang",
-      "configuration": "Release"
+      "name": "ninja-release",
+      "configurePreset": "ninja-release",
+      "condition": {
+        "type": "equals",
+        "lhs": "${hostSystemName}",
+        "rhs": "Linux"
+      }
     },
     {
-      "name": "Gcc Release",
-      "configurePreset": "Gcc",
-      "configuration": "Release"
+      "name": "clang-ninja-debug",
+      "configurePreset": "clang-ninja-debug"
     },
     {
-      "name": "Gcc Debug",
-      "configurePreset": "Gcc",
-      "configuration": "Debug"
+      "name": "clang-ninja-release",
+      "configurePreset": "clang-ninja-release"
+    },
+    {
+      "name": "clang-libcpp-ninja-debug",
+      "configurePreset": "clang-libcpp-ninja-debug"
+    },
+    {
+      "name": "clang-libcpp-ninja-release",
+      "configurePreset": "clang-libcpp-ninja-release"
     }
   ],
   "testPresets": [
     {
-      "name": "MSVC Debug",
-      "configurePreset": "MSVC",
-      "configuration": "Debug"
+      "name": "msvc-debug",
+      "configurePreset": "msvc",
+      "configuration": "Debug",
+      "condition": {
+        "type": "equals",
+        "lhs": "${hostSystemName}",
+        "rhs": "Windows"
+      }
     },
     {
-      "name": "MSVC Release",
-      "configurePreset": "MSVC",
-      "configuration": "Release"
+      "name": "msvc-release",
+      "configurePreset": "msvc",
+      "configuration": "Release",
+      "condition": {
+        "type": "equals",
+        "lhs": "${hostSystemName}",
+        "rhs": "Windows"
+      }
     },
     {
-      "name": "Clang Debug",
-      "configurePreset": "Clang",
-      "configuration": "Debug"
+      "name": "ninja-debug",
+      "configurePreset": "ninja-debug",
+      "condition": {
+        "type": "equals",
+        "lhs": "${hostSystemName}",
+        "rhs": "Linux"
+      }
     },
     {
-      "name": "Clang Release",
-      "configurePreset": "Clang",
-      "configuration": "Release"
+      "name": "ninja-release",
+      "configurePreset": "ninja-release",
+      "condition": {
+        "type": "equals",
+        "lhs": "${hostSystemName}",
+        "rhs": "Linux"
+      }
     },
     {
-      "name": "Gcc Release",
-      "configurePreset": "Gcc",
-      "configuration": "Release"
+      "name": "clang-ninja-debug",
+      "configurePreset": "clang-ninja-debug"
     },
     {
-      "name": "Gcc Debug",
-      "configurePreset": "Gcc",
-      "configuration": "Debug"
+      "name": "clang-ninja-release",
+      "configurePreset": "clang-ninja-release"
+    },
+    {
+      "name": "clang-libcpp-ninja-debug",
+      "configurePreset": "clang-libcpp-ninja-debug"
+    },
+    {
+      "name": "clang-libcpp-ninja-release",
+      "configurePreset": "clang-libcpp-ninja-release"
     }
   ]
 }

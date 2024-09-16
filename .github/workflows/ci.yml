@@ -1,4 +1,4 @@
-name: CI - Build and test
+name: CI
 
 on:
   push:
@@ -8,58 +8,51 @@ on:
   workflow_dispatch:
   schedule:
     # Run every Monday at 00:30 UTC
-    - cron: '30 0 * * 1'
+    - cron: "30 0 * * 1"
 
 jobs:
   build-and-test:
     strategy:
       matrix:
-        os:
-          - windows-latest
-        build_type:
-          - Debug
-          - Release
-        compiler:
-          - Clang
-          - MSVC
         include:
-          - host_profile: default
-          - compiler: Clang
-            os: windows-latest
-            host_profile: clang-windows
+          # MSVC
+          - os: windows-latest
+            workflowPreset: ci-msvc-debug
+          - os: windows-latest
+            workflowPreset: ci-msvc-release
+          # Clang on Windows requires fix to
+          # https://github.com/microsoft/vcpkg/issues/40912
+          #- os: windows-latest
+          #  workflowPreset: ClangWindows Debug
+          #- os: windows-latest
+          #  workflowPreset: ClangWindows Release
+          # Clang on Linux
+          - os: ubuntu-24.04
+            workflowPreset: ci-clang-linux-debug
+          - os: ubuntu-24.04
+            workflowPreset: ci-clang-linux-release
 
+    name: ${{matrix.workflowPreset}}
     runs-on: ${{matrix.os}}
 
     steps:
       - uses: actions/checkout@v4
-      - name: Install poetry
-        run: pipx install poetry
-      - uses: actions/setup-python@v5
+      - uses: lukka/get-cmake@latest
+
+      - name: DEBUG - Dump the content of $RUNNER_TEMP
+        run: find $RUNNER_TEMP
+        shell: bash
+      - name: DEBUG - Dump the content of $RUNNER_WORKSPACE
+        run: find $RUNNER_WORKSPACE
+        shell: bash
+
+      - name: Setup anew (or from cache) vcpkg (and does not build any package)
+        uses: lukka/run-vcpkg@v11.5
+      - name: Prepare presets
+        run: cp .github/CMakeUserPresets.json CMakeUserPresets.json
+        shell: bash
+      - name:
+          Run CMake consuming CMakePreset.json and run vcpkg to build packages
+        uses: lukka/run-cmake@v10
         with:
-          python-version: '3.x'
-          cache: 'poetry'
-      - name: Install python deps including conan
-        run: poetry install
-
-      - name: Detect default conan profile
-        run: |
-          poetry run conan profile detect
-          poetry run conan profile show -pr:a default
-
-      - name: Install conan profile
-        if: matrix.host_profile != 'default'
-        run: |
-          cp .github/conan-profiles/${{matrix.host_profile}} ~/.conan2/profiles/
-          poetry run conan profile show -pr:h ${{matrix.host_profile}} -pr:b default -vvv
-
-      - name: Install conan dependencies
-        run: poetry run conan install . -pr:h ${{matrix.host_profile}} -pr:b default -s:h build_type=${{matrix.build_type}} -s:h compiler.cppstd=23 -c:h tools.cmake.cmake_layout:build_folder_vars="['settings.compiler']" --build=missing
-
-      - name: Configure CMake
-        run: cmake --preset ${{matrix.compiler}}
-
-      - name: Build
-        run: cmake --build --preset "${{matrix.compiler}} ${{matrix.build_type}}" -v
-
-      - name: Test
-        run: ctest --preset "${{matrix.compiler}} ${{matrix.build_type}}"
+          workflowPreset: "${{matrix.workflowPreset}}"
