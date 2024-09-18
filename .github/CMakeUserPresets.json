@@ -1,5 +1,42 @@
 {
   "version": 8,
+  "configurePresets": [
+    {
+      "name": "gcc-14",
+      "hidden": true,
+      "environment": {
+        "CXX": "g++-14"
+      }
+    },
+    {
+      "name": "ci-gcc-14-debug",
+      "inherits": ["ninja-debug", "gcc-14"]
+    },
+    {
+      "name": "ci-gcc-14-release",
+      "inherits": ["ninja-release", "gcc-14"]
+    }
+  ],
+  "buildPresets": [
+    {
+      "name": "ci-gcc-14-debug",
+      "configurePreset": "ci-gcc-14-debug"
+    },
+    {
+      "name": "ci-gcc-14-release",
+      "configurePreset": "ci-gcc-14-release"
+    }
+  ],
+  "testPresets": [
+    {
+      "name": "ci-gcc-14-debug",
+      "configurePreset": "ci-gcc-14-debug"
+    },
+    {
+      "name": "ci-gcc-14-release",
+      "configurePreset": "ci-gcc-14-release"
+    }
+  ],
   "workflowPresets": [
     {
       "name": "ci-msvc-debug",
@@ -66,6 +103,40 @@
         {
           "type": "test",
           "name": "clang-ninja-release"
+        }
+      ]
+    },
+    {
+      "name": "ci-gcc-14-linux-debug",
+      "steps": [
+        {
+          "type": "configure",
+          "name": "ci-gcc-14-debug"
+        },
+        {
+          "type": "build",
+          "name": "ci-gcc-14-debug"
+        },
+        {
+          "type": "test",
+          "name": "ci-gcc-14-debug"
+        }
+      ]
+    },
+    {
+      "name": "ci-gcc-14-linux-release",
+      "steps": [
+        {
+          "type": "configure",
+          "name": "ci-gcc-14-release"
+        },
+        {
+          "type": "build",
+          "name": "ci-gcc-14-release"
+        },
+        {
+          "type": "test",
+          "name": "ci-gcc-14-release"
         }
       ]
     }
