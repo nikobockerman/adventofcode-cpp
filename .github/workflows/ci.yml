@@ -31,6 +31,14 @@ jobs:
             workflowPreset: ci-clang-linux-debug
           - os: ubuntu-24.04
             workflowPreset: ci-clang-linux-release
+          # Gcc 14 on Linux
+          - os: ubuntu-24.04
+            workflowPreset: ci-gcc-14-linux-debug
+          # Gcc 14 Release build doesn't work with the
+          # gcc 14.0.1 20240412 snapshot version available on Ubuntu Universe
+          # The issue may be fixed in newer 14.1 or 14.2 versions.
+          #- os: ubuntu-24.04
+          #  workflowPreset: ci-gcc-14-linux-release
 
     name: ${{matrix.workflowPreset}}
     runs-on: ${{matrix.os}}
