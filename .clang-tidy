@@ -1,3 +1,5 @@
 ---
-Checks: "clang-diagnostic-*,clang-analyzer-*,cppcoreguidelines-*,modernize-*,performance-*,portability-*,readability-*"
+Checks: >
+  clang-diagnostic-*, clang-analyzer-*, cppcoreguidelines-*, modernize-*,
+  performance-*, portability-*, readability-*
 WarningsAsErrors: "*"
