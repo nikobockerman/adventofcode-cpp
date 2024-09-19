@@ -56,3 +56,22 @@ jobs:
         uses: lukka/run-cmake@v10
         with:
           workflowPreset: "${{matrix.workflowPreset}}"
+
+  clang-tidy:
+    name: Clang tidy
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: lukka/get-cmake@latest
+      - uses: lukka/run-vcpkg@v11.5
+      - name: Prepare presets
+        run: cp .github/CMakeUserPresets.json CMakeUserPresets.json
+        shell: bash
+      - name:
+          Run CMake consuming CMakePreset.json and run vcpkg to build packages
+        uses: lukka/run-cmake@v10
+        with:
+          configurePreset: "ci-clang-tidy"
+      - name: Run clang-tidy
+        run: |
+          run-clang-tidy -p build/clang-release
