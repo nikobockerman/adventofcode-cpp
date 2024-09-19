@@ -25,15 +25,19 @@ namespace {
 using Crate = char;
 using Stack = std::vector<Crate>;
 
+using Amount = NamedType<std::size_t, struct AmountTag>;
+using IndexFromStack = NamedType<std::size_t, struct IndexFromStackTag>;
+using IndexToStack = NamedType<std::size_t, struct IndexToStackTag>;
+
 class Move {
  public:
   static constexpr std::size_t inputIndexOffset{1};
 
-  constexpr Move(std::size_t amount, std::size_t inputIndexFromStack,
-                 std::size_t inputIndexToStack)
-      : _amount{amount},
-        _indexFromStack{inputIndexFromStack - inputIndexOffset},
-        _indexToStack{inputIndexToStack - inputIndexOffset} {
+  constexpr Move(Amount amount, IndexFromStack indexFromStack,
+                 IndexToStack indexToStack)
+      : _amount{amount.get()},
+        _indexFromStack{indexFromStack.get() - inputIndexOffset},
+        _indexToStack{indexToStack.get() - inputIndexOffset} {
     if (_amount == 0) {
       throw std::runtime_error("Move without amount");
     }
@@ -141,7 +145,8 @@ constexpr auto parseMove(auto &&line) {
                  return convert<std::size_t>(value);
                }) |
                ranges::to<std::vector>();
-  return Move{parts.at(0), parts.at(1), parts.at(2)};
+  return Move{Amount{parts.at(0)}, IndexFromStack{parts.at(1)},
+              IndexToStack{parts.at(2)}};
 }
 
 RUNTIME_CONSTEXPR auto loadMoves(auto &&lines) {
