@@ -82,3 +82,13 @@ jobs:
       - name: Run clang-tidy
         run: |
           run-clang-tidy -p "${{matrix.binaryDir}}"
+
+  clang-format:
+    runs-on: ubuntu-24.04
+    name: Clang format check
+    steps:
+      - uses: actions/checkout@v4
+      - name: Run clang-format
+        run: |
+          clang-format -n -Werror --verbose $(git ls-files | grep -E '\.hpp$|\.cpp$')
+        shell: bash
