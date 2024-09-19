@@ -46,9 +46,12 @@ RUNTIME_CONSTEXPR auto solve2() {
   ranges::nth_element(calorieSums, pastInteresting, std::greater<>());
   logd("Partitioned: {}", fmt::join(calorieSums, ","));
 
-  return ranges::fold_left_first(calorieSums.begin(), pastInteresting,
-                                 std::plus())
-      .value();
+  auto result = ranges::fold_left_first(calorieSums.begin(), pastInteresting,
+                                        std::plus());
+  if (!result) {
+    throw std::runtime_error("No result");
+  }
+  return result.value();
 }
 
 }  // namespace

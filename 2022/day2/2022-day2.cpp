@@ -4,6 +4,7 @@
 
 #include "common.hpp"
 #include "input.hpp"
+#include "utils.hpp"
 
 namespace ranges = std::ranges;
 namespace views = std::views;
@@ -27,23 +28,26 @@ constexpr auto typeScore(Type type) -> unsigned {
   throw std::runtime_error("Unknown type for score");
 }
 
-constexpr auto battleScore(Type opponent, Type own) -> unsigned {
+using OpponentType = NamedType<Type, struct OpponentTypeTag>;
+using OwnType = NamedType<Type, struct OwnTypeTag>;
+
+constexpr auto battleScore(OpponentType opponent, OwnType own) -> unsigned {
   constexpr unsigned scoreLoss{0};
   constexpr unsigned scoreEven{3};
   constexpr unsigned scoreWin{6};
 
-  if (opponent == own) {
+  if (opponent.get() == own.get()) {
     return scoreEven;
   }
 
   auto iWin = [=] {
-    switch (opponent) {
+    switch (opponent.get()) {
       case Type::Paper:
-        return own == Type::Scissors;
+        return own.get() == Type::Scissors;
       case Type::Scissors:
-        return own == Type::Rock;
+        return own.get() == Type::Rock;
       case Type::Rock:
-        return own == Type::Paper;
+        return own.get() == Type::Paper;
     }
     throw std::runtime_error("Unknown opponent type for win check");
   };
@@ -53,27 +57,29 @@ constexpr auto battleScore(Type opponent, Type own) -> unsigned {
 
 class Battle {
  public:
-  constexpr Battle(Type opponent, Type own) : _opponent{opponent}, _me{own} {}
+  constexpr Battle(OpponentType opponent, OwnType own)
+      : _opponent{opponent}, _me{own} {}
 
   [[nodiscard]] constexpr auto score() const -> unsigned {
-    return typeScore(_me) + battleScore(_opponent, _me);
+    return typeScore(_me.get()) + battleScore(_opponent, _me);
   }
 
  private:
-  Type _opponent;
-  Type _me;
+  OpponentType _opponent;
+  OwnType _me;
 };
 
 constexpr auto parseOpponent(char move) {
   switch (move) {
     case 'A':
-      return Type::Rock;
+      return OpponentType{Type::Rock};
     case 'B':
-      return Type::Paper;
+      return OpponentType{Type::Paper};
     case 'C':
-      return Type::Scissors;
+      return OpponentType{Type::Scissors};
+    default:
+      throw std::runtime_error("Unknown opponent type");
   }
-  throw std::runtime_error("Unknown opponent type");
 }
 
 constexpr auto parseBattleMarks(auto &&line) {
@@ -94,11 +100,13 @@ constexpr auto getBattleMarks(auto &&range) {
 }
 
 constexpr auto sumBattleScores(auto &&range) -> unsigned {
-  return ranges::fold_left_first(range | views::transform([](auto &&battle) {
-                                   return battle.score();
-                                 }),
-                                 std::plus())
-      .value();
+  auto result = ranges::fold_left_first(
+      range | views::transform([](auto &&battle) { return battle.score(); }),
+      std::plus());
+  if (!result) {
+    throw std::runtime_error("No result");
+  }
+  return result.value();
 }
 
 }  // namespace
@@ -107,17 +115,18 @@ TEST_F(T2022_day2, part1) {
   auto parseMe = [](char move) constexpr {
     switch (move) {
       case 'X':
-        return Type::Rock;
+        return OwnType{Type::Rock};
       case 'Y':
-        return Type::Paper;
+        return OwnType{Type::Paper};
       case 'Z':
-        return Type::Scissors;
+        return OwnType{Type::Scissors};
+      default:
+        throw std::runtime_error("Unknown me type");
     }
-    throw std::runtime_error("Unknown me type");
   };
   constexpr auto result = sumBattleScores(
       getBattleMarks(input) | views::transform([&parseMe](auto marks) {
-        return Battle(parseOpponent(marks.first), parseMe(marks.second));
+        return Battle{parseOpponent(marks.first), parseMe(marks.second)};
       }));
   EXPECT_EQ(result, 8890);
 }
@@ -151,21 +160,22 @@ constexpr auto winningType(Type opponent) {
 }  // namespace
 
 TEST_F(T2022_day2, part2) {
-  auto parseMe = [](Type opponent, char move) {
+  auto parseMe = [](OpponentType opponent, char move) {
     switch (move) {
       case 'X':
-        return losingType(opponent);
+        return OwnType{losingType(opponent.get())};
       case 'Y':
-        return opponent;
+        return OwnType{opponent.get()};
       case 'Z':
-        return winningType(opponent);
+        return OwnType{winningType(opponent.get())};
+      default:
+        throw std::runtime_error("Unknown me type");
     }
-    throw std::runtime_error("Unknown me type");
   };
   constexpr auto result = sumBattleScores(
       getBattleMarks(input) | views::transform([&parseMe](auto marks) {
         auto opponent = parseOpponent(marks.first);
-        return Battle(opponent, parseMe(opponent, marks.second));
+        return Battle{opponent, parseMe(opponent, marks.second)};
       }));
   EXPECT_EQ(result, 10238);
 }
