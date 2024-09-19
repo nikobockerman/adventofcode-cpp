@@ -77,8 +77,9 @@ constexpr auto parseOpponent(char move) {
       return OpponentType{Type::Paper};
     case 'C':
       return OpponentType{Type::Scissors};
+    default:
+      throw std::runtime_error("Unknown opponent type");
   }
-  throw std::runtime_error("Unknown opponent type");
 }
 
 constexpr auto parseBattleMarks(auto &&line) {
@@ -119,8 +120,9 @@ TEST_F(T2022_day2, part1) {
         return OwnType{Type::Paper};
       case 'Z':
         return OwnType{Type::Scissors};
+      default:
+        throw std::runtime_error("Unknown me type");
     }
-    throw std::runtime_error("Unknown me type");
   };
   constexpr auto result = sumBattleScores(
       getBattleMarks(input) | views::transform([&parseMe](auto marks) {
@@ -166,8 +168,9 @@ TEST_F(T2022_day2, part2) {
         return OwnType{opponent.get()};
       case 'Z':
         return OwnType{winningType(opponent.get())};
+      default:
+        throw std::runtime_error("Unknown me type");
     }
-    throw std::runtime_error("Unknown me type");
   };
   constexpr auto result = sumBattleScores(
       getBattleMarks(input) | views::transform([&parseMe](auto marks) {
