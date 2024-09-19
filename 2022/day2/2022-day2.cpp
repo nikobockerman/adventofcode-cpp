@@ -13,7 +13,7 @@ using T2022_day2 = TestFixture;
 
 namespace {
 
-enum class Type { Rock, Paper, Scissors };
+enum class Type : std::uint8_t { Rock, Paper, Scissors };
 
 constexpr auto typeScore(Type type) -> unsigned {
   switch (type) {
