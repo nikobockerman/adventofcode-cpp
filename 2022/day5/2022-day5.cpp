@@ -181,8 +181,9 @@ constexpr auto loadParts(auto &&range) {
 
   Crate movedCrate{fromStack.back()};
 
-#if 0 //#ifdef __cpp_lib_ranges_zip //NOLINT
-#pragma message ("Needs to be fixed. MSVC in Github supports this but debugging with it is difficult")
+#if 0  // #ifdef __cpp_lib_ranges_zip //NOLINT
+#pragma message( \
+    "Needs to be fixed. MSVC in Github supports this but debugging with it is difficult")
   return Stage{
       views::zip(views::iota(std::size_t{}), std::move(prevStage)) |
       views::transform([movedCrate, indexFrom, indexTo](auto enum_stack) {
@@ -210,9 +211,8 @@ constexpr auto loadParts(auto &&range) {
 #endif
 }
 
-[[nodiscard]] RUNTIME_CONSTEXPR auto applyMoveOneByOne(Stage stage,
-                                                       const Move &move)
-    -> Stage {
+[[nodiscard]] RUNTIME_CONSTEXPR auto applyMoveOneByOne(
+    Stage stage, const Move &move) -> Stage {
   return ranges::fold_left(views::iota(std::size_t{}, move.amount()),
                            std::move(stage), [&move](auto prev, auto) {
                              auto stack = applySingleMove(std::move(prev),
