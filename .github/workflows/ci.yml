@@ -46,14 +46,6 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - uses: lukka/get-cmake@latest
-
-      - name: DEBUG - Dump the content of $RUNNER_TEMP
-        run: find $RUNNER_TEMP
-        shell: bash
-      - name: DEBUG - Dump the content of $RUNNER_WORKSPACE
-        run: find $RUNNER_WORKSPACE
-        shell: bash
-
       - name: Setup anew (or from cache) vcpkg (and does not build any package)
         uses: lukka/run-vcpkg@v11.5
       - name: Prepare presets
