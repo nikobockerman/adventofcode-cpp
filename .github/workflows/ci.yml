@@ -40,20 +40,12 @@ jobs:
           #- os: ubuntu-24.04
           #  workflowPreset: ci-gcc-14-linux-release
 
-    name: ${{matrix.workflowPreset}}
+    name: Build + test (${{matrix.workflowPreset}})
     runs-on: ${{matrix.os}}
 
     steps:
       - uses: actions/checkout@v4
       - uses: lukka/get-cmake@latest
-
-      - name: DEBUG - Dump the content of $RUNNER_TEMP
-        run: find $RUNNER_TEMP
-        shell: bash
-      - name: DEBUG - Dump the content of $RUNNER_WORKSPACE
-        run: find $RUNNER_WORKSPACE
-        shell: bash
-
       - name: Setup anew (or from cache) vcpkg (and does not build any package)
         uses: lukka/run-vcpkg@v11.5
       - name: Prepare presets
@@ -64,3 +56,29 @@ jobs:
         uses: lukka/run-cmake@v10
         with:
           workflowPreset: "${{matrix.workflowPreset}}"
+
+  clang-tidy:
+    runs-on: ubuntu-24.04
+    strategy:
+      matrix:
+        include:
+          - configurePreset: ci-clang-tidy-debug
+            binaryDir: build/clang-debug
+          - configurePreset: ci-clang-tidy-release
+            binaryDir: build/clang-release
+    name: Clang tidy (${{matrix.configurePreset}})
+    steps:
+      - uses: actions/checkout@v4
+      - uses: lukka/get-cmake@latest
+      - uses: lukka/run-vcpkg@v11.5
+      - name: Prepare presets
+        run: cp .github/CMakeUserPresets.json CMakeUserPresets.json
+        shell: bash
+      - name:
+          Run CMake consuming CMakePreset.json and run vcpkg to build packages
+        uses: lukka/run-cmake@v10
+        with:
+          configurePreset: "${{matrix.configurePreset}}"
+      - name: Run clang-tidy
+        run: |
+          run-clang-tidy -p "${{matrix.binaryDir}}"

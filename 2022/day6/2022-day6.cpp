@@ -29,6 +29,7 @@ TEST_F(T2022_day6, part1) {
 }
 
 TEST_F(T2022_day6, part2) {
-  RUNTIME_CONSTEXPR auto result = firstDistinctWindow<14>(input);
+  constexpr auto windowSize = 14;
+  RUNTIME_CONSTEXPR auto result = firstDistinctWindow<windowSize>(input);
   EXPECT_EQ(result, 3513);
 }
