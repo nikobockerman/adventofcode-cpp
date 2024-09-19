@@ -60,6 +60,13 @@ jobs:
   clang-tidy:
     name: Clang tidy
     runs-on: ubuntu-24.04
+    strategy:
+      matrix:
+        include:
+          - configurePreset: ci-clang-tidy-debug
+            binaryDir: build/clang-debug
+          - configurePreset: ci-clang-tidy-release
+            binaryDir: build/clang-release
     steps:
       - uses: actions/checkout@v4
       - uses: lukka/get-cmake@latest
@@ -71,7 +78,7 @@ jobs:
           Run CMake consuming CMakePreset.json and run vcpkg to build packages
         uses: lukka/run-cmake@v10
         with:
-          configurePreset: "ci-clang-tidy"
+          configurePreset: "${{matrix.configurePreset}}"
       - name: Run clang-tidy
         run: |
-          run-clang-tidy -p build/clang-release
+          run-clang-tidy -p "${{matrix.binaryDir}}"

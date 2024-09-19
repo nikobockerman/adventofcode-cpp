@@ -17,7 +17,14 @@
       "inherits": ["ninja-release", "gcc-14"]
     },
     {
-      "name": "ci-clang-tidy",
+      "name": "ci-clang-tidy-debug",
+      "inherits": ["clang-ninja-debug"],
+      "cacheVariables": {
+        "CMAKE_EXPORT_COMPILE_COMMANDS": "ON"
+      }
+    },
+    {
+      "name": "ci-clang-tidy-release",
       "inherits": ["clang-ninja-release"],
       "cacheVariables": {
         "CMAKE_EXPORT_COMPILE_COMMANDS": "ON"
