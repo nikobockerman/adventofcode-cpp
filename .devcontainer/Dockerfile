@@ -7,6 +7,7 @@ RUN apt-get update && apt-get install -y \
 
 RUN apt-add-repository -y universe && apt-get update && apt-get install -y \
     clangd \
+    clang-format \
     clang-tidy \
     g++-14 \
     shellcheck \
