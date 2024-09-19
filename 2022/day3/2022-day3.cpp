@@ -69,11 +69,14 @@ constexpr auto priority(char sharedItem) -> unsigned {
 }
 
 constexpr auto sumScore(auto &&items) -> unsigned {
-  return ranges::fold_left_first(items | views::transform([](auto character) {
-                                   return priority(character);
-                                 }),
-                                 std::plus())
-      .value();
+  auto result = ranges::fold_left_first(
+      items |
+          views::transform([](auto character) { return priority(character); }),
+      std::plus());
+  if (!result) {
+    throw std::runtime_error("No result");
+  }
+  return result.value();
 }
 
 constexpr auto middle(const auto &rucksack) {

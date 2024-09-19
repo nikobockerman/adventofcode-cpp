@@ -94,11 +94,13 @@ constexpr auto getBattleMarks(auto &&range) {
 }
 
 constexpr auto sumBattleScores(auto &&range) -> unsigned {
-  return ranges::fold_left_first(range | views::transform([](auto &&battle) {
-                                   return battle.score();
-                                 }),
-                                 std::plus())
-      .value();
+  auto result = ranges::fold_left_first(
+      range | views::transform([](auto &&battle) { return battle.score(); }),
+      std::plus());
+  if (!result) {
+    throw std::runtime_error("No result");
+  }
+  return result.value();
 }
 
 }  // namespace
