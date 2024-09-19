@@ -176,7 +176,7 @@ constexpr auto loadParts(auto &&range) {
 
   Crate movedCrate{fromStack.back()};
 
-#if 0 //#ifdef __cpp_lib_ranges_zip
+#if 0 //#ifdef __cpp_lib_ranges_zip //NOLINT
 #pragma message ("Needs to be fixed. MSVC in Github supports this but debugging with it is difficult")
   return Stage{
       views::zip(views::iota(std::size_t{}), std::move(prevStage)) |
@@ -192,14 +192,14 @@ constexpr auto loadParts(auto &&range) {
       ranges::to<Stage>()};
 #else
   Stage stage;
-  for (std::size_t i{}; auto &stack : prevStage) {
-    if (i == indexFrom) {
+  for (std::size_t index{}; auto &stack : prevStage) {
+    if (index == indexFrom) {
       stack.pop_back();
-    } else if (i == indexTo) {
+    } else if (index == indexTo) {
       stack.emplace_back(movedCrate);
     }
     stage.emplace_back(std::move(stack));
-    ++i;
+    ++index;
   }
   return stage;
 #endif
@@ -255,13 +255,13 @@ namespace {
   }
 
   Stage stage;
-  for (std::size_t i{}; auto &stack : prevStage) {
-    if (i == move.indexToStack()) {
+  for (std::size_t index{}; auto &stack : prevStage) {
+    if (index == move.indexToStack()) {
       std::move(movedCrates.begin(), movedCrates.end(),
                 std::back_inserter(stack));
     }
     stage.emplace_back(std::move(stack));
-    ++i;
+    ++index;
   }
   return stage;
 }

@@ -78,11 +78,11 @@ constexpr auto parseOpponent(char move) {
 
 constexpr auto parseBattleMarks(auto &&line) {
   auto end = line.end();
-  auto it = line.begin();
-  auto opponentMark = *it;
-  ranges::advance(it, 2, end);
-  auto meMark = *it;
-  if (it == end) {
+  auto iter = line.begin();
+  auto opponentMark = *iter;
+  ranges::advance(iter, 2, end);
+  auto meMark = *iter;
+  if (iter == end) {
     throw std::runtime_error("Unpexpected line");
   }
   return std::make_pair(opponentMark, meMark);

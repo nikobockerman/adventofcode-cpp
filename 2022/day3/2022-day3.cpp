@@ -124,14 +124,14 @@ namespace {
 
 RUNTIME_CONSTEXPR auto getGroupBadgeItem(auto &&groupRuckSacks) -> char {
   auto end = groupRuckSacks.end();
-  auto it = groupRuckSacks.begin();
-  auto first = vectorSet(*it);
-  ranges::advance(it, 1, end);
-  auto second = vectorSet(*it);
-  ranges::advance(it, 1, end);
-  auto third = vectorSet(*it);
+  auto iter = groupRuckSacks.begin();
+  auto first = vectorSet(*iter);
+  ranges::advance(iter, 1, end);
+  auto second = vectorSet(*iter);
+  ranges::advance(iter, 1, end);
+  auto third = vectorSet(*iter);
 
-  if (it == end) {
+  if (iter == end) {
     logd("Invalid group size: {}", ranges::distance(groupRuckSacks));
     throw std::runtime_error("Invalid group size");
   }
