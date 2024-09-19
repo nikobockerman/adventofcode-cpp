@@ -40,7 +40,7 @@ jobs:
           #- os: ubuntu-24.04
           #  workflowPreset: ci-gcc-14-linux-release
 
-    name: ${{matrix.workflowPreset}}
+    name: Build + test (${{matrix.workflowPreset}})
     runs-on: ${{matrix.os}}
 
     steps:
@@ -58,7 +58,6 @@ jobs:
           workflowPreset: "${{matrix.workflowPreset}}"
 
   clang-tidy:
-    name: Clang tidy
     runs-on: ubuntu-24.04
     strategy:
       matrix:
@@ -67,6 +66,7 @@ jobs:
             binaryDir: build/clang-debug
           - configurePreset: ci-clang-tidy-release
             binaryDir: build/clang-release
+    name: Clang tidy (${{matrix.configurePreset}})
     steps:
       - uses: actions/checkout@v4
       - uses: lukka/get-cmake@latest
