@@ -248,8 +248,8 @@ namespace {
   auto &movedFromStack = prevStage.at(move.indexFromStack());
   Stack movedCrates{};
   {
-    auto movedIt = std::next(movedFromStack.begin(),
-                             movedFromStack.size() - move.amount());
+    auto movedIt = movedFromStack.begin();
+    std::advance(movedIt, movedFromStack.size() - move.amount());
     std::move(movedIt, movedFromStack.end(), std::back_inserter(movedCrates));
     movedFromStack.erase(movedIt, movedFromStack.end());
   }
