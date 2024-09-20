@@ -1,10 +1,21 @@
-#include <algorithm>
-#include <numeric>
-#include <ranges>
-#include <string_view>
+#include <fmt/ranges.h>  // NOLINT(misc-include-cleaner) necessary include in debug builds
+#include <gtest/gtest.h>
 
-#include "common.hpp"
+#include <algorithm>
+#include <cstddef>
+#include <functional>
+#include <iterator>
+#include <ranges>
+#include <stdexcept>
+#include <string_view>
+#include <vector>
+
+#include "convert.hpp"
 #include "input.hpp"
+#include "log.hpp"
+#include "runtime-tools.hpp"
+#include "test.hpp"
+#include "utils.hpp"
 
 namespace ranges = std::ranges;
 namespace views = std::views;
@@ -17,7 +28,7 @@ namespace {
 constexpr auto resolveCalorieSums(auto &&input) {
   return input | views::split("\n\n"sv) |
          views::transform([](auto calorieLines) {
-           return ranges::fold_left_first(
+           return ranges::fold_left_first(  // NOLINT(misc-include-cleaner)
                       splitLinesUntilEmpty(calorieLines) |
                           views::transform([](auto calorieLine) {
                             return convert<unsigned>(calorieLine);

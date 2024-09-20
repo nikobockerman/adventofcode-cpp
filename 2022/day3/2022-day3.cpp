@@ -1,12 +1,19 @@
+#include <fmt/ranges.h>  // NOLINT(misc-include-cleaner) necessary include in debug builds
+#include <gtest/gtest.h>
+
 #include <algorithm>
-#include <numeric>
+#include <cstddef>
+#include <functional>
+#include <iterator>
 #include <ranges>
-#include <set>
 #include <stdexcept>
 #include <vector>
 
-#include "common.hpp"
 #include "input.hpp"
+#include "log.hpp"
+#include "runtime-tools.hpp"
+#include "test.hpp"
+#include "utils.hpp"
 
 namespace ranges = std::ranges;
 namespace views = std::views;
@@ -69,7 +76,7 @@ constexpr auto priority(char sharedItem) -> unsigned {
 }
 
 constexpr auto sumScore(auto &&items) -> unsigned {
-  auto result = ranges::fold_left_first(
+  auto result = ranges::fold_left_first(  // NOLINT(misc-include-cleaner)
       items |
           views::transform([](auto character) { return priority(character); }),
       std::plus());

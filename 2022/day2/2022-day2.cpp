@@ -1,9 +1,14 @@
-#include <numeric>
+#include <gtest/gtest.h>
+
+#include <cstdint>
+#include <functional>
+#include <iterator>
 #include <ranges>
 #include <stdexcept>
 
-#include "common.hpp"
 #include "input.hpp"
+#include "named-type.hpp"
+#include "test.hpp"
 #include "utils.hpp"
 
 namespace ranges = std::ranges;
@@ -100,7 +105,7 @@ constexpr auto getBattleMarks(auto &&range) {
 }
 
 constexpr auto sumBattleScores(auto &&range) -> unsigned {
-  auto result = ranges::fold_left_first(
+  auto result = ranges::fold_left_first(  // NOLINT(misc-include-cleaner)
       range | views::transform([](auto &&battle) { return battle.score(); }),
       std::plus());
   if (!result) {
