@@ -15,7 +15,7 @@ namespace views = std::views;
 using namespace std::string_literals;
 using namespace std::string_view_literals;
 
-using T2022_day6 = TestFixture;
+using T2022Day6 = TestFixture;
 
 namespace {
 
@@ -32,12 +32,12 @@ constexpr auto firstDistinctWindow(auto &&range) {
 
 }  // namespace
 
-TEST_F(T2022_day6, part1) {
+TEST_F(T2022Day6, part1) {
   RUNTIME_CONSTEXPR auto result = firstDistinctWindow<4>(input);
   EXPECT_EQ(result, 1282);
 }
 
-TEST_F(T2022_day6, part2) {
+TEST_F(T2022Day6, part2) {
   constexpr auto windowSize = 14;
   RUNTIME_CONSTEXPR auto result = firstDistinctWindow<windowSize>(input);
   EXPECT_EQ(result, 3513);

@@ -19,7 +19,7 @@ namespace ranges = std::ranges;
 namespace views = std::views;
 using namespace std::string_view_literals;
 
-using T2022_day3 = TestFixture;
+using T2022Day3 = TestFixture;
 
 namespace {
 
@@ -122,7 +122,7 @@ RUNTIME_CONSTEXPR auto getSharedItem(auto &&rucksack) {
 
 }  // namespace
 
-TEST_F(T2022_day3, part1) {
+TEST_F(T2022Day3, part1) {
   RUNTIME_CONSTEXPR auto result =
       sumScore(splitLinesUntilEmpty(input) | views::transform([](auto &&line) {
                  return getSharedItem(line);
@@ -173,7 +173,7 @@ constexpr auto solve2() {
 
 }  // namespace
 
-TEST_F(T2022_day3, part2) {
+TEST_F(T2022Day3, part2) {
   RUNTIME_CONSTEXPR auto result = solve2();
   EXPECT_EQ(result, 2616);
 }
