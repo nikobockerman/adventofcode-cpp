@@ -1,5 +1,6 @@
 ---
 Checks: >
-  bugprone-*, clang-diagnostic-*, clang-analyzer-*, cppcoreguidelines-*,
-  google-*, misc-*, modernize-*, performance-*, portability-*, readability-*
+  bugprone-*, cert-*, clang-diagnostic-*, clang-analyzer-*, concurrency-*,
+  cppcoreguidelines-*, google-*, hicpp-*, misc-*, modernize-*, performance-*,
+  portability-*, readability-*
 WarningsAsErrors: "*"
