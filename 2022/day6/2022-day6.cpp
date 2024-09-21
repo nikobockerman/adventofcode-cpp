@@ -1,5 +1,14 @@
-#include "common.hpp"
+#include <gtest/gtest.h>
+
+#include <algorithm>
+#include <cstddef>
+#include <iterator>
+#include <ranges>
+#include <vector>
+
 #include "input.hpp"
+#include "runtime-tools.hpp"
+#include "test.hpp"
 
 namespace ranges = std::ranges;
 namespace views = std::views;

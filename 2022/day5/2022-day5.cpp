@@ -1,17 +1,21 @@
+#include <fmt/base.h>
 #include <fmt/ranges.h>
+#include <gtest/gtest.h>
 
 #include <algorithm>
 #include <cstddef>
 #include <iterator>
-#include <numeric>
-#include <optional>
 #include <ranges>
 #include <stdexcept>
 #include <string_view>
 #include <vector>
 
-#include "common.hpp"
+#include "convert.hpp"
 #include "input.hpp"
+#include "log.hpp"
+#include "named-type.hpp"
+#include "runtime-tools.hpp"
+#include "test.hpp"
 
 namespace ranges = std::ranges;
 namespace views = std::views;
@@ -179,7 +183,7 @@ constexpr auto loadParts(auto &&range) {
     throw std::runtime_error("Moving from empty stack");
   }
 
-  Crate movedCrate{fromStack.back()};
+  const Crate movedCrate{fromStack.back()};
 
 #if 0  // #ifdef __cpp_lib_ranges_zip //NOLINT
 #pragma message( \
@@ -213,14 +217,14 @@ constexpr auto loadParts(auto &&range) {
 
 [[nodiscard]] RUNTIME_CONSTEXPR auto applyMoveOneByOne(
     Stage stage, const Move &move) -> Stage {
-  return ranges::fold_left(views::iota(std::size_t{}, move.amount()),
-                           std::move(stage), [&move](auto prev, auto) {
-                             auto stack = applySingleMove(std::move(prev),
-                                                          move.indexFromStack(),
-                                                          move.indexToStack());
-                             logd("Intermediate stage: {}", stack);
-                             return stack;
-                           });
+  return ranges::fold_left(  // NOLINT(misc-include-cleaner)
+      views::iota(std::size_t{}, move.amount()), std::move(stage),
+      [&move](auto prev, auto) {
+        auto stack = applySingleMove(std::move(prev), move.indexFromStack(),
+                                     move.indexToStack());
+        logd("Intermediate stage: {}", stack);
+        return stack;
+      });
 }
 
 RUNTIME_CONSTEXPR auto solve1() {
@@ -235,7 +239,7 @@ RUNTIME_CONSTEXPR auto solve1() {
       });
 
   return ranges::fold_left(
-      finalStage, ""s,
+      finalStage, ""s,  // NOLINT(misc-include-cleaner)
       [](const auto &prev, const auto &stack) { return prev + stack.back(); });
 }
 
