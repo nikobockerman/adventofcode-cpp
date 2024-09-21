@@ -21,7 +21,7 @@ namespace ranges = std::ranges;
 namespace views = std::views;
 using namespace std::string_view_literals;
 
-using T2022_day1 = TestFixture;
+using T2022Day1 = TestFixture;
 
 namespace {
 
@@ -40,7 +40,7 @@ constexpr auto resolveCalorieSums(auto &&input) {
 
 }  // namespace
 
-TEST_F(T2022_day1, part1) {
+TEST_F(T2022Day1, part1) {
   constexpr auto result = ranges::max(resolveCalorieSums(input));
   EXPECT_EQ(result, 69836);
 }
@@ -67,7 +67,7 @@ RUNTIME_CONSTEXPR auto solve2() {
 
 }  // namespace
 
-TEST_F(T2022_day1, part2) {
+TEST_F(T2022Day1, part2) {
   RUNTIME_CONSTEXPR auto result = solve2();
   EXPECT_EQ(result, 207968);
 }

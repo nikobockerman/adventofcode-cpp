@@ -13,7 +13,7 @@ namespace ranges = std::ranges;
 namespace views = std::views;
 using namespace std::string_view_literals;
 
-using T2022_day4 = TestFixture;
+using T2022Day4 = TestFixture;
 
 namespace {
 
@@ -56,7 +56,7 @@ constexpr auto solve1() {
 
 }  // namespace
 
-TEST_F(T2022_day4, part1) {
+TEST_F(T2022Day4, part1) {
   constexpr auto result = solve1();
   EXPECT_EQ(result, 536);
 }
@@ -78,7 +78,7 @@ constexpr auto solve2() {
 
 }  // namespace
 
-TEST_F(T2022_day4, part2) {
+TEST_F(T2022Day4, part2) {
   constexpr auto result = solve2();
   EXPECT_EQ(result, 845);
 }

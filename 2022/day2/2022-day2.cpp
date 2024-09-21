@@ -15,7 +15,7 @@ namespace ranges = std::ranges;
 namespace views = std::views;
 using namespace std::string_view_literals;
 
-using T2022_day2 = TestFixture;
+using T2022Day2 = TestFixture;
 
 namespace {
 
@@ -116,7 +116,7 @@ constexpr auto sumBattleScores(auto &&range) -> unsigned {
 
 }  // namespace
 
-TEST_F(T2022_day2, part1) {
+TEST_F(T2022Day2, part1) {
   auto parseMe = [](char move) constexpr {
     switch (move) {
       case 'X':
@@ -164,7 +164,7 @@ constexpr auto winningType(Type opponent) {
 
 }  // namespace
 
-TEST_F(T2022_day2, part2) {
+TEST_F(T2022Day2, part2) {
   auto parseMe = [](OpponentType opponent, char move) {
     switch (move) {
       case 'X':
