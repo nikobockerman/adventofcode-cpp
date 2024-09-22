@@ -1,21 +1,16 @@
-#include <gtest/gtest.h>
-
 #include <algorithm>
 #include <cstddef>
 #include <iterator>
 #include <ranges>
+#include <string_view>
 #include <vector>
 
-#include "input.hpp"
-#include "runtime-tools.hpp"
-#include "test.hpp"
+#include "problem.hpp"
 
 namespace ranges = std::ranges;
 namespace views = std::views;
 using namespace std::string_literals;
 using namespace std::string_view_literals;
-
-using T2022Day6 = TestFixture;
 
 namespace {
 
@@ -32,13 +27,11 @@ constexpr auto firstDistinctWindow(auto &&range) {
 
 }  // namespace
 
-TEST_F(T2022Day6, part1) {
-  RUNTIME_CONSTEXPR auto result = firstDistinctWindow<4>(input);
-  EXPECT_EQ(result, 1282);
+auto p1(std::string_view input) -> ResultType {
+  return firstDistinctWindow<4>(input);
 }
 
-TEST_F(T2022Day6, part2) {
+auto p2(std::string_view input) -> ResultType {
   constexpr auto windowSize = 14;
-  RUNTIME_CONSTEXPR auto result = firstDistinctWindow<windowSize>(input);
-  EXPECT_EQ(result, 3513);
+  return firstDistinctWindow<windowSize>(input);
 }

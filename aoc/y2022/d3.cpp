@@ -1,25 +1,23 @@
 #include <fmt/ranges.h>  // NOLINT(misc-include-cleaner) necessary include in debug builds
-#include <gtest/gtest.h>
 
 #include <algorithm>
 #include <cstddef>
+#include <cstdint>
 #include <functional>
 #include <iterator>
 #include <ranges>
 #include <stdexcept>
+#include <string_view>
 #include <vector>
 
-#include "input.hpp"
 #include "log.hpp"
+#include "problem.hpp"
 #include "runtime-tools.hpp"
-#include "test.hpp"
 #include "utils.hpp"
 
 namespace ranges = std::ranges;
 namespace views = std::views;
 using namespace std::string_view_literals;
-
-using T2022Day3 = TestFixture;
 
 namespace {
 
@@ -75,7 +73,7 @@ constexpr auto priority(char sharedItem) -> unsigned {
   throw std::runtime_error("Invalid character");
 }
 
-constexpr auto sumScore(auto &&items) -> unsigned {
+constexpr auto sumScore(auto &&items) -> uint64_t {
   auto result = ranges::fold_left_first(  // NOLINT(misc-include-cleaner)
       items |
           views::transform([](auto character) { return priority(character); }),
@@ -122,12 +120,10 @@ RUNTIME_CONSTEXPR auto getSharedItem(auto &&rucksack) {
 
 }  // namespace
 
-TEST_F(T2022Day3, part1) {
-  RUNTIME_CONSTEXPR auto result =
-      sumScore(splitLinesUntilEmpty(input) | views::transform([](auto &&line) {
-                 return getSharedItem(line);
-               }));
-  EXPECT_EQ(result, 7848);
+auto p1(std::string_view input) -> ResultType {
+  return sumScore(
+      splitLinesUntilEmpty(input) |
+      views::transform([](auto &&line) { return getSharedItem(line); }));
 }
 
 namespace {
@@ -163,7 +159,7 @@ RUNTIME_CONSTEXPR auto getGroupBadgeItem(auto &&groupRuckSacks) -> char {
   return badge;
 }
 
-constexpr auto solve2() {
+constexpr auto solve2(auto input) {
   constexpr std::size_t groupSize{3};
 
   return sumScore(
@@ -173,7 +169,4 @@ constexpr auto solve2() {
 
 }  // namespace
 
-TEST_F(T2022Day3, part2) {
-  RUNTIME_CONSTEXPR auto result = solve2();
-  EXPECT_EQ(result, 2616);
-}
+auto p2(std::string_view input) -> ResultType { return solve2(input); }
