@@ -1,21 +1,17 @@
-#include <gtest/gtest.h>
-
 #include <cstdint>
 #include <functional>
 #include <iterator>
 #include <ranges>
 #include <stdexcept>
+#include <string_view>
 
-#include "input.hpp"
 #include "named-type.hpp"
-#include "test.hpp"
+#include "problem.hpp"
 #include "utils.hpp"
 
 namespace ranges = std::ranges;
 namespace views = std::views;
 using namespace std::string_view_literals;
-
-using T2022Day2 = TestFixture;
 
 namespace {
 
@@ -104,7 +100,7 @@ constexpr auto getBattleMarks(auto &&range) {
          views::transform([](auto &&line) { return parseBattleMarks(line); });
 }
 
-constexpr auto sumBattleScores(auto &&range) -> unsigned {
+constexpr auto sumBattleScores(auto &&range) -> uint64_t {
   auto result = ranges::fold_left_first(  // NOLINT(misc-include-cleaner)
       range | views::transform([](auto &&battle) { return battle.score(); }),
       std::plus());
@@ -116,7 +112,7 @@ constexpr auto sumBattleScores(auto &&range) -> unsigned {
 
 }  // namespace
 
-TEST_F(T2022Day2, part1) {
+auto p1(std::string_view input) -> ResultType {
   auto parseMe = [](char move) constexpr {
     switch (move) {
       case 'X':
@@ -129,11 +125,10 @@ TEST_F(T2022Day2, part1) {
         throw std::runtime_error("Unknown me type");
     }
   };
-  constexpr auto result = sumBattleScores(
+  return sumBattleScores(
       getBattleMarks(input) | views::transform([&parseMe](auto marks) {
         return Battle{parseOpponent(marks.first), parseMe(marks.second)};
       }));
-  EXPECT_EQ(result, 8890);
 }
 
 namespace {
@@ -164,7 +159,7 @@ constexpr auto winningType(Type opponent) {
 
 }  // namespace
 
-TEST_F(T2022Day2, part2) {
+auto p2(std::string_view input) -> ResultType {
   auto parseMe = [](OpponentType opponent, char move) {
     switch (move) {
       case 'X':
@@ -177,10 +172,9 @@ TEST_F(T2022Day2, part2) {
         throw std::runtime_error("Unknown me type");
     }
   };
-  constexpr auto result = sumBattleScores(
+  return sumBattleScores(
       getBattleMarks(input) | views::transform([&parseMe](auto marks) {
         auto opponent = parseOpponent(marks.first);
         return Battle{opponent, parseMe(opponent, marks.second)};
       }));
-  EXPECT_EQ(result, 10238);
 }

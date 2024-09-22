@@ -1,6 +1,5 @@
 #include <fmt/base.h>
 #include <fmt/ranges.h>
-#include <gtest/gtest.h>
 
 #include <algorithm>
 #include <cstddef>
@@ -11,18 +10,15 @@
 #include <vector>
 
 #include "convert.hpp"
-#include "input.hpp"
 #include "log.hpp"
 #include "named-type.hpp"
+#include "problem.hpp"
 #include "runtime-tools.hpp"
-#include "test.hpp"
 
 namespace ranges = std::ranges;
 namespace views = std::views;
 using namespace std::string_literals;
 using namespace std::string_view_literals;
-
-using T2022Day5 = TestFixture;
 
 namespace {
 
@@ -227,7 +223,7 @@ constexpr auto loadParts(auto &&range) {
       });
 }
 
-RUNTIME_CONSTEXPR auto solve1() {
+auto solve1(auto input) {
   auto [stage, moves] = loadParts(input);
   logi("Initial stage: {}", stage);
   auto finalStage = ranges::fold_left(
@@ -245,10 +241,7 @@ RUNTIME_CONSTEXPR auto solve1() {
 
 }  // namespace
 
-TEST_F(T2022Day5, part1) {
-  RUNTIME_STATIC_CONSTEXPR auto result = solve1();
-  EXPECT_EQ(result, "TLFGBZHCN"sv);
-}
+auto p1(std::string_view input) -> ResultType { return solve1(input); }
 
 namespace {
 
@@ -275,7 +268,7 @@ namespace {
   return stage;
 }
 
-RUNTIME_CONSTEXPR auto solve2() {
+RUNTIME_CONSTEXPR auto solve2(auto input) {
   auto [stage, moves] = loadParts(input);
   logi("Initial stage: {}", stage);
   auto finalStage = ranges::fold_left(
@@ -293,7 +286,4 @@ RUNTIME_CONSTEXPR auto solve2() {
 
 }  // namespace
 
-TEST_F(T2022Day5, part2) {
-  RUNTIME_STATIC_CONSTEXPR auto result = solve2();
-  EXPECT_EQ(result, "QRQFHFWCL"sv);
-}
+auto p2(std::string_view input) -> ResultType { return solve2(input); }
