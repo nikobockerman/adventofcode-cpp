@@ -1,4 +1,5 @@
 #include <fmt/ranges.h>  // NOLINT(misc-include-cleaner) necessary include in debug builds
+#include <spdlog/spdlog.h>
 
 #include <algorithm>
 #include <cstddef>
@@ -10,7 +11,6 @@
 #include <vector>
 
 #include "convert.hpp"
-#include "log.hpp"
 #include "problem.hpp"
 #include "utils.hpp"
 
@@ -43,13 +43,13 @@ namespace {
 
 auto solve2(std::string_view input) {
   auto calorieSums = resolveCalorieSums(input) | ranges::to<std::vector>();
-  logd("Initial: {}", fmt::join(calorieSums, ","));
+  SPDLOG_DEBUG("Initial: {}", fmt::join(calorieSums, ","));
 
   constexpr std::size_t interestedSize{3};
 
   auto pastInteresting = ranges::next(calorieSums.begin(), interestedSize);
   ranges::nth_element(calorieSums, pastInteresting, std::greater<>());
-  logd("Partitioned: {}", fmt::join(calorieSums, ","));
+  SPDLOG_DEBUG("Partitioned: {}", fmt::join(calorieSums, ","));
 
   auto result = ranges::fold_left_first(calorieSums.begin(), pastInteresting,
                                         std::plus());
