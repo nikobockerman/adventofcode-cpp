@@ -8,6 +8,10 @@ find_package(fmt CONFIG REQUIRED)
 find_package(GTest CONFIG REQUIRED)
 find_package(spdlog CONFIG REQUIRED)
 
+# Configure maximum logging level
+add_compile_definitions("$<$<CONFIG:Debug>:SPDLOG_ACTIVE_LEVEL=SPDLOG_LEVEL_DEBUG>")
+add_compile_definitions("$<$<CONFIG:Release>:SPDLOG_ACTIVE_LEVEL=SPDLOG_LEVEL_WARN>")
+
 enable_testing()
 include(GoogleTest)
 
@@ -53,17 +57,5 @@ function(add_solution_test_executable targetNameVariable day)
   add_executable(${targetName} ${sourceFile})
   set(${targetNameVariable} ${targetName} PARENT_SCOPE)
 endfunction()
-
-# Allow long recursive constexpr evaluations project wide
-if(CMAKE_CXX_COMPILER_ID MATCHES "MSVC")
-  add_compile_options("/constexpr:steps20000000")
-elseif(CMAKE_CXX_COMPILER_ID MATCHES "Clang")
-  add_compile_options("-fconstexpr-steps=20000000")
-elseif(CMAKE_CXX_COMPILER_ID MATCHES "GNU")
-  add_compile_options("-fconstexpr-ops-limit=35000000")
-endif()
-
-# Make debug builds use runtime algorithms
-link_libraries(debug enableRuntime)
 
 add_subdirectory(aoc)

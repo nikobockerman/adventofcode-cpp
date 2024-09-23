@@ -1,4 +1,5 @@
 #include <fmt/ranges.h>  // NOLINT(misc-include-cleaner) necessary include in debug builds
+#include <spdlog/spdlog.h>
 
 #include <algorithm>
 #include <cstddef>
@@ -10,9 +11,7 @@
 #include <string_view>
 #include <vector>
 
-#include "log.hpp"
 #include "problem.hpp"
-#include "runtime-tools.hpp"
 #include "utils.hpp"
 
 namespace ranges = std::ranges;
@@ -98,7 +97,7 @@ constexpr auto getCompartments(const auto &rucksack) {
                         rucksack | views::drop(mid));
 }
 
-RUNTIME_CONSTEXPR auto getSharedItem(auto &&rucksack) {
+constexpr auto getSharedItem(auto &&rucksack) {
   if (rucksack.empty()) {
     throw std::runtime_error("Empty rucksack");
   }
@@ -110,7 +109,7 @@ RUNTIME_CONSTEXPR auto getSharedItem(auto &&rucksack) {
   auto intersection = std::vector<char>{};
   ranges::set_intersection(first, second, std::back_inserter(intersection));
 
-  logd("Intersection: {}", fmt::join(intersection, ","));
+  SPDLOG_DEBUG("Intersection: {}", fmt::join(intersection, ","));
   if (intersection.size() != 1) {
     throw std::runtime_error("Unexpected number of intersections");
   }
@@ -128,7 +127,7 @@ auto p1(std::string_view input) -> ResultType {
 
 namespace {
 
-RUNTIME_CONSTEXPR auto getGroupBadgeItem(auto &&groupRuckSacks) -> char {
+constexpr auto getGroupBadgeItem(auto &&groupRuckSacks) -> char {
   auto end = groupRuckSacks.end();
   auto iter = groupRuckSacks.begin();
   auto first = vectorSet(*iter);
@@ -138,7 +137,7 @@ RUNTIME_CONSTEXPR auto getGroupBadgeItem(auto &&groupRuckSacks) -> char {
   auto third = vectorSet(*iter);
 
   if (iter == end) {
-    logd("Invalid group size: {}", ranges::distance(groupRuckSacks));
+    SPDLOG_DEBUG("Invalid group size: {}", ranges::distance(groupRuckSacks));
     throw std::runtime_error("Invalid group size");
   }
 
@@ -155,7 +154,7 @@ RUNTIME_CONSTEXPR auto getGroupBadgeItem(auto &&groupRuckSacks) -> char {
   }
 
   auto badge = intersection.at(0);
-  logd("Group badge found: {}", badge);
+  SPDLOG_DEBUG("Group badge found: {}", badge);
   return badge;
 }
 

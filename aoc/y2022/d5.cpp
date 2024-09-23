@@ -1,5 +1,6 @@
 #include <fmt/base.h>
 #include <fmt/ranges.h>
+#include <spdlog/spdlog.h>
 
 #include <algorithm>
 #include <cstddef>
@@ -10,10 +11,8 @@
 #include <vector>
 
 #include "convert.hpp"
-#include "log.hpp"
 #include "named-type.hpp"
 #include "problem.hpp"
-#include "runtime-tools.hpp"
 
 namespace ranges = std::ranges;
 namespace views = std::views;
@@ -116,10 +115,10 @@ constexpr auto countStacks(auto &&stackIdLine) -> std::size_t {
 
 constexpr auto crateCharIndex(auto stackIndex) { return 1 + 4 * stackIndex; }
 
-RUNTIME_CONSTEXPR auto loadStage(auto &&linesView) -> Stage {
+constexpr auto loadStage(auto &&linesView) -> Stage {
   auto lines = linesView | ranges::to<std::vector>();
   auto stackCount = countStacks(lines.back());
-  logd("Stack count: {}", stackCount);
+  SPDLOG_DEBUG("Stack count: {}", stackCount);
 
   auto crateLines =
       lines | views::reverse | views::drop(1) | ranges::to<std::vector>();
@@ -149,10 +148,10 @@ constexpr auto parseMove(auto &&line) {
               IndexToStack{parts.at(2)}};
 }
 
-RUNTIME_CONSTEXPR auto loadMoves(auto &&lines) {
+constexpr auto loadMoves(auto &&lines) {
   return lines | views::transform([](auto &&line) {
-           logd("DEBUG");
-           logd("Parsing move: {}", line);
+           SPDLOG_DEBUG("DEBUG");
+           SPDLOG_DEBUG("Parsing move: {}", line);
            return parseMove(line);
          });
 }
@@ -211,26 +210,26 @@ constexpr auto loadParts(auto &&range) {
 #endif
 }
 
-[[nodiscard]] RUNTIME_CONSTEXPR auto applyMoveOneByOne(
-    Stage stage, const Move &move) -> Stage {
+[[nodiscard]] constexpr auto applyMoveOneByOne(Stage stage,
+                                               const Move &move) -> Stage {
   return ranges::fold_left(  // NOLINT(misc-include-cleaner)
       views::iota(std::size_t{}, move.amount()), std::move(stage),
       [&move](auto prev, auto) {
         auto stack = applySingleMove(std::move(prev), move.indexFromStack(),
                                      move.indexToStack());
-        logd("Intermediate stage: {}", stack);
+        SPDLOG_DEBUG("Intermediate stage: {}", stack);
         return stack;
       });
 }
 
 auto solve1(auto input) {
   auto [stage, moves] = loadParts(input);
-  logi("Initial stage: {}", stage);
+  SPDLOG_INFO("Initial stage: {}", stage);
   auto finalStage = ranges::fold_left(
       moves, std::move(stage), [](auto prev, const auto &move) {
-        logd("Performing move ({}); Stage: {}", move, prev);
+        SPDLOG_DEBUG("Performing move ({}); Stage: {}", move, prev);
         auto next = applyMoveOneByOne(std::move(prev), move);
-        logd("Move performed ({}); Stage: {}", move, next);
+        SPDLOG_DEBUG("Move performed ({}); Stage: {}", move, next);
         return next;
       });
 
@@ -268,14 +267,14 @@ namespace {
   return stage;
 }
 
-RUNTIME_CONSTEXPR auto solve2(auto input) {
+constexpr auto solve2(auto input) {
   auto [stage, moves] = loadParts(input);
-  logi("Initial stage: {}", stage);
+  SPDLOG_INFO("Initial stage: {}", stage);
   auto finalStage = ranges::fold_left(
       moves, std::move(stage), [](auto prev, const auto &move) {
-        logd("Performing move ({}); Stage: {}", move, prev);
+        SPDLOG_DEBUG("Performing move ({}); Stage: {}", move, prev);
         auto next = applyMoveInSingle(std::move(prev), move);
-        logd("Move performed ({}); Stage: {}", move, next);
+        SPDLOG_DEBUG("Move performed ({}); Stage: {}", move, next);
         return next;
       });
 
