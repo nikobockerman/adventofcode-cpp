@@ -13,7 +13,6 @@
 #include "convert.hpp"
 #include "named-type.hpp"
 #include "problem.hpp"
-#include "runtime-tools.hpp"
 
 namespace ranges = std::ranges;
 namespace views = std::views;
@@ -116,7 +115,7 @@ constexpr auto countStacks(auto &&stackIdLine) -> std::size_t {
 
 constexpr auto crateCharIndex(auto stackIndex) { return 1 + 4 * stackIndex; }
 
-RUNTIME_CONSTEXPR auto loadStage(auto &&linesView) -> Stage {
+constexpr auto loadStage(auto &&linesView) -> Stage {
   auto lines = linesView | ranges::to<std::vector>();
   auto stackCount = countStacks(lines.back());
   SPDLOG_DEBUG("Stack count: {}", stackCount);
@@ -149,7 +148,7 @@ constexpr auto parseMove(auto &&line) {
               IndexToStack{parts.at(2)}};
 }
 
-RUNTIME_CONSTEXPR auto loadMoves(auto &&lines) {
+constexpr auto loadMoves(auto &&lines) {
   return lines | views::transform([](auto &&line) {
            SPDLOG_DEBUG("DEBUG");
            SPDLOG_DEBUG("Parsing move: {}", line);
@@ -211,8 +210,8 @@ constexpr auto loadParts(auto &&range) {
 #endif
 }
 
-[[nodiscard]] RUNTIME_CONSTEXPR auto applyMoveOneByOne(
-    Stage stage, const Move &move) -> Stage {
+[[nodiscard]] constexpr auto applyMoveOneByOne(Stage stage,
+                                               const Move &move) -> Stage {
   return ranges::fold_left(  // NOLINT(misc-include-cleaner)
       views::iota(std::size_t{}, move.amount()), std::move(stage),
       [&move](auto prev, auto) {
@@ -268,7 +267,7 @@ namespace {
   return stage;
 }
 
-RUNTIME_CONSTEXPR auto solve2(auto input) {
+constexpr auto solve2(auto input) {
   auto [stage, moves] = loadParts(input);
   SPDLOG_INFO("Initial stage: {}", stage);
   auto finalStage = ranges::fold_left(

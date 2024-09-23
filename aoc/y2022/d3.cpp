@@ -12,7 +12,6 @@
 #include <vector>
 
 #include "problem.hpp"
-#include "runtime-tools.hpp"
 #include "utils.hpp"
 
 namespace ranges = std::ranges;
@@ -98,7 +97,7 @@ constexpr auto getCompartments(const auto &rucksack) {
                         rucksack | views::drop(mid));
 }
 
-RUNTIME_CONSTEXPR auto getSharedItem(auto &&rucksack) {
+constexpr auto getSharedItem(auto &&rucksack) {
   if (rucksack.empty()) {
     throw std::runtime_error("Empty rucksack");
   }
@@ -128,7 +127,7 @@ auto p1(std::string_view input) -> ResultType {
 
 namespace {
 
-RUNTIME_CONSTEXPR auto getGroupBadgeItem(auto &&groupRuckSacks) -> char {
+constexpr auto getGroupBadgeItem(auto &&groupRuckSacks) -> char {
   auto end = groupRuckSacks.end();
   auto iter = groupRuckSacks.begin();
   auto first = vectorSet(*iter);

@@ -58,7 +58,4 @@ function(add_solution_test_executable targetNameVariable day)
   set(${targetNameVariable} ${targetName} PARENT_SCOPE)
 endfunction()
 
-# Make debug builds use runtime algorithms
-link_libraries(debug enableRuntime)
-
 add_subdirectory(aoc)
