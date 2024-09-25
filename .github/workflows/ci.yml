@@ -20,7 +20,7 @@ jobs:
             workflowPreset: ci-msvc-debug
           - os: windows-latest
             workflowPreset: ci-msvc-release
-          # Clang on Windows requires fix to
+          # Clang on Windows
           - os: windows-latest
             workflowPreset: ci-clang-windows-debug
           - os: windows-latest
