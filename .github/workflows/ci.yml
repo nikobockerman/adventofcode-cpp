@@ -21,11 +21,10 @@ jobs:
           - os: windows-latest
             workflowPreset: ci-msvc-release
           # Clang on Windows requires fix to
-          # https://github.com/microsoft/vcpkg/issues/40912
-          #- os: windows-latest
-          #  workflowPreset: ClangWindows Debug
-          #- os: windows-latest
-          #  workflowPreset: ClangWindows Release
+          - os: windows-latest
+            workflowPreset: ci-clang-windows-debug
+          - os: windows-latest
+            workflowPreset: ci-clang-windows-release
           # Clang on Linux
           - os: ubuntu-24.04
             workflowPreset: ci-clang-linux-debug
