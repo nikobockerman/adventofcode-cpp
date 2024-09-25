@@ -2,9 +2,7 @@ name: CI
 
 on:
   push:
-    branches: ["main"]
-  pull_request:
-    branches: ["main"]
+    branches: ["ci-enable-clang-libcpp-on-linux"]
   workflow_dispatch:
   schedule:
     # Run every Monday at 00:30 UTC
@@ -15,36 +13,10 @@ jobs:
     strategy:
       matrix:
         include:
-          # MSVC
-          - os: windows-latest
-            workflowPreset: ci-msvc-debug
-          - os: windows-latest
-            workflowPreset: ci-msvc-release
-          # Clang on Windows requires fix to
-          - os: windows-latest
-            workflowPreset: ci-clang-windows-debug
-          - os: windows-latest
-            workflowPreset: ci-clang-windows-release
-          # Clang on Linux
-          - os: ubuntu-24.04
-            workflowPreset: ci-clang-linux-debug
-          - os: ubuntu-24.04
-            workflowPreset: ci-clang-linux-release
           # Clang with libc++ on Linux
           - os: ubuntu-24.04
             workflowPreset: ci-clang-libcpp-linux-debug
             aptPackages: libc++-dev
-          - os: ubuntu-24.04
-            workflowPreset: ci-clang-libcpp-linux-release
-            aptPackages: libc++-dev
-          # Gcc 14 on Linux
-          - os: ubuntu-24.04
-            workflowPreset: ci-gcc-14-linux-debug
-          # Gcc 14 Release build doesn't work with the
-          # gcc 14.0.1 20240412 snapshot version available on Ubuntu Universe
-          # The issue may be fixed in newer 14.1 or 14.2 versions.
-          #- os: ubuntu-24.04
-          #  workflowPreset: ci-gcc-14-linux-release
 
     name: Build + test (${{matrix.workflowPreset}})
     runs-on: ${{matrix.os}}
@@ -67,39 +39,3 @@ jobs:
         uses: lukka/run-cmake@v10
         with:
           workflowPreset: "${{matrix.workflowPreset}}"
-
-  clang-tidy:
-    runs-on: ubuntu-24.04
-    strategy:
-      matrix:
-        include:
-          - configurePreset: ci-clang-tidy-debug
-            binaryDir: build/clang-debug
-          - configurePreset: ci-clang-tidy-release
-            binaryDir: build/clang-release
-    name: Clang tidy (${{matrix.configurePreset}})
-    steps:
-      - uses: actions/checkout@v4
-      - uses: lukka/get-cmake@latest
-      - uses: lukka/run-vcpkg@v11.5
-      - name: Prepare presets
-        run: cp .github/CMakeUserPresets.json CMakeUserPresets.json
-        shell: bash
-      - name:
-          Run CMake consuming CMakePreset.json and run vcpkg to build packages
-        uses: lukka/run-cmake@v10
-        with:
-          configurePreset: "${{matrix.configurePreset}}"
-      - name: Run clang-tidy
-        run: |
-          run-clang-tidy -p "${{matrix.binaryDir}}"
-
-  clang-format:
-    runs-on: ubuntu-24.04
-    name: Clang format check
-    steps:
-      - uses: actions/checkout@v4
-      - name: Run clang-format
-        run: |
-          clang-format -n -Werror --verbose $(git ls-files | grep -E '\.hpp$|\.cpp$')
-        shell: bash
