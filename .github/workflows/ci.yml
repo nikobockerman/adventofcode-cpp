@@ -44,6 +44,11 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
+      - name: Install apt packages
+        if: ${{ matrix.aptPackages }}
+        uses: daaku/gh-action-apt-install@v4
+        with:
+          packages: ${{ matrix.aptPackages }}
       - uses: lukka/get-cmake@latest
       - name: Setup anew (or from cache) vcpkg (and does not build any package)
         uses: lukka/run-vcpkg@v11.5
