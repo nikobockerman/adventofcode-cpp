@@ -30,6 +30,13 @@ jobs:
             workflowPreset: ci-clang-linux-debug
           - os: ubuntu-24.04
             workflowPreset: ci-clang-linux-release
+          # Clang with libc++ on Linux
+          - os: ubuntu-24.04
+            workflowPreset: ci-clang-libcpp-linux-debug
+            aptPackages: libc++-dev
+          - os: ubuntu-24.04
+            workflowPreset: ci-clang-libcpp-linux-release
+            aptPackages: libc++-dev
           # Gcc 14 on Linux
           - os: ubuntu-24.04
             workflowPreset: ci-gcc-14-linux-debug
