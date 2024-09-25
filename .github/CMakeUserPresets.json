@@ -39,6 +39,11 @@
     {
       "name": "ci-gcc-14-release",
       "configurePreset": "ci-gcc-14-release"
+    },
+    {
+      "name": "ci-clang-libcpp-ninja-debug",
+      "configurePreset": "clang-libcpp-ninja-debug",
+      "verbose": true
     }
   ],
   "testPresets": [
@@ -129,7 +134,7 @@
         },
         {
           "type": "build",
-          "name": "clang-libcpp-ninja-debug"
+          "name": "ci-clang-libcpp-ninja-debug"
         },
         {
           "type": "test",
