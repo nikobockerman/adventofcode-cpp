@@ -25,6 +25,11 @@ jobs:
             workflowPreset: ci-clang-windows-debug
           - os: windows-latest
             workflowPreset: ci-clang-windows-release
+          # Clang with libc++ on Windows
+          - os: windows-latest
+            workflowPreset: ci-clang-libcpp-windows-debug
+          - os: windows-latest
+            workflowPreset: ci-clang-libcpp-windows-release
           # Clang on Linux
           - os: ubuntu-24.04
             workflowPreset: ci-clang-linux-debug

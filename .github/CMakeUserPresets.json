@@ -121,6 +121,40 @@
       ]
     },
     {
+      "name": "ci-clang-libcpp-windows-debug",
+      "steps": [
+        {
+          "type": "configure",
+          "name": "clang-libcpp-ninja-debug"
+        },
+        {
+          "type": "build",
+          "name": "clang-libcpp-ninja-debug"
+        },
+        {
+          "type": "test",
+          "name": "clang-libcpp-ninja-debug"
+        }
+      ]
+    },
+    {
+      "name": "ci-clang-libcpp-windows-release",
+      "steps": [
+        {
+          "type": "configure",
+          "name": "clang-libcpp-ninja-release"
+        },
+        {
+          "type": "build",
+          "name": "clang-libcpp-ninja-release"
+        },
+        {
+          "type": "test",
+          "name": "clang-libcpp-ninja-release"
+        }
+      ]
+    },
+    {
       "name": "ci-clang-linux-debug",
       "steps": [
         {
