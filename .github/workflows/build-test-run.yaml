@@ -41,3 +41,15 @@ jobs:
       - name: Run aoc
         if: matrix.aocBinPath
         run: ./"${{matrix.aocBinPath}}"
+
+  inspect:
+    name: Inspect
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
+      - run: |
+          which c++ || true
+          which clang++ || true
+          brew list
+          brew list llvm || true
+          brew list llvm@15 || true
