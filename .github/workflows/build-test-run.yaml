@@ -1,5 +1,7 @@
 name: Build, test and run
 on:
+  push:
+    branches: ["ci-enable-build-on-macos"]
   pull_request:
     paths:
       - "**.cpp"
@@ -19,34 +21,9 @@ jobs:
     strategy:
       matrix:
         include:
-          # MSVC
-          - os: windows-latest
-            workflowPreset: ci-msvc-debug
-            aocBinPath: ""
-          - os: windows-latest
-            workflowPreset: ci-msvc-release
-            aocBinPath: build/msvc/aoc/aoc/Release/aoc.exe
-          # Clang on Windows
-          - os: windows-latest
-            workflowPreset: ci-clang-windows-debug
-            aocBinPath: ""
-          - os: windows-latest
-            workflowPreset: ci-clang-windows-release
-            aocBinPath: build/clang-release/aoc/aoc/aoc.exe
-          # Clang on Linux
-          - os: ubuntu-24.04
-            workflowPreset: ci-clang-linux-debug
-            aocBinPath: build/clang-debug/aoc/aoc/aoc
-          - os: ubuntu-24.04
-            workflowPreset: ci-clang-linux-release
-            aocBinPath: build/clang-release/aoc/aoc/aoc
-          # Gcc 14 on Linux
-          - os: ubuntu-24.04
-            workflowPreset: ci-gcc-14-linux-debug
-            aocBinPath: build/default-debug/aoc/aoc/aoc
-          - os: ubuntu-24.04
-            workflowPreset: ci-gcc-14-linux-release
-            aocBinPath: build/default-release/aoc/aoc/aoc
+          # MacOS latest
+          - os: macos-latest
+            workflowPreset: ci-macos-debug
 
     name: ${{matrix.workflowPreset}} - Build + test + run
     runs-on: ${{matrix.os}}
