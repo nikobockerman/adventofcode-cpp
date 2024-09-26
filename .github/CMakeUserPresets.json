@@ -29,6 +29,17 @@
       "cacheVariables": {
         "CMAKE_EXPORT_COMPILE_COMMANDS": "ON"
       }
+    },
+    {
+      "name": "ci-macos-debug",
+      "binaryDir": "build/macos-debug",
+      "inherits": [
+        "vcpkg-toolchain",
+        "ninja",
+        "gcc-clang-flags",
+        "debug",
+        "configure-flags"
+      ]
     }
   ],
   "buildPresets": [
@@ -39,6 +50,11 @@
     {
       "name": "ci-gcc-14-release",
       "configurePreset": "ci-gcc-14-release"
+    },
+    {
+      "name": "ci-macos-debug",
+      "configurePreset": "ci-macos-debug",
+      "verbose": true
     }
   ],
   "testPresets": [
@@ -49,6 +65,10 @@
     {
       "name": "ci-gcc-14-release",
       "configurePreset": "ci-gcc-14-release"
+    },
+    {
+      "name": "ci-macos-debug",
+      "configurePreset": "ci-macos-debug"
     }
   ],
   "workflowPresets": [
@@ -185,6 +205,23 @@
         {
           "type": "test",
           "name": "ci-gcc-14-release"
+        }
+      ]
+    },
+    {
+      "name": "ci-macos-debug",
+      "steps": [
+        {
+          "type": "configure",
+          "name": "ci-macos-debug"
+        },
+        {
+          "type": "build",
+          "name": "ci-macos-debug"
+        },
+        {
+          "type": "test",
+          "name": "ci-macos-debug"
         }
       ]
     }
