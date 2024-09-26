@@ -13,7 +13,7 @@ jobs:
     strategy:
       matrix:
         include:
-          - os: macos-latest
+          - os: macos-15
             workflowPreset: ci-macos-debug
 
     name: Build + test (${{matrix.workflowPreset}})
@@ -35,12 +35,13 @@ jobs:
 
   inspect:
     name: Inspect
-    runs-on: macos-latest
+    runs-on: macos-15
     steps:
       - uses: actions/checkout@v3
       - run: |
           which c++ || true
+          which -a c++ || true
           which clang++ || true
+          which -a clang++ || true
           brew list
-          brew list llvm || true
-          brew list llvm@15 || true
+          brew list llvm@18 | sort || true
