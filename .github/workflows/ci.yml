@@ -32,3 +32,15 @@ jobs:
         uses: lukka/run-cmake@v10
         with:
           workflowPreset: "${{matrix.workflowPreset}}"
+
+  inspect:
+    name: Inspect
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v3
+      - run: |
+          which c++ || true
+          which clang++ || true
+          brew list
+          brew list llvm || true
+          brew list llvm@15 || true
