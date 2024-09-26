@@ -230,9 +230,15 @@
   ],
   "testPresets": [
     {
+      "name": "output-on-failure",
+      "hidden": true,
+      "output": { "outputOnFailure": true }
+    },
+    {
       "name": "msvc-debug",
       "configurePreset": "msvc",
       "configuration": "Debug",
+      "inherits": ["output-on-failure"],
       "condition": {
         "type": "equals",
         "lhs": "${hostSystemName}",
@@ -243,6 +249,7 @@
       "name": "msvc-release",
       "configurePreset": "msvc",
       "configuration": "Release",
+      "inherits": ["output-on-failure"],
       "condition": {
         "type": "equals",
         "lhs": "${hostSystemName}",
@@ -252,6 +259,7 @@
     {
       "name": "ninja-debug",
       "configurePreset": "ninja-debug",
+      "inherits": ["output-on-failure"],
       "condition": {
         "type": "equals",
         "lhs": "${hostSystemName}",
@@ -261,6 +269,7 @@
     {
       "name": "ninja-release",
       "configurePreset": "ninja-release",
+      "inherits": ["output-on-failure"],
       "condition": {
         "type": "equals",
         "lhs": "${hostSystemName}",
@@ -269,19 +278,23 @@
     },
     {
       "name": "clang-ninja-debug",
-      "configurePreset": "clang-ninja-debug"
+      "configurePreset": "clang-ninja-debug",
+      "inherits": ["output-on-failure"]
     },
     {
       "name": "clang-ninja-release",
-      "configurePreset": "clang-ninja-release"
+      "configurePreset": "clang-ninja-release",
+      "inherits": ["output-on-failure"]
     },
     {
       "name": "clang-libcpp-ninja-debug",
-      "configurePreset": "clang-libcpp-ninja-debug"
+      "configurePreset": "clang-libcpp-ninja-debug",
+      "inherits": ["output-on-failure"]
     },
     {
       "name": "clang-libcpp-ninja-release",
-      "configurePreset": "clang-libcpp-ninja-release"
+      "configurePreset": "clang-libcpp-ninja-release",
+      "inherits": ["output-on-failure"]
     }
   ]
 }

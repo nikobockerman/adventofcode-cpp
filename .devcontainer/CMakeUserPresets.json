@@ -69,20 +69,24 @@
     {
       "name": "vscode-clang-debug",
       "displayName": "Debug",
-      "configurePreset": "vscode-clang-debug"
+      "configurePreset": "vscode-clang-debug",
+      "inherits": ["output-on-failure"]
     },
     {
       "name": "vscode-clang-release",
       "displayName": "Release",
-      "configurePreset": "vscode-clang-release"
+      "configurePreset": "vscode-clang-release",
+      "inherits": ["output-on-failure"]
     },
     {
       "name": "dev-gcc-14-debug",
-      "configurePreset": "dev-gcc-14-debug"
+      "configurePreset": "dev-gcc-14-debug",
+      "inherits": ["output-on-failure"]
     },
     {
       "name": "dev-gcc-14-release",
-      "configurePreset": "dev-gcc-14-release"
+      "configurePreset": "dev-gcc-14-release",
+      "inherits": ["output-on-failure"]
     }
   ],
   "workflowPresets": [

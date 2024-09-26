@@ -44,11 +44,13 @@
   "testPresets": [
     {
       "name": "ci-gcc-14-debug",
-      "configurePreset": "ci-gcc-14-debug"
+      "configurePreset": "ci-gcc-14-debug",
+      "inherits": ["output-on-failure"]
     },
     {
       "name": "ci-gcc-14-release",
-      "configurePreset": "ci-gcc-14-release"
+      "configurePreset": "ci-gcc-14-release",
+      "inherits": ["output-on-failure"]
     }
   ],
   "workflowPresets": [
