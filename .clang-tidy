@@ -4,3 +4,4 @@ Checks: >
   cppcoreguidelines-*, google-*, hicpp-*, misc-*, modernize-*, performance-*,
   portability-*, readability-*
 WarningsAsErrors: "*"
+HeaderFilterRegex: ".*"
