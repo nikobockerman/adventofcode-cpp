@@ -39,7 +39,10 @@
         "gcc-clang-flags",
         "debug",
         "configure-flags"
-      ]
+      ],
+      "environment": {
+        "CXX": "/opt/homebrew/Cellar/llvm@18/18.1.8/bin/clang++"
+      }
     }
   ],
   "buildPresets": [
