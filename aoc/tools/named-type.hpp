@@ -4,7 +4,7 @@
 template <typename T, typename Parameter>
 class NamedType {
  public:
-  constexpr NamedType(T value) : value{value} {}
+  explicit constexpr NamedType(T value) : value{value} {}
 
   [[nodiscard]] constexpr auto get() noexcept -> T& { return value; }
   [[nodiscard]] constexpr auto get() const noexcept

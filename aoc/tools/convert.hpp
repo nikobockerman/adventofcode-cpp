@@ -10,7 +10,7 @@ template <typename TResult, typename TRange>
            std::ranges::sized_range<TRange> &&
            std::is_same_v<std::ranges::range_value_t<TRange>, char>)
 constexpr auto convert(TRange &&range) -> TResult {
-  if (std::ranges::empty(range)) {
+  if (std::ranges::empty(std::forward<TRange>(range))) {
     throw std::runtime_error("Empty string to convert");
   }
 
