@@ -11,7 +11,7 @@
 #include <vector>
 
 #include "convert.hpp"
-#include "problem.hpp"
+#include "day-interface.hpp"
 #include "utils.hpp"
 
 namespace ranges = std::ranges;

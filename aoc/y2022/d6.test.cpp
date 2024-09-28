@@ -4,9 +4,9 @@
 #include <string_view>
 #include <variant>
 
+#include "day-interface.hpp"
 #include "example-input.hpp"
 #include "input.hpp"
-#include "problem.hpp"
 #include "test.hpp"
 
 using namespace std::string_view_literals;

@@ -11,8 +11,8 @@
 #include <vector>
 
 #include "convert.hpp"
+#include "day-interface.hpp"
 #include "named-type.hpp"
-#include "problem.hpp"
 
 namespace ranges = std::ranges;
 namespace views = std::views;

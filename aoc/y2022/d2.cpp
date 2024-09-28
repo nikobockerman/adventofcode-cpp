@@ -5,8 +5,8 @@
 #include <stdexcept>
 #include <string_view>
 
+#include "day-interface.hpp"
 #include "named-type.hpp"
-#include "problem.hpp"
 #include "utils.hpp"
 
 namespace ranges = std::ranges;

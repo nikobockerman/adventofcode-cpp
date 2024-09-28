@@ -4,7 +4,7 @@ set(testDays 1 2 3 4 5 6)
 foreach(day IN LISTS problemDays)
     add_input_library(inputName ${day})
     add_solution_library(solutionName ${day})
-    target_link_libraries(${solutionName} PRIVATE tools)
+    target_link_libraries(${solutionName} PRIVATE day-interface tools)
 
     list(FIND testDays ${day} index)
     if(index GREATER -1)
@@ -12,6 +12,12 @@ foreach(day IN LISTS problemDays)
         gtest_discover_tests(${testName})
         target_link_libraries(
             ${testName}
-            PRIVATE GTest::gtest_main ${solutionName} ${inputName} test-tools)
+            PRIVATE
+                ${solutionName}
+                ${inputName}
+                day-interface
+                test-tools
+                GTest::gtest_main
+        )
     endif()
 endforeach()
