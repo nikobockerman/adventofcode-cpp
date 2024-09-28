@@ -31,20 +31,20 @@ constexpr auto exampleInput = processExampleInput(R"input(
 
 TEST_F(T2022Day1, p1) {
   constexpr auto exampleResult = 24'000;
-  verifyResult<int64_t>(p1(exampleInput), exampleResult);
+  verifyResult<uint64_t>(p1(exampleInput), exampleResult);
 }
 
 TEST_F(T2022Day1, p2) {
   constexpr auto exampleResult = 45'000;
-  verifyResult<int64_t>(p2(exampleInput), exampleResult);
+  verifyResult<uint64_t>(p2(exampleInput), exampleResult);
 }
 
 TEST_F(T2022Day1, p1Correct) {
   constexpr auto correctResult = 69'836;
-  verifyResult<int64_t>(p1(input), correctResult);
+  verifyResult<uint64_t>(p1(input), correctResult);
 }
 
 TEST_F(T2022Day1, p2Correct) {
   constexpr auto correctResult = 207'968;
-  verifyResult<int64_t>(p2(input), correctResult);
+  verifyResult<uint64_t>(p2(input), correctResult);
 }
