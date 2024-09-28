@@ -1,4 +1,5 @@
 add_library(test-tools STATIC test.cpp)
 target_include_directories(test-tools INTERFACE ${CMAKE_CURRENT_LIST_DIR})
+target_link_libraries(test-tools PUBLIC day-interface)
 target_link_libraries(test-tools PUBLIC GTest::gtest)
 target_link_libraries(test-tools PRIVATE spdlog::spdlog)

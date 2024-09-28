@@ -11,7 +11,7 @@
 #include <string_view>
 #include <vector>
 
-#include "problem.hpp"
+#include "day-interface.hpp"
 #include "utils.hpp"
 
 namespace ranges = std::ranges;

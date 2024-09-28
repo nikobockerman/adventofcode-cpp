@@ -2,11 +2,10 @@
 
 #include <cstdint>
 #include <string_view>
-#include <variant>
 
+#include "day-interface.hpp"
 #include "example-input.hpp"
 #include "input.hpp"
-#include "problem.hpp"
 #include "test.hpp"
 
 using namespace std::string_view_literals;
@@ -23,23 +22,21 @@ constexpr auto exampleInput = processExampleInput(R"input(
 )input"sv);
 
 TEST_F(T2022Day4, p1) {
-  auto result = p1(exampleInput);
-  EXPECT_EQ(std::get<int64_t>(result), 2);
+  constexpr auto exampleResult = 2;
+  verifyResult<int64_t>(p1(exampleInput), exampleResult);
 }
 
 TEST_F(T2022Day4, p2) {
-  auto result = p2(exampleInput);
-  EXPECT_EQ(std::get<int64_t>(result), 4);
+  constexpr auto exampleResult = 4;
+  verifyResult<int64_t>(p2(exampleInput), exampleResult);
 }
 
 TEST_F(T2022Day4, p1Correct) {
-  auto result = p1(input);
-  ASSERT_TRUE(std::holds_alternative<int64_t>(result));
-  EXPECT_EQ(std::get<int64_t>(result), 536);
+  constexpr auto correctResult = 536;
+  verifyResult<int64_t>(p1(input), correctResult);
 }
 
 TEST_F(T2022Day4, p2Correct) {
-  auto result = p2(input);
-  ASSERT_TRUE(std::holds_alternative<int64_t>(result));
-  EXPECT_EQ(std::get<int64_t>(result), 845);
+  constexpr auto correctResult = 845;
+  verifyResult<int64_t>(p2(input), correctResult);
 }

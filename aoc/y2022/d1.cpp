@@ -3,6 +3,7 @@
 
 #include <algorithm>
 #include <cstddef>
+#include <cstdint>
 #include <functional>
 #include <iterator>
 #include <ranges>
@@ -11,7 +12,7 @@
 #include <vector>
 
 #include "convert.hpp"
-#include "problem.hpp"
+#include "day-interface.hpp"
 #include "utils.hpp"
 
 namespace ranges = std::ranges;
@@ -26,7 +27,7 @@ constexpr auto resolveCalorieSums(auto &&input) {
            return ranges::fold_left_first(  // NOLINT(misc-include-cleaner)
                       splitLinesUntilEmpty(calorieLines) |
                           views::transform([](auto calorieLine) {
-                            return convert<int>(calorieLine);
+                            return convert<unsigned>(calorieLine);
                           }),
                       std::plus())
                .value();
@@ -36,12 +37,12 @@ constexpr auto resolveCalorieSums(auto &&input) {
 }  // namespace
 
 auto p1(std::string_view input) -> ResultType {
-  return ranges::max(resolveCalorieSums(input));
+  return static_cast<uint64_t>(ranges::max(resolveCalorieSums(input)));
 }
 
 namespace {
 
-auto solve2(std::string_view input) {
+auto solve2(std::string_view input) -> uint64_t {
   auto calorieSums = resolveCalorieSums(input) | ranges::to<std::vector>();
   SPDLOG_DEBUG("Initial: {}", fmt::join(calorieSums, ","));
 

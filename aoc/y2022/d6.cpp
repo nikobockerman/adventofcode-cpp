@@ -5,7 +5,7 @@
 #include <string_view>
 #include <vector>
 
-#include "problem.hpp"
+#include "day-interface.hpp"
 
 namespace ranges = std::ranges;
 namespace views = std::views;
