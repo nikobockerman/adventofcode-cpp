@@ -2,7 +2,6 @@
 
 #include <cstdint>
 #include <string_view>
-#include <variant>
 
 #include "day-interface.hpp"
 #include "example-input.hpp"
@@ -31,23 +30,21 @@ constexpr auto exampleInput = processExampleInput(R"input(
 )input"sv);
 
 TEST_F(T2022Day1, p1) {
-  auto result = p1(exampleInput);
-  EXPECT_EQ(std::get<int64_t>(result), 24000);
+  constexpr auto exampleResult = 24'000;
+  verifyResult<int64_t>(p1(exampleInput), exampleResult);
 }
 
 TEST_F(T2022Day1, p2) {
-  auto result = p2(exampleInput);
-  EXPECT_EQ(std::get<int64_t>(result), 45000);
+  constexpr auto exampleResult = 45'000;
+  verifyResult<int64_t>(p2(exampleInput), exampleResult);
 }
 
 TEST_F(T2022Day1, p1Correct) {
-  auto result = p1(input);
-  ASSERT_TRUE(std::holds_alternative<int64_t>(result));
-  EXPECT_EQ(std::get<int64_t>(result), 69836);
+  constexpr auto correctResult = 69'836;
+  verifyResult<int64_t>(p1(input), correctResult);
 }
 
 TEST_F(T2022Day1, p2Correct) {
-  auto result = p2(input);
-  ASSERT_TRUE(std::holds_alternative<int64_t>(result));
-  EXPECT_EQ(std::get<int64_t>(result), 207968);
+  constexpr auto correctResult = 207'968;
+  verifyResult<int64_t>(p2(input), correctResult);
 }

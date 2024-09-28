@@ -2,7 +2,6 @@
 
 #include <cstdint>
 #include <string_view>
-#include <variant>
 
 #include "day-interface.hpp"
 #include "example-input.hpp"
@@ -34,63 +33,61 @@ zcfzfwzzqfrljwzlrfnpqdbhtmscgvjw
 )input"sv);
 
 TEST_F(T2022Day6, p1Example1) {
-  auto result = p1(example1Input);
-  EXPECT_EQ(std::get<uint64_t>(result), 7);
+  constexpr auto exampleResult = 7;
+  verifyResult<uint64_t>(p1(example1Input), exampleResult);
 }
 
 TEST_F(T2022Day6, p1Example2) {
-  auto result = p1(example2Input);
-  EXPECT_EQ(std::get<uint64_t>(result), 5);
+  constexpr auto exampleResult = 5;
+  verifyResult<uint64_t>(p1(example2Input), exampleResult);
 }
 
 TEST_F(T2022Day6, p1Example3) {
-  auto result = p1(example3Input);
-  EXPECT_EQ(std::get<uint64_t>(result), 6);
+  constexpr auto exampleResult = 6;
+  verifyResult<uint64_t>(p1(example3Input), exampleResult);
 }
 
 TEST_F(T2022Day6, p1Example4) {
-  auto result = p1(example4Input);
-  EXPECT_EQ(std::get<uint64_t>(result), 10);
+  constexpr auto exampleResult = 10;
+  verifyResult<uint64_t>(p1(example4Input), exampleResult);
 }
 
 TEST_F(T2022Day6, p1Example5) {
-  auto result = p1(example5Input);
-  EXPECT_EQ(std::get<uint64_t>(result), 11);
+  constexpr auto exampleResult = 11;
+  verifyResult<uint64_t>(p1(example5Input), exampleResult);
 }
 
 TEST_F(T2022Day6, p2Example1) {
-  auto result = p2(example1Input);
-  EXPECT_EQ(std::get<uint64_t>(result), 19);
+  constexpr auto exampleResult = 19;
+  verifyResult<uint64_t>(p2(example1Input), exampleResult);
 }
 
 TEST_F(T2022Day6, p2Example2) {
-  auto result = p2(example2Input);
-  EXPECT_EQ(std::get<uint64_t>(result), 23);
+  constexpr auto exampleResult = 23;
+  verifyResult<uint64_t>(p2(example2Input), exampleResult);
 }
 
 TEST_F(T2022Day6, p2Example3) {
-  auto result = p2(example3Input);
-  EXPECT_EQ(std::get<uint64_t>(result), 23);
+  constexpr auto exampleResult = 23;
+  verifyResult<uint64_t>(p2(example3Input), exampleResult);
 }
 
 TEST_F(T2022Day6, p2Example4) {
-  auto result = p2(example4Input);
-  EXPECT_EQ(std::get<uint64_t>(result), 29);
+  constexpr auto exampleResult = 29;
+  verifyResult<uint64_t>(p2(example4Input), exampleResult);
 }
 
 TEST_F(T2022Day6, p2Example5) {
-  auto result = p2(example5Input);
-  EXPECT_EQ(std::get<uint64_t>(result), 26);
+  constexpr auto exampleResult = 26;
+  verifyResult<uint64_t>(p2(example5Input), exampleResult);
 }
 
 TEST_F(T2022Day6, p1Correct) {
-  auto result = p1(input);
-  ASSERT_TRUE(std::holds_alternative<uint64_t>(result));
-  EXPECT_EQ(std::get<uint64_t>(result), 1282);
+  constexpr auto correctResult = 1'282;
+  verifyResult<uint64_t>(p1(input), correctResult);
 }
 
 TEST_F(T2022Day6, p2Correct) {
-  auto result = p2(input);
-  ASSERT_TRUE(std::holds_alternative<uint64_t>(result));
-  EXPECT_EQ(std::get<uint64_t>(result), 3513);
+  constexpr auto correctResult = 3'513;
+  verifyResult<uint64_t>(p2(input), correctResult);
 }
