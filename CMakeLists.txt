@@ -1,9 +1,19 @@
 cmake_minimum_required(VERSION 3.18)
 
-project(adventofcode2022 VERSION 0.1.0 LANGUAGES CXX)
+project(adventofcode VERSION 0.1.0 LANGUAGES CXX)
 
 set(CMAKE_CXX_STANDARD 23)
 
+include(CPack)
+include(GenerateExportHeader)
+include(GNUInstallDirs)
+
+set(CMAKE_CXX_VISIBILITY_PRESET hidden)
+set(CMAKE_VISIBILITY_INLINES_HIDDEN 1)
+
+find_package(boost_dll CONFIG REQUIRED)
+#find_package(boost_filesystem CONFIG REQUIRED)
+#find_package(boost_function CONFIG REQUIRED)
 find_package(fmt CONFIG REQUIRED)
 find_package(GTest CONFIG REQUIRED)
 find_package(spdlog CONFIG REQUIRED)
@@ -11,6 +21,7 @@ find_package(spdlog CONFIG REQUIRED)
 # Configure maximum logging level
 add_compile_definitions("$<$<CONFIG:Debug>:SPDLOG_ACTIVE_LEVEL=SPDLOG_LEVEL_DEBUG>")
 add_compile_definitions("$<$<CONFIG:Release>:SPDLOG_ACTIVE_LEVEL=SPDLOG_LEVEL_WARN>")
+
 
 enable_testing()
 include(GoogleTest)
@@ -41,10 +52,23 @@ endfunction()
 function(add_solution_library targetNameVariable day)
   set_year_part()
   set_day_part(${day})
+
+  configure_file(
+    ${CMAKE_CURRENT_FUNCTION_LIST_DIR}/day-interface.in.hpp
+    ${yearPart}-${dayPart}-interface.hpp
+    @ONLY
+  )
+
   set(sourceFile ${dayPart}.cpp)
 
   set(targetName ${yearPart}-${dayPart}-solution)
-  add_library(${targetName} STATIC ${sourceFile})
+  add_library(${targetName} SHARED ${sourceFile})
+  #add_library(${targetName} STATIC ${sourceFile})
+
+  generate_export_header(${targetName} EXPORT_MACRO_NAME DAY_SOLUTION_EXPORT)
+  target_include_directories(${targetName} PUBLIC ${CMAKE_CURRENT_BINARY_DIR})
+  target_link_libraries(${targetName} PUBLIC result-type)
+
   set(${targetNameVariable} ${targetName} PARENT_SCOPE)
 endfunction()
 

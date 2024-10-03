@@ -2,7 +2,7 @@
 
 #include <gtest/gtest.h>
 
-#include "day-interface.hpp"
+#include "result-type.hpp"
 
 void enableDebugLogging();
 

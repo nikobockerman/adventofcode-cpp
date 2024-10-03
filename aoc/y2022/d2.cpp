@@ -5,9 +5,9 @@
 #include <stdexcept>
 #include <string_view>
 
-#include "day-interface.hpp"
 #include "named-type.hpp"
 #include "utils.hpp"
+#include "y2022-d2-interface.hpp"
 
 namespace ranges = std::ranges;
 namespace views = std::views;
@@ -112,7 +112,7 @@ constexpr auto sumBattleScores(auto &&range) -> uint64_t {
 
 }  // namespace
 
-auto p1(std::string_view input) -> ResultType {
+auto y2022::d2::p1(std::string_view input) -> ResultType {
   auto parseMe = [](char move) constexpr {
     switch (move) {
       case 'X':
@@ -159,7 +159,7 @@ constexpr auto winningType(Type opponent) {
 
 }  // namespace
 
-auto p2(std::string_view input) -> ResultType {
+auto y2022::d2::p2(std::string_view input) -> ResultType {
   auto parseMe = [](OpponentType opponent, char move) {
     switch (move) {
       case 'X':

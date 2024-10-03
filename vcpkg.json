@@ -1,5 +1,8 @@
 {
   "dependencies": [
+    "boost-dll",
+    "boost-filesystem",
+    "boost-function",
     "fmt",
     "gtest",
     "spdlog"
