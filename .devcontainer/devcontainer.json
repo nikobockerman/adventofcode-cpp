@@ -1,5 +1,5 @@
 {
-  "name": "C++ using conan by poetry",
+  "name": "C++",
   "build": {
     "dockerfile": "Dockerfile"
   },
