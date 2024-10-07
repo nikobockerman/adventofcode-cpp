@@ -5,7 +5,7 @@
 #include <string_view>
 #include <vector>
 
-#include "day-interface.hpp"
+#include "day-interface-y2022-d6.hpp"
 #include "result-type.hpp"
 
 namespace ranges = std::ranges;
@@ -28,11 +28,11 @@ constexpr auto firstDistinctWindow(auto &&range) {
 
 }  // namespace
 
-auto p1(std::string_view input) -> ResultType {
+auto y2022::d6::p1(std::string_view input) -> ResultType {
   return firstDistinctWindow<4>(input);
 }
 
-auto p2(std::string_view input) -> ResultType {
+auto y2022::d6::p2(std::string_view input) -> ResultType {
   constexpr auto windowSize = 14;
   return firstDistinctWindow<windowSize>(input);
 }

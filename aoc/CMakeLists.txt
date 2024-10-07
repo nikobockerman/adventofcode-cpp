@@ -24,10 +24,19 @@ endfunction()
 function(add_solution_library targetNameVariable day)
   set_year_part()
   set_day_part(${day})
+
+  configure_file(
+    ${CMAKE_CURRENT_FUNCTION_LIST_DIR}/day-interface.in.hpp
+    dayInterfaceLib/${dayPart}/day-interface-${yearPart}-${dayPart}.hpp
+    @ONLY
+  )
+
   set(sourceFile ${dayPart}.cpp)
 
   set(targetName ${yearPart}-${dayPart}-solution)
   add_library(${targetName} STATIC ${sourceFile})
+  target_include_directories(${targetName} PUBLIC ${CMAKE_CURRENT_BINARY_DIR}/dayInterfaceLib/${dayPart})
+  target_link_libraries(${targetName} PUBLIC result-type)
   set(${targetNameVariable} ${targetName} PARENT_SCOPE)
 endfunction()
 
@@ -41,7 +50,6 @@ function(add_solution_test_executable targetNameVariable day)
   set(${targetNameVariable} ${targetName} PARENT_SCOPE)
 endfunction()
 
-add_subdirectory(day)
 add_subdirectory(result-type)
 add_subdirectory(test-tools)
 add_subdirectory(tools)
