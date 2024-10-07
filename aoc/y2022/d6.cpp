@@ -6,6 +6,7 @@
 #include <vector>
 
 #include "day-interface.hpp"
+#include "result-type.hpp"
 
 namespace ranges = std::ranges;
 namespace views = std::views;
