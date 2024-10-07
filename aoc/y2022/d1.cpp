@@ -13,6 +13,7 @@
 
 #include "convert.hpp"
 #include "day-interface.hpp"
+#include "result-type.hpp"
 #include "utils.hpp"
 
 namespace ranges = std::ranges;

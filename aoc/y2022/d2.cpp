@@ -7,6 +7,7 @@
 
 #include "day-interface.hpp"
 #include "named-type.hpp"
+#include "result-type.hpp"
 #include "utils.hpp"
 
 namespace ranges = std::ranges;

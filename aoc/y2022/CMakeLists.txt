@@ -4,7 +4,13 @@ set(testDays 1 2 3 4 5 6)
 foreach(day IN LISTS problemDays)
     add_input_library(inputName ${day})
     add_solution_library(solutionName ${day})
-    target_link_libraries(${solutionName} PRIVATE day-interface tools)
+    target_link_libraries(
+        ${solutionName}
+        PRIVATE
+            day-interface
+            result-type
+            tools
+    )
 
     list(FIND testDays ${day} index)
     if(index GREATER -1)
