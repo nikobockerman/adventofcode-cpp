@@ -7,7 +7,6 @@ foreach(day IN LISTS problemDays)
     target_link_libraries(
         ${solutionName}
         PRIVATE
-            day-interface
             result-type
             tools
     )
@@ -21,7 +20,6 @@ foreach(day IN LISTS problemDays)
             PRIVATE
                 ${solutionName}
                 ${inputName}
-                day-interface
                 test-tools
                 GTest::gtest_main
         )

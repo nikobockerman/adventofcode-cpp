@@ -12,7 +12,7 @@
 #include <vector>
 
 #include "convert.hpp"
-#include "day-interface.hpp"
+#include "day-interface-y2022-d1.hpp"
 #include "result-type.hpp"
 #include "utils.hpp"
 
@@ -37,7 +37,7 @@ constexpr auto resolveCalorieSums(auto &&input) {
 
 }  // namespace
 
-auto p1(std::string_view input) -> ResultType {
+auto y2022::d1::p1(std::string_view input) -> ResultType {
   return static_cast<uint64_t>(ranges::max(resolveCalorieSums(input)));
 }
 
@@ -63,4 +63,6 @@ auto solve2(std::string_view input) -> uint64_t {
 
 }  // namespace
 
-auto p2(std::string_view input) -> ResultType { return solve2(input); }
+auto y2022::d1::p2(std::string_view input) -> ResultType {
+  return solve2(input);
+}

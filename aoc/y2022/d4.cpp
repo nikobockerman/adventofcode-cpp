@@ -4,7 +4,7 @@
 #include <vector>
 
 #include "convert.hpp"
-#include "day-interface.hpp"
+#include "day-interface-y2022-d4.hpp"
 #include "result-type.hpp"
 #include "utils.hpp"
 
@@ -53,7 +53,9 @@ constexpr auto solve1(auto input) {
 
 }  // namespace
 
-auto p1(std::string_view input) -> ResultType { return solve1(input); }
+auto y2022::d4::p1(std::string_view input) -> ResultType {
+  return solve1(input);
+}
 
 namespace {
 
@@ -72,4 +74,6 @@ constexpr auto solve2(auto input) {
 
 }  // namespace
 
-auto p2(std::string_view input) -> ResultType { return solve2(input); }
+auto y2022::d4::p2(std::string_view input) -> ResultType {
+  return solve2(input);
+}

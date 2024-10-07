@@ -3,12 +3,15 @@
 #include <cstdint>
 #include <string_view>
 
-#include "day-interface.hpp"
+#include "day-interface-y2022-d1.hpp"
 #include "example-input.hpp"
 #include "input.hpp"
 #include "test.hpp"
 
 using namespace std::string_view_literals;
+
+using y2022::d1::p1;
+using y2022::d1::p2;
 
 using T2022Day1 = TestFixture;
 
