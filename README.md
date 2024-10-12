@@ -7,8 +7,8 @@ C++ features and utilizing those in the solutions.
 # Instructions for building
 
 This project has some dependencies to other packages. Those dependencies are
-managed using `vcpkg`. CMake is configured to use `vcpkg` CMake toolchain
-which then installs those dependencies during configuration.
+managed using `vcpkg`. CMake is configured to use `vcpkg` CMake toolchain which
+then installs those dependencies during configuration.
 
 ## Building
 
