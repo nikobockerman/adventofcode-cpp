@@ -1,7 +1,3 @@
 {
-  "dependencies": [
-    "fmt",
-    "gtest",
-    "spdlog"
-  ]
+  "dependencies": ["fmt", "gtest", "spdlog"]
 }

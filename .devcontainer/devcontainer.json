@@ -3,6 +3,9 @@
   "build": {
     "dockerfile": "Dockerfile"
   },
+  "features": {
+    "ghcr.io/devcontainers-community/npm-features/prettier:1": {}
+  },
   "containerEnv": {
     "VCPKG_FORCE_SYSTEM_BINARIES": "true"
   },
@@ -10,6 +13,8 @@
   "customizations": {
     "vscode": {
       "extensions": [
+        "editorconfig.editorconfig",
+        "esbenp.prettier-vscode",
         "github.vscode-github-actions",
         "llvm-vs-code-extensions.vscode-clangd",
         "ms-azuretools.vscode-docker",
