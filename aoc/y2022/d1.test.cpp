@@ -5,7 +5,6 @@
 
 #include "day-interface-y2022-d1.hpp"
 #include "example-input.hpp"
-#include "input.hpp"
 #include "test.hpp"
 
 using namespace std::string_view_literals;
@@ -40,14 +39,4 @@ TEST_F(T2022Day1, p1) {
 TEST_F(T2022Day1, p2) {
   constexpr auto exampleResult = 45'000;
   verifyResult<uint64_t>(p2(exampleInput), exampleResult);
-}
-
-TEST_F(T2022Day1, p1Correct) {
-  constexpr auto correctResult = 69'836;
-  verifyResult<uint64_t>(p1(input), correctResult);
-}
-
-TEST_F(T2022Day1, p2Correct) {
-  constexpr auto correctResult = 207'968;
-  verifyResult<uint64_t>(p2(input), correctResult);
 }

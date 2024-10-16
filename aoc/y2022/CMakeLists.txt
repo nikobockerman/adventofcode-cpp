@@ -19,7 +19,6 @@ foreach(day IN LISTS problemDays)
             ${testName}
             PRIVATE
                 ${solutionName}
-                ${inputName}
                 test-tools
                 GTest::gtest_main
         )
