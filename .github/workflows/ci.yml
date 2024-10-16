@@ -41,6 +41,7 @@ jobs:
 
     name: Build + test (${{matrix.workflowPreset}})
     runs-on: ${{matrix.os}}
+    timeout-minutes: 30
 
     steps:
       - uses: actions/checkout@v4
@@ -58,6 +59,7 @@ jobs:
 
   clang-tidy:
     runs-on: ubuntu-24.04
+    timeout-minutes: 30
     strategy:
       matrix:
         include:
@@ -85,6 +87,7 @@ jobs:
   clang-format:
     runs-on: ubuntu-24.04
     name: Clang format check
+    timeout-minutes: 10
     steps:
       - uses: actions/checkout@v4
       - name: Run clang-format
