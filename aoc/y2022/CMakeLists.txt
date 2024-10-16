@@ -13,7 +13,7 @@ foreach(day IN LISTS problemDays)
 
     list(FIND testDays ${day} index)
     if(index GREATER -1)
-        add_solution_test_executable(testName ${day} ${inputLibName})
+        add_solution_test_executable(testName ${day})
         gtest_discover_tests(${testName})
         target_link_libraries(
             ${testName}
