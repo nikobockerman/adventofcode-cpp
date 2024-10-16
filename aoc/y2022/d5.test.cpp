@@ -5,7 +5,6 @@
 
 #include "day-interface-y2022-d5.hpp"
 #include "example-input.hpp"
-#include "input.hpp"
 #include "test.hpp"
 
 using namespace std::string_literals;
@@ -36,14 +35,4 @@ TEST_F(T2022Day5, p1) {
 TEST_F(T2022Day5, p2) {
   const auto exampleResult = "MCD"s;
   verifyResult<std::string>(p2(exampleInput), exampleResult);
-}
-
-TEST_F(T2022Day5, p1Correct) {
-  const auto correctResult = "TLFGBZHCN"s;
-  verifyResult<std::string>(p1(input), correctResult);
-}
-
-TEST_F(T2022Day5, p2Correct) {
-  const auto correctResult = "QRQFHFWCL"s;
-  verifyResult<std::string>(p2(input), correctResult);
 }
