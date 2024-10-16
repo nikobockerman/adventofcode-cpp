@@ -19,7 +19,8 @@
         "llvm-vs-code-extensions.vscode-clangd",
         "ms-azuretools.vscode-docker",
         "ms-vscode.cpptools-extension-pack",
-        "timonwong.shellcheck"
+        "timonwong.shellcheck",
+        "vadimcn.vscode-lldb"
       ]
     }
   }
