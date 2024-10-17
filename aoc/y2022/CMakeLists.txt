@@ -2,7 +2,6 @@ set(problemDays 1 2 3 4 5 6)
 set(testDays 1 2 3 4 5 6)
 
 foreach(day IN LISTS problemDays)
-    add_input_library(inputName ${day})
     add_solution_library(solutionName ${day})
     target_link_libraries(
         ${solutionName}
