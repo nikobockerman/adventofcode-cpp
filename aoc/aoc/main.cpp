@@ -1,7 +1,9 @@
+#include <fmt/chrono.h>  //NOLINT(misc-include-cleaner)
 #include <fmt/format.h>
 
 #include <algorithm>
 #include <cctype>
+#include <chrono>
 #include <cstdint>
 #include <filesystem>
 #include <fstream>
@@ -11,6 +13,7 @@
 #include <map>
 #include <string>
 #include <string_view>
+#include <type_traits>
 
 #include "aoc-config.hpp"
 #include "result-type.hpp"
@@ -68,6 +71,11 @@ auto readInputFile(int year, int day) -> std::string {
   return contents;
 }
 
+using DurationClock =
+    std::conditional_t<std::chrono::high_resolution_clock::is_steady,
+                       std::chrono::high_resolution_clock,
+                       std::chrono::steady_clock>;
+
 auto main() -> int {  // NOLINT(bugprone-exception-escape)
   bool success = true;
   for (auto const& [year, answerDays] : answers()) {
@@ -79,7 +87,11 @@ auto main() -> int {  // NOLINT(bugprone-exception-escape)
 
         auto problemFunc = problems().at(year).at(day).at(problem);
 
+        auto start = DurationClock::now();
         ResultType result = problemFunc(input);
+        auto end = DurationClock::now();
+        std::chrono::duration<double> duration = end - start;
+        msg += fmt::format("{:.3%Q%q}: ", duration);
 
         if (result != correctAnswer) {
           msg += fmt::format("FAIL: Incorrect answer: {}. Correct is: {}",
