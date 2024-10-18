@@ -69,16 +69,13 @@ auto readInputFile(int year, int day) -> std::string {
 }
 
 auto main() -> int {  // NOLINT(bugprone-exception-escape)
-  std::cout << "Current path: " << std::filesystem::current_path() << '\n';
-  std::cout << "Input files directory: " << inputFilesRootDir() << '\n';
   bool success = true;
   for (auto const& [year, answerDays] : answers()) {
     for (auto const& [day, answerProblems] : answerDays) {
       auto input = readInputFile(year, day);
 
       for (auto const& [problem, correctAnswer] : answerProblems) {
-        auto msg =
-            fmt::format("Year {} Day {:2} Problem {}: ", year, day, problem);
+        auto msg = fmt::format("{} {:2} {}: ", year, day, problem);
 
         auto problemFunc = problems().at(year).at(day).at(problem);
 
