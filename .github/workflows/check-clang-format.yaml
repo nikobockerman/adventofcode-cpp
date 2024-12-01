@@ -5,6 +5,7 @@ on:
       - "**.cpp"
       - "**.hpp"
       - ".clang-format"
+      - ".github/workflows/check-clang-format.yaml"
   workflow_call:
   workflow_dispatch:
 

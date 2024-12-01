@@ -6,6 +6,8 @@ on:
       - "**.hpp"
       - "**/CMakeLists.txt"
       - ".clang-tidy"
+      - ".github/actions/cmake-project-setup/**"
+      - ".github/workflows/check-clang-tidy.yaml"
       - ".github/CMakeUserPresets.json"
       - "vcpkg-configuration.json"
       - "vcpkg.json"

@@ -5,6 +5,8 @@ on:
       - "**.cpp"
       - "**.hpp"
       - "**/CMakeLists.txt"
+      - ".github/actions/cmake-project-setup/**"
+      - ".github/workflows/build-test-run.yaml"
       - ".github/CMakeUserPresets.json"
       - "aoc/**/input-*.txt"
       - "vcpkg-configuration.json"
