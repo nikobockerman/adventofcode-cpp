@@ -35,3 +35,10 @@ tasks:
     desc: "All fixes"
     deps:
       - fix:format
+
+  all:
+    desc: "All tasks"
+    aliases:
+      - default
+    deps:
+      - check
