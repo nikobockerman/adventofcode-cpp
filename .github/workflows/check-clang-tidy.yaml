@@ -6,6 +6,8 @@ on:
       - "**.hpp"
       - "**/CMakeLists.txt"
       - ".clang-tidy"
+      - ".github/actions/cmake-project-setup/**"
+      - ".github/workflows/check-clang-tidy.yaml"
       - ".github/CMakeUserPresets.json"
       - "vcpkg-configuration.json"
       - "vcpkg.json"
@@ -30,7 +32,7 @@ jobs:
       - name: Setup CMake project
         uses: ./.github/actions/cmake-project-setup
       - name: Configure CMake project
-        uses: lukka/run-cmake@v10
+        uses: lukka/run-cmake@v10.7
         with:
           configurePreset: "${{matrix.configurePreset}}"
       - name: Run clang-tidy

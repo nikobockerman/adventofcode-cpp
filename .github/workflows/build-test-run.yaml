@@ -5,6 +5,8 @@ on:
       - "**.cpp"
       - "**.hpp"
       - "**/CMakeLists.txt"
+      - ".github/actions/cmake-project-setup/**"
+      - ".github/workflows/build-test-run.yaml"
       - ".github/CMakeUserPresets.json"
       - "aoc/**/input-*.txt"
       - "vcpkg-configuration.json"
@@ -56,7 +58,7 @@ jobs:
       - name: Setup CMake project
         uses: ./.github/actions/cmake-project-setup
       - name: Run CMake workflow
-        uses: lukka/run-cmake@v10
+        uses: lukka/run-cmake@v10.7
         with:
           workflowPreset: "${{matrix.workflowPreset}}"
       - name: Run aoc

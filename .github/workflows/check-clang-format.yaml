@@ -5,6 +5,7 @@ on:
       - "**.cpp"
       - "**.hpp"
       - ".clang-format"
+      - ".github/workflows/check-clang-format.yaml"
   workflow_call:
   workflow_dispatch:
 
@@ -16,6 +17,6 @@ jobs:
       - name: Checkout
         uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
       - name: Setup task
-        uses: arduino/setup-task@v2
+        uses: arduino/setup-task@v2.0.0
       - name: Check with clang-format
         run: task check:clang-format
