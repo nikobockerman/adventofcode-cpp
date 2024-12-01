@@ -5,7 +5,7 @@ runs:
   using: composite
   steps:
     - name: Install CMake
-      uses: lukka/get-cmake@latest
+      uses: lukka/get-cmake@v3.30.5
     - name: Setup anew (or from cache) vcpkg (and does not build any package)
       uses: lukka/run-vcpkg@5e0cab206a5ea620130caf672fce3e4a6b5666a1 # v11.5
     - name: Prepare CMakeUserPresets.json
