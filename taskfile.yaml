@@ -6,3 +6,27 @@ tasks:
     cmds:
       - clang-format -n -Werror --verbose $(git ls-files | grep -E
         '\.hpp$|\.cpp$')
+  check:prettier:
+    desc: "Check - prettier"
+    cmds:
+      - npm run check:prettier
+  check:
+    desc: "All checks"
+    deps:
+      - check:clang-format
+      - check:prettier
+
+  fix:format:prettier:
+    desc: "Fix - prettier"
+    cmds:
+      - npm run fix:prettier
+
+  fix:format:
+    desc: "All fixes"
+    deps:
+      - fix:format:prettier
+
+  fix:
+    desc: "All fixes"
+    deps:
+      - fix:format

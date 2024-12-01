@@ -4,8 +4,11 @@
     "dockerfile": "Dockerfile"
   },
   "features": {
-    "ghcr.io/eitsupi/devcontainer-features/go-task:1": {},
-    "ghcr.io/devcontainers-community/npm-features/prettier:1": {}
+    "ghcr.io/devcontainers/features/node:1": {
+      "version": "22"
+    },
+    "ghcr.io/devcontainers-community/npm-features/prettier:1": {},
+    "ghcr.io/eitsupi/devcontainer-features/go-task:1": {}
   },
   "containerEnv": {
     "VCPKG_FORCE_SYSTEM_BINARIES": "true"
