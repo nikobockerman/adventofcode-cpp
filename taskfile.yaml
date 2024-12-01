@@ -1,0 +1,8 @@
+version: "3"
+
+tasks:
+  check:clang-format:
+    desc: "Check - clang-format"
+    cmds:
+      - clang-format -n -Werror --verbose $(git ls-files | grep -E
+        '\.hpp$|\.cpp$')
