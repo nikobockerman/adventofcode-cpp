@@ -6,6 +6,9 @@
     "fix:prettier": "prettier --write ."
   },
   "private": true,
+  "engines": {
+    "node": "^22.0.0"
+  },
   "devDependencies": {
     "@action-validator/cli": "0.6.0",
     "prettier": "3.4.1"
