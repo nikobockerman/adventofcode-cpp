@@ -20,14 +20,14 @@ jobs:
           # MSVC
           - os: windows-latest
             workflowPreset: ci-msvc-debug
-            aocBinPath:
+            aocBinPath: ""
           - os: windows-latest
             workflowPreset: ci-msvc-release
             aocBinPath: build/msvc/aoc/aoc/Release/aoc.exe
           # Clang on Windows
           - os: windows-latest
             workflowPreset: ci-clang-windows-debug
-            aocBinPath:
+            aocBinPath: ""
           - os: windows-latest
             workflowPreset: ci-clang-windows-release
             aocBinPath: build/clang-release/aoc/aoc/aoc.exe

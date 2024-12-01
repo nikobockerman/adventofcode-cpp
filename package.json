@@ -1,10 +1,12 @@
 {
   "scripts": {
+    "check:github-actions": "git ls-files '.github/**.yaml' | xargs -t -I {} action-validator {}",
     "check:prettier": "prettier --check .",
     "fix:prettier": "prettier --write ."
   },
   "private": true,
   "devDependencies": {
+    "@action-validator/cli": "0.6.0",
     "prettier": "3.4.1"
   }
 }

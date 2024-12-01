@@ -15,5 +15,7 @@ jobs:
     uses: ./.github/workflows/check-clang-tidy.yaml
   check-clang-format:
     uses: ./.github/workflows/check-clang-format.yaml
+  check-github-actions:
+    uses: ./.github/workflows/check-github-actions.yaml
   check-prettier:
     uses: ./.github/workflows/check-prettier.yaml
