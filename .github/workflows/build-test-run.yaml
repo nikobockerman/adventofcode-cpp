@@ -58,7 +58,7 @@ jobs:
       - name: Setup CMake project
         uses: ./.github/actions/cmake-project-setup
       - name: Run CMake workflow
-        uses: lukka/run-cmake@v10.7
+        uses: lukka/run-cmake@2ce8982be71b8e9a3c4d5e432135035afd1e76a7 # v10.7
         with:
           workflowPreset: "${{matrix.workflowPreset}}"
       - name: Run aoc
