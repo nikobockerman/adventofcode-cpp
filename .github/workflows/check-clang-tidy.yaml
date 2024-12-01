@@ -1,0 +1,37 @@
+name: Check - clang-tidy
+on:
+  pull_request:
+    paths:
+      - "**.cpp"
+      - "**.hpp"
+      - "**/CMakeLists.txt"
+      - ".clang-tidy"
+      - ".github/CMakeUserPresets.json"
+      - "vcpkg-configuration.json"
+      - "vcpkg.json"
+  workflow_call:
+  workflow_dispatch:
+
+jobs:
+  clang-tidy:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    strategy:
+      matrix:
+        include:
+          - configurePreset: ci-clang-tidy-debug
+            binaryDir: build/clang-debug
+          - configurePreset: ci-clang-tidy-release
+            binaryDir: build/clang-release
+    name: ${{matrix.configurePreset}} - Clang tidy
+    steps:
+      - name: Checkout
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
+      - name: Setup CMake project
+        uses: ./.github/actions/cmake-project-setup
+      - name: Configure CMake project
+        uses: lukka/run-cmake@v10
+        with:
+          configurePreset: "${{matrix.configurePreset}}"
+      - name: Run clang-tidy
+        run: run-clang-tidy -p "${{matrix.binaryDir}}"
