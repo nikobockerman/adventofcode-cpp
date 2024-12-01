@@ -2,6 +2,7 @@
   "scripts": {
     "check:github-actions": "git ls-files '.github/**.yaml' | xargs -t -I {} action-validator {}",
     "check:prettier": "prettier --check .",
+    "check:renovateconfig": "npx --package=renovate -- renovate-config-validator --strict",
     "fix:prettier": "prettier --write ."
   },
   "private": true,

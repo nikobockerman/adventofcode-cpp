@@ -19,3 +19,5 @@ jobs:
     uses: ./.github/workflows/check-github-actions.yaml
   check-prettier:
     uses: ./.github/workflows/check-prettier.yaml
+  check-renovate-config:
+    uses: ./.github/workflows/check-renovate-config.yaml
