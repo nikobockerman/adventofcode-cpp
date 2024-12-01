@@ -1,0 +1,64 @@
+name: Build, test and run
+on:
+  pull_request:
+    paths:
+      - "**.cpp"
+      - "**.hpp"
+      - "**/CMakeLists.txt"
+      - ".github/CMakeUserPresets.json"
+      - "aoc/**/input-*.txt"
+      - "vcpkg-configuration.json"
+      - "vcpkg.json"
+  workflow_call:
+  workflow_dispatch:
+
+jobs:
+  build-test-run:
+    strategy:
+      matrix:
+        include:
+          # MSVC
+          - os: windows-latest
+            workflowPreset: ci-msvc-debug
+            aocBinPath: ""
+          - os: windows-latest
+            workflowPreset: ci-msvc-release
+            aocBinPath: build/msvc/aoc/aoc/Release/aoc.exe
+          # Clang on Windows
+          - os: windows-latest
+            workflowPreset: ci-clang-windows-debug
+            aocBinPath: ""
+          - os: windows-latest
+            workflowPreset: ci-clang-windows-release
+            aocBinPath: build/clang-release/aoc/aoc/aoc.exe
+          # Clang on Linux
+          - os: ubuntu-24.04
+            workflowPreset: ci-clang-linux-debug
+            aocBinPath: build/clang-debug/aoc/aoc/aoc
+          - os: ubuntu-24.04
+            workflowPreset: ci-clang-linux-release
+            aocBinPath: build/clang-release/aoc/aoc/aoc
+          # Gcc 14 on Linux
+          - os: ubuntu-24.04
+            workflowPreset: ci-gcc-14-linux-debug
+            aocBinPath: build/default-debug/aoc/aoc/aoc
+          - os: ubuntu-24.04
+            workflowPreset: ci-gcc-14-linux-release
+            aocBinPath: build/default-release/aoc/aoc/aoc
+
+    name: ${{matrix.workflowPreset}} - Build + test + run
+    runs-on: ${{matrix.os}}
+    timeout-minutes: 30
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
+      - name: Setup CMake project
+        uses: ./.github/actions/cmake-project-setup
+      - name: Run CMake workflow
+        uses: lukka/run-cmake@v10
+        with:
+          workflowPreset: "${{matrix.workflowPreset}}"
+      - name: Run aoc
+        if: matrix.aocBinPath
+        run: ./"${{matrix.aocBinPath}}"

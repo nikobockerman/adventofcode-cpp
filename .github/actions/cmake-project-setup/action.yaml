@@ -1,0 +1,13 @@
+name: CMake project setup
+description: Setup cmake, vcpkg and CMakeUserPresets.json
+
+runs:
+  using: composite
+  steps:
+    - name: Install CMake
+      uses: lukka/get-cmake@latest
+    - name: Setup anew (or from cache) vcpkg (and does not build any package)
+      uses: lukka/run-vcpkg@5e0cab206a5ea620130caf672fce3e4a6b5666a1 # v11.5
+    - name: Prepare CMakeUserPresets.json
+      run: cp .github/CMakeUserPresets.json CMakeUserPresets.json
+      shell: bash

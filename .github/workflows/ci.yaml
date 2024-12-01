@@ -1,0 +1,23 @@
+name: CI
+
+on:
+  push:
+    branches: ["main"]
+  schedule:
+    # Run every Monday at 00:30 UTC
+    - cron: "30 0 * * 1"
+  workflow_dispatch:
+
+jobs:
+  build-test-run:
+    uses: ./.github/workflows/build-test-run.yaml
+  check-clang-tidy:
+    uses: ./.github/workflows/check-clang-tidy.yaml
+  check-clang-format:
+    uses: ./.github/workflows/check-clang-format.yaml
+  check-github-actions:
+    uses: ./.github/workflows/check-github-actions.yaml
+  check-prettier:
+    uses: ./.github/workflows/check-prettier.yaml
+  check-renovate-config:
+    uses: ./.github/workflows/check-renovate-config.yaml

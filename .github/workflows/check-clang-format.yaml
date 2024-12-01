@@ -1,0 +1,21 @@
+name: Check - clang-format
+on:
+  pull_request:
+    paths:
+      - "**.cpp"
+      - "**.hpp"
+      - ".clang-format"
+  workflow_call:
+  workflow_dispatch:
+
+jobs:
+  format:
+    name: Validate formatting
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
+      - name: Setup task
+        uses: arduino/setup-task@v2
+      - name: Check with clang-format
+        run: task check:clang-format
