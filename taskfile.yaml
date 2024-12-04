@@ -27,6 +27,7 @@ tasks:
     deps:
       - check:clang-format
       - check:github-actions
+      - check:npm:dedupe
       - check:prettier
       - check:renovateconfig
 
