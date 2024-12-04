@@ -10,6 +10,10 @@ tasks:
     desc: "Check - Github actions"
     cmds:
       - npm run check:github-actions
+  check:npm:dedupe:
+    desc: "Check - npm dedupe"
+    cmds:
+      - npm run check:npm:dedupe
   check:prettier:
     desc: "Check - prettier"
     cmds:
