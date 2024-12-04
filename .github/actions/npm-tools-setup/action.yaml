@@ -9,5 +9,5 @@ runs:
         node-version: 22
         cache: npm
     - name: Install npm dev tools
-      run: npm install
+      run: npm ci
       shell: bash
