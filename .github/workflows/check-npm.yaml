@@ -1,0 +1,23 @@
+name: Check - npm and dependencies
+
+on:
+  pull_request:
+    paths:
+      - ".github/actions/npm-tools-setup/**"
+      - ".github/workflows/check-npm.yaml"
+      - "package.json"
+      - "package-lock.json"
+  workflow_call:
+  workflow_dispatch:
+
+jobs:
+  duplicate-dependencies:
+    name: Check for duplicate dependencies
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
+      - name: Setup npm tools
+        uses: ./.github/actions/npm-tools-setup
+      - name: Check for duplicate dependencies
+        run: npm run check:npm:dedupe
