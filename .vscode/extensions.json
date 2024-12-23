@@ -1,0 +1,12 @@
+{
+  "recommendations": [
+    "editorconfig.editorconfig",
+    "esbenp.prettier-vscode",
+    "github.vscode-github-actions",
+    "llvm-vs-code-extensions.vscode-clangd",
+    "ms-azuretools.vscode-docker",
+    "ms-vscode.cpptools-extension-pack",
+    "timonwong.shellcheck",
+    "vadimcn.vscode-lldb"
+  ]
+}
