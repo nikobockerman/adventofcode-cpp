@@ -1,5 +1,5 @@
 /build/
 /.cache/
 /vcpkg_installed/
-/CMakeUserPresets.json
+/CMakeUserPresets*.json
 /node_modules/
