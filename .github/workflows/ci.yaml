@@ -17,9 +17,9 @@ jobs:
     uses: ./.github/workflows/check-clang-tidy.yaml
   check-github-actions:
     uses: ./.github/workflows/check-github-actions.yaml
-  check-npm:
-    uses: ./.github/workflows/check-npm.yaml
   check-prettier:
     uses: ./.github/workflows/check-prettier.yaml
   check-renovate-config:
     uses: ./.github/workflows/check-renovate-config.yaml
+  check-yarn:
+    uses: ./.github/workflows/check-yarn.yaml

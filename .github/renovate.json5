@@ -4,7 +4,7 @@
   lockFileMaintenance: {
     enabled: true,
   },
-  postUpdateOptions: ["npmDedupe"],
+  postUpdateOptions: ["yarnDedupeHighest"],
   separateMinorPatch: true,
   packageRules: [
     {

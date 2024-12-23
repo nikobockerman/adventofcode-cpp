@@ -9,32 +9,32 @@ tasks:
   check:github-actions:
     desc: "Check - Github actions"
     cmds:
-      - npm run check:github-actions
-  check:npm:dedupe:
-    desc: "Check - npm dedupe"
-    cmds:
-      - npm run check:npm:dedupe
+      - yarn run check:github-actions
   check:prettier:
     desc: "Check - prettier"
     cmds:
-      - npm run check:prettier
+      - yarn run check:prettier
   check:renovateconfig:
     desc: "Check - Renovate config"
     cmds:
-      - npm run check:renovateconfig
+      - yarn run check:renovateconfig
+  check:yarn:dedupe:
+    desc: "Check - yarn dedupe"
+    cmds:
+      - yarn run check:yarn:dedupe
   check:
     desc: "All checks"
     deps:
       - check:clang-format
       - check:github-actions
-      - check:npm:dedupe
       - check:prettier
       - check:renovateconfig
+      - check:yarn:dedupe
 
   fix:format:prettier:
     desc: "Fix - prettier"
     cmds:
-      - npm run fix:prettier
+      - yarn run fix:prettier
 
   fix:format:
     desc: "All fixes"

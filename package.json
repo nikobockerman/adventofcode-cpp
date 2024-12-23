@@ -1,17 +1,19 @@
 {
   "scripts": {
     "check:github-actions": "git ls-files '.github/**.yaml' | xargs -t -I {} action-validator {}",
-    "check:npm:dedupe": "npm find-dupes",
+    "check:yarn:dedupe": "yarn dedupe --check",
     "check:prettier": "prettier --check .",
     "check:renovateconfig": "npx --package=renovate -- renovate-config-validator --strict",
     "fix:prettier": "prettier --write --cache-location .prettiercache ."
   },
   "private": true,
+  "packageManager": "yarn@4.5.3",
   "engines": {
     "node": "^22.0.0"
   },
   "devDependencies": {
     "@action-validator/cli": "0.6.0",
+    "@action-validator/core": "0.6.0",
     "prettier": "3.4.2"
   }
 }
