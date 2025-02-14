@@ -6,11 +6,4 @@
   },
   postUpdateOptions: ["yarnDedupeHighest"],
   separateMinorPatch: true,
-  packageRules: [
-    {
-      description: "Disable docker pinning for devcontainer",
-      matchFileNames: [".devcontainer/Dockerfile"],
-      pinDigests: false,
-    },
-  ],
 }
