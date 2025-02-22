@@ -14,6 +14,6 @@
   "devDependencies": {
     "@action-validator/cli": "0.6.0",
     "@action-validator/core": "0.6.0",
-    "prettier": "3.5.1"
+    "prettier": "3.5.2"
   }
 }
