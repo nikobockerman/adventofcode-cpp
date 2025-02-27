@@ -9,7 +9,8 @@
       "version": "22"
     },
     "ghcr.io/devcontainers-community/npm-features/prettier:1": {},
-    "ghcr.io/eitsupi/devcontainer-features/go-task:1": {}
+    "ghcr.io/eitsupi/devcontainer-features/go-task:1": {},
+    "ghcr.io/nikobockerman/devcontainer-features/yarn-persistent-cache:1": {}
   },
   "containerEnv": {
     "COREPACK_ENABLE_DOWNLOAD_PROMPT": "0",
