@@ -3,7 +3,7 @@
     "check:github-actions": "git ls-files '.github/**.yaml' | xargs -t -I {} action-validator {}",
     "check:yarn:dedupe": "yarn dedupe --check",
     "check:prettier": "prettier --check .",
-    "check:renovateconfig": "npx --package=renovate -- renovate-config-validator --strict",
+    "check:renovateconfig": "npx --package=renovate --yes -- renovate-config-validator --strict",
     "fix:prettier": "prettier --write --cache-location .prettiercache ."
   },
   "private": true,
