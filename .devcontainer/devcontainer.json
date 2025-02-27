@@ -16,6 +16,7 @@
     "VCPKG_FORCE_SYSTEM_BINARIES": "true"
   },
   "onCreateCommand": "sh .devcontainer/onCreate.sh",
+  "updateContentCommand": "task install",
   "customizations": {
     "vscode": {
       "extensions": [
