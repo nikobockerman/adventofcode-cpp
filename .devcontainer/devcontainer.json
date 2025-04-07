@@ -6,7 +6,7 @@
   "features": {
     "ghcr.io/devcontainers/features/node:1.6.1": {
       "installYarnUsingApt": false,
-      "version": "22"
+      "version": "22.14.0"
     },
     "ghcr.io/devcontainers-community/npm-features/prettier:1": {},
     "ghcr.io/eitsupi/devcontainer-features/go-task:1": {},
