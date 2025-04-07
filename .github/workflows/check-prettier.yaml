@@ -5,16 +5,8 @@ on:
     paths-ignore:
       - "**.cpp"
       - "**.hpp"
-  workflow_call:
   workflow_dispatch:
 
 jobs:
-  prettier:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout
-        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
-      - name: Setup tools
-        uses: ./.github/actions/yarn-project-setup
-      - name: Check prettier
-        run: yarn run check:prettier
+  wf:
+    uses: nikobockerman/github-workflows/.github/workflows/check-prettier.yaml@d32b3b6765f463389cf43ee69b0bb1a6a8fe80f6
