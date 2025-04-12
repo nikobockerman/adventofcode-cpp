@@ -1,5 +1,4 @@
 name: CI
-
 on:
   push:
     branches: ["main"]
@@ -10,6 +9,8 @@ on:
     # Run every Monday at 00:30 UTC
     - cron: "30 0 * * 1"
   workflow_dispatch:
+permissions:
+  contents: read
 
 jobs:
   build-test-run:
