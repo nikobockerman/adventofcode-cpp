@@ -2,7 +2,6 @@
 /.cache/
 /.vscode/settings.json
 /.task/
-/vcpkg_installed/
 /CMakeUserPresets*.json
 
 

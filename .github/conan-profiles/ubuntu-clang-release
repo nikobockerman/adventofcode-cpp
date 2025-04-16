@@ -1,0 +1,4 @@
+include(ubuntu-clang)
+
+[settings]
+build_type = Release

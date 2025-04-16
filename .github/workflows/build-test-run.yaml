@@ -6,11 +6,12 @@ on:
       - "**.hpp"
       - "**/CMakeLists.txt"
       - ".github/actions/cmake-project-setup/**"
+      - ".github/conan-profiles/**"
       - ".github/workflows/build-test-run.yaml"
       - ".github/CMakeUserPresets.json"
       - "aoc/**/input-*.txt"
-      - "vcpkg-configuration.json"
-      - "vcpkg.json"
+      - "CMakePresets.json"
+      - "conanfile.txt"
   workflow_call:
   workflow_dispatch:
 permissions:
@@ -22,35 +23,42 @@ jobs:
       matrix:
         include:
           # MSVC
-          - os: windows-latest
-            workflowPreset: ci-msvc-debug
+          - name: "MSVC Debug"
+            os: windows-2025
+            conanProfileHost: "msvc-debug"
+            workflowPreset: "ci-debug-msvc"
             aocBinPath: ""
-          - os: windows-latest
-            workflowPreset: ci-msvc-release
-            aocBinPath: build/msvc/aoc/aoc/Release/aoc.exe
-          # Clang on Windows
-          - os: windows-latest
-            workflowPreset: ci-clang-windows-debug
-            aocBinPath: ""
-          - os: windows-latest
-            workflowPreset: ci-clang-windows-release
-            aocBinPath: build/clang-release/aoc/aoc/aoc.exe
-          # Clang on Linux
-          - os: ubuntu-24.04
-            workflowPreset: ci-clang-linux-debug
-            aocBinPath: build/clang-debug/aoc/aoc/aoc
-          - os: ubuntu-24.04
-            workflowPreset: ci-clang-linux-release
-            aocBinPath: build/clang-release/aoc/aoc/aoc
-          # Gcc 14 on Linux
-          - os: ubuntu-24.04
-            workflowPreset: ci-gcc-14-linux-debug
-            aocBinPath: build/default-debug/aoc/aoc/aoc
-          - os: ubuntu-24.04
-            workflowPreset: ci-gcc-14-linux-release
-            aocBinPath: build/default-release/aoc/aoc/aoc
+          - name: "MSVC Release"
+            os: windows-2025
+            conanProfileHost: "msvc-release"
+            workflowPreset: "ci-release-msvc"
+            aocBinPath: "build/aoc/aoc/Release/aoc.exe"
 
-    name: ${{matrix.workflowPreset}} - Build + test + run
+          # Clang on Linux
+          - name: Linux Clang Release
+            os: ubuntu-24.04
+            conanProfileHost: ubuntu-clang-release
+            workflowPreset: ci-release-gcc-clang
+            aocBinPath: build/Release/aoc/aoc/aoc
+          - name: Linux Clang Debug
+            os: ubuntu-24.04
+            conanProfileHost: ubuntu-clang-debug
+            workflowPreset: ci-debug-gcc-clang
+            aocBinPath: build/Debug/aoc/aoc/aoc
+
+          # Gcc 14 on Linux
+          - name: Linux GCC 14 Release
+            os: ubuntu-24.04
+            conanProfileHost: ubuntu-gcc-14-release
+            workflowPreset: ci-release-gcc-clang
+            aocBinPath: build/Release/aoc/aoc/aoc
+          - name: Linux GCC 14 Debug
+            os: ubuntu-24.04
+            conanProfileHost: ubuntu-gcc-14-debug
+            workflowPreset: ci-debug-gcc-clang
+            aocBinPath: build/Debug/aoc/aoc/aoc
+
+    name: ${{matrix.name}} - Build + test + run
     runs-on: ${{matrix.os}}
     timeout-minutes: 30
 
@@ -59,6 +67,8 @@ jobs:
         uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
       - name: Setup CMake project
         uses: ./.github/actions/cmake-project-setup
+        with:
+          conanProfileHost: ${{matrix.conanProfileHost}}
       - name: Run CMake workflow
         uses: lukka/run-cmake@af1be47fd7c933593f687731bc6fdbee024d3ff4 # v10.8
         with:
