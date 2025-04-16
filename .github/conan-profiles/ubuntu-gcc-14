@@ -1,0 +1,16 @@
+{% set gcc_bin_path = '/usr/bin' %}
+{% set gcc_path = gcc_bin_path ~ '/gcc-14' %}
+{% set gpp_path = gcc_bin_path ~ '/g++-14' %}
+{% set compiler, version, _ = detect_api.detect_gcc_compiler(gcc_path) %}
+
+[settings]
+arch = {{detect_api.detect_arch()}}
+compiler = {{compiler}}
+compiler.cppstd = gnu23
+compiler.libcxx = libstdc++11
+compiler.version = {{detect_api.default_compiler_version(compiler, version)}}
+os = {{detect_api.detect_os()}}
+
+[conf]
+tools.cmake.cmaketoolchain:generator=Ninja
+tools.build:compiler_executables={'c': '{{gcc_path}}', 'cpp': '{{gpp_path}}'}
