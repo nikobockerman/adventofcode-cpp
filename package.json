@@ -7,7 +7,7 @@
     "fix:prettier": "prettier --write --cache-location .prettiercache ."
   },
   "private": true,
-  "packageManager": "yarn@4.8.1",
+  "packageManager": "yarn@4.9.0",
   "engines": {
     "node": "^22.0.0"
   },
