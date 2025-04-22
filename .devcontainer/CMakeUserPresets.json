@@ -1,60 +1,49 @@
 {
   "version": 8,
+  "include": ["CMakeConanPresets.json"],
   "configurePresets": [
     {
-      "name": "vscode-clang-debug",
+      "name": "vscode",
       "displayName": "VSCode: Clang Debug",
-      "binaryDir": "build/vscode-clang-debug",
+      "binaryDir": "build/clang/vscode",
+      "toolchainFile": "../Debug/generators/conan_toolchain.cmake",
       "inherits": [
-        "vcpkg-toolchain",
-        "clang",
-        "ninja",
+        "conan-clang-debug",
         "gcc-clang-flags",
         "configure-flags",
-        "debug",
         "compile-commands-json"
       ]
     },
     {
-      "name": "vscode-clang-release",
-      "displayName": "VSCode: Clang Release",
-      "binaryDir": "build/vscode-clang-release",
-      "inherits": [
-        "vcpkg-toolchain",
-        "clang",
-        "ninja",
-        "gcc-clang-flags",
-        "configure-flags",
-        "release",
-        "compile-commands-json"
-      ]
+      "name": "dev-clang-debug",
+      "inherits": ["conan-clang-debug", "gcc-clang-flags", "configure-flags"]
     },
     {
-      "name": "gcc-14",
-      "hidden": true,
-      "environment": {
-        "CXX": "g++-14"
-      }
+      "name": "dev-clang-release",
+      "inherits": ["conan-clang-release", "gcc-clang-flags", "configure-flags"]
     },
     {
       "name": "dev-gcc-14-debug",
-      "inherits": ["ninja-debug", "gcc-14"]
+      "inherits": ["conan-gcc-debug", "gcc-clang-flags", "configure-flags"]
     },
     {
       "name": "dev-gcc-14-release",
-      "inherits": ["ninja-release", "gcc-14"]
+      "inherits": ["conan-gcc-release", "gcc-clang-flags", "configure-flags"]
     }
   ],
   "buildPresets": [
     {
-      "name": "vscode-clang-debug",
+      "name": "vscode-debug",
       "displayName": "Debug",
-      "configurePreset": "vscode-clang-debug"
+      "configurePreset": "vscode"
     },
     {
-      "name": "vscode-clang-release",
-      "displayName": "Release",
-      "configurePreset": "vscode-clang-release"
+      "name": "dev-clang-debug",
+      "configurePreset": "dev-clang-debug"
+    },
+    {
+      "name": "dev-clang-release",
+      "configurePreset": "dev-clang-release"
     },
     {
       "name": "dev-gcc-14-debug",
@@ -67,15 +56,19 @@
   ],
   "testPresets": [
     {
-      "name": "vscode-clang-debug",
+      "name": "vscode-debug",
       "displayName": "Debug",
-      "configurePreset": "vscode-clang-debug",
+      "configurePreset": "vscode",
       "inherits": ["output-on-failure"]
     },
     {
-      "name": "vscode-clang-release",
-      "displayName": "Release",
-      "configurePreset": "vscode-clang-release",
+      "name": "dev-clang-debug",
+      "configurePreset": "dev-clang-debug",
+      "inherits": ["output-on-failure"]
+    },
+    {
+      "name": "dev-clang-release",
+      "configurePreset": "dev-clang-release",
       "inherits": ["output-on-failure"]
     },
     {
@@ -95,15 +88,15 @@
       "steps": [
         {
           "type": "configure",
-          "name": "clang-ninja-debug"
+          "name": "dev-clang-debug"
         },
         {
           "type": "build",
-          "name": "clang-ninja-debug"
+          "name": "dev-clang-debug"
         },
         {
           "type": "test",
-          "name": "clang-ninja-debug"
+          "name": "dev-clang-debug"
         }
       ]
     },
@@ -112,32 +105,15 @@
       "steps": [
         {
           "type": "configure",
-          "name": "clang-ninja-release"
+          "name": "dev-clang-release"
         },
         {
           "type": "build",
-          "name": "clang-ninja-release"
+          "name": "dev-clang-release"
         },
         {
           "type": "test",
-          "name": "clang-ninja-release"
-        }
-      ]
-    },
-    {
-      "name": "dev-clang-libcpp-debug-wf",
-      "steps": [
-        {
-          "type": "configure",
-          "name": "clang-libcpp-ninja-debug"
-        },
-        {
-          "type": "build",
-          "name": "clang-libcpp-ninja-debug"
-        },
-        {
-          "type": "test",
-          "name": "clang-libcpp-ninja-debug"
+          "name": "dev-clang-release"
         }
       ]
     },
