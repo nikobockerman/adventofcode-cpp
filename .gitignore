@@ -1,8 +1,10 @@
 /build/
 /.cache/
+/.vscode/settings.json
 /.task/
-/vcpkg_installed/
+/CMakeConanPresets.json
 /CMakeUserPresets*.json
+/compile_commands.json
 
 
 # Yarn

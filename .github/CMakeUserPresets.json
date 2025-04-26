@@ -1,192 +1,138 @@
 {
   "version": 8,
+  "include": ["CMakeConanPresets.json"],
   "configurePresets": [
     {
-      "name": "gcc-14",
-      "hidden": true,
-      "environment": {
-        "CXX": "g++-14"
-      }
+      "name": "ci-release-gcc-clang",
+      "inherits": ["conan-release", "gcc-clang-flags", "configure-flags"]
     },
     {
-      "name": "ci-gcc-14-debug",
-      "inherits": ["ninja-debug", "gcc-14"]
+      "name": "ci-debug-gcc-clang",
+      "inherits": ["conan-debug", "gcc-clang-flags", "configure-flags"]
     },
     {
-      "name": "ci-gcc-14-release",
-      "inherits": ["ninja-release", "gcc-14"]
-    },
-    {
-      "name": "ci-clang-tidy-debug",
-      "inherits": ["clang-ninja-debug"],
-      "cacheVariables": {
-        "CMAKE_EXPORT_COMPILE_COMMANDS": "ON"
-      }
+      "name": "ci-msvc",
+      "inherits": ["conan-default", "msvc-flags", "configure-flags"]
     },
     {
       "name": "ci-clang-tidy-release",
-      "inherits": ["clang-ninja-release"],
-      "cacheVariables": {
-        "CMAKE_EXPORT_COMPILE_COMMANDS": "ON"
-      }
+      "inherits": ["ci-release-gcc-clang", "compile-commands-json"]
+    },
+    {
+      "name": "ci-clang-tidy-debug",
+      "inherits": ["ci-debug-gcc-clang", "compile-commands-json"]
     }
   ],
   "buildPresets": [
     {
-      "name": "ci-gcc-14-debug",
-      "configurePreset": "ci-gcc-14-debug"
+      "name": "ci-release-gcc-clang",
+      "configurePreset": "ci-release-gcc-clang"
     },
     {
-      "name": "ci-gcc-14-release",
-      "configurePreset": "ci-gcc-14-release"
+      "name": "ci-debug-gcc-clang",
+      "configurePreset": "ci-debug-gcc-clang"
+    },
+    {
+      "name": "ci-release-msvc",
+      "configurePreset": "ci-msvc",
+      "configuration": "Release"
+    },
+    {
+      "name": "ci-debug-msvc",
+      "configurePreset": "ci-msvc",
+      "configuration": "Debug"
     }
   ],
   "testPresets": [
     {
-      "name": "ci-gcc-14-debug",
-      "configurePreset": "ci-gcc-14-debug",
+      "name": "ci-release-gcc-clang",
+      "configurePreset": "ci-release-gcc-clang",
       "inherits": ["output-on-failure"]
     },
     {
-      "name": "ci-gcc-14-release",
-      "configurePreset": "ci-gcc-14-release",
+      "name": "ci-debug-gcc-clang",
+      "configurePreset": "ci-debug-gcc-clang",
+      "inherits": ["output-on-failure"]
+    },
+    {
+      "name": "ci-release-msvc",
+      "configurePreset": "ci-msvc",
+      "configuration": "Release",
+      "inherits": ["output-on-failure"]
+    },
+    {
+      "name": "ci-debug-msvc",
+      "configurePreset": "ci-msvc",
+      "configuration": "Debug",
       "inherits": ["output-on-failure"]
     }
   ],
   "workflowPresets": [
     {
-      "name": "ci-msvc-debug",
+      "name": "ci-release-gcc-clang",
       "steps": [
         {
           "type": "configure",
-          "name": "msvc"
+          "name": "ci-release-gcc-clang"
         },
         {
           "type": "build",
-          "name": "msvc-debug"
+          "name": "ci-release-gcc-clang"
         },
         {
           "type": "test",
-          "name": "msvc-debug"
+          "name": "ci-release-gcc-clang"
         }
       ]
     },
     {
-      "name": "ci-msvc-release",
+      "name": "ci-debug-gcc-clang",
       "steps": [
         {
           "type": "configure",
-          "name": "msvc"
+          "name": "ci-debug-gcc-clang"
         },
         {
           "type": "build",
-          "name": "msvc-release"
+          "name": "ci-debug-gcc-clang"
         },
         {
           "type": "test",
-          "name": "msvc-release"
+          "name": "ci-debug-gcc-clang"
         }
       ]
     },
     {
-      "name": "ci-clang-windows-debug",
+      "name": "ci-release-msvc",
       "steps": [
         {
           "type": "configure",
-          "name": "clang-ninja-debug"
+          "name": "ci-msvc"
         },
         {
           "type": "build",
-          "name": "clang-ninja-debug"
+          "name": "ci-release-msvc"
         },
         {
           "type": "test",
-          "name": "clang-ninja-debug"
+          "name": "ci-release-msvc"
         }
       ]
     },
     {
-      "name": "ci-clang-windows-release",
+      "name": "ci-debug-msvc",
       "steps": [
         {
           "type": "configure",
-          "name": "clang-ninja-release"
+          "name": "ci-msvc"
         },
         {
           "type": "build",
-          "name": "clang-ninja-release"
+          "name": "ci-debug-msvc"
         },
         {
           "type": "test",
-          "name": "clang-ninja-release"
-        }
-      ]
-    },
-    {
-      "name": "ci-clang-linux-debug",
-      "steps": [
-        {
-          "type": "configure",
-          "name": "clang-ninja-debug"
-        },
-        {
-          "type": "build",
-          "name": "clang-ninja-debug"
-        },
-        {
-          "type": "test",
-          "name": "clang-ninja-debug"
-        }
-      ]
-    },
-    {
-      "name": "ci-clang-linux-release",
-      "steps": [
-        {
-          "type": "configure",
-          "name": "clang-ninja-release"
-        },
-        {
-          "type": "build",
-          "name": "clang-ninja-release"
-        },
-        {
-          "type": "test",
-          "name": "clang-ninja-release"
-        }
-      ]
-    },
-    {
-      "name": "ci-gcc-14-linux-debug",
-      "steps": [
-        {
-          "type": "configure",
-          "name": "ci-gcc-14-debug"
-        },
-        {
-          "type": "build",
-          "name": "ci-gcc-14-debug"
-        },
-        {
-          "type": "test",
-          "name": "ci-gcc-14-debug"
-        }
-      ]
-    },
-    {
-      "name": "ci-gcc-14-linux-release",
-      "steps": [
-        {
-          "type": "configure",
-          "name": "ci-gcc-14-release"
-        },
-        {
-          "type": "build",
-          "name": "ci-gcc-14-release"
-        },
-        {
-          "type": "test",
-          "name": "ci-gcc-14-release"
+          "name": "ci-debug-msvc"
         }
       ]
     }

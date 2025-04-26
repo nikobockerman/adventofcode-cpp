@@ -1,0 +1,32 @@
+name: Check - devcontainer
+on:
+  pull_request:
+    paths:
+      - "**.cpp"
+      - "**.hpp"
+      - "**/CMakeLists.txt"
+      - ".devcontainer/**"
+      - ".github/conan-profiles/**"
+      - ".github/workflows/check-devcontainer.yaml"
+      - "aoc/**/input-*.txt"
+      - "CMakePresets.json"
+      - "conanfile.txt"
+  workflow_call:
+  workflow_dispatch:
+permissions:
+  contents: read
+
+jobs:
+  devcontainer:
+    name: Build devcontainer and run a cmake workflow inside
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - name: Checkout
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
+      - name: Pre-build dev container image
+        uses: devcontainers/ci@8bf61b26e9c3a98f69cb6ce2f88d24ff59b785c6 # v0.3.1900000417
+        with:
+          runCmd: |
+            cmake --workflow --preset dev-clang-release && \
+              ./build/clang/Release/aoc/aoc/aoc

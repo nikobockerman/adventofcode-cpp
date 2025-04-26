@@ -7,10 +7,11 @@ on:
       - "**/CMakeLists.txt"
       - ".clang-tidy"
       - ".github/actions/cmake-project-setup/**"
+      - ".github/conan-profiles/**"
       - ".github/workflows/check-clang-tidy.yaml"
       - ".github/CMakeUserPresets.json"
-      - "vcpkg-configuration.json"
-      - "vcpkg.json"
+      - "CMakePresets.json"
+      - "conanfile.txt"
   workflow_call:
   workflow_dispatch:
 permissions:
@@ -23,16 +24,22 @@ jobs:
     strategy:
       matrix:
         include:
-          - configurePreset: ci-clang-tidy-debug
-            binaryDir: build/clang-debug
-          - configurePreset: ci-clang-tidy-release
-            binaryDir: build/clang-release
-    name: ${{matrix.configurePreset}} - Clang tidy
+          - name: Clang Debug
+            conanProfileHost: ubuntu-clang-debug
+            configurePreset: ci-clang-tidy-debug
+            binaryDir: build/Debug
+          - name: Clang Release
+            conanProfileHost: ubuntu-clang-release
+            configurePreset: ci-clang-tidy-release
+            binaryDir: build/Release
+    name: ${{matrix.name}} - Clang tidy
     steps:
       - name: Checkout
         uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
       - name: Setup CMake project
         uses: ./.github/actions/cmake-project-setup
+        with:
+          conanProfileHost: ${{matrix.conanProfileHost}}
       - name: Configure CMake project
         uses: lukka/run-cmake@af1be47fd7c933593f687731bc6fdbee024d3ff4 # v10.8
         with:
