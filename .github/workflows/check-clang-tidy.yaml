@@ -11,6 +11,7 @@ on:
       - ".github/workflows/check-clang-tidy.yaml"
       - ".github/CMakeUserPresets.json"
       - "CMakePresets.json"
+      - "conan.lock"
       - "conanfile.txt"
   workflow_call:
   workflow_dispatch:
