@@ -4,6 +4,7 @@ on:
     paths-ignore:
       - "**.cpp"
       - "**.hpp"
+      - "conan.lock"
   workflow_dispatch:
 permissions:
   contents: read
