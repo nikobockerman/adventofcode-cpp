@@ -10,6 +10,7 @@ on:
       - ".github/workflows/check-devcontainer.yaml"
       - "aoc/**/input-*.txt"
       - "CMakePresets.json"
+      - "conan.lock"
       - "conanfile.txt"
   workflow_call:
   workflow_dispatch:
