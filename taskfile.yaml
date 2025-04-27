@@ -23,6 +23,10 @@ tasks:
     desc: "Check - Renovate config"
     cmds:
       - yarn run check:renovateconfig
+  check:shellcheck:
+    desc: "Check - shellcheck"
+    cmds:
+      - shellcheck $(git ls-files | grep '\.sh$')
   check:yarn:dedupe:
     desc: "Check - yarn dedupe"
     cmds:
@@ -36,6 +40,7 @@ tasks:
       - check:github-actions
       - check:prettier
       - check:renovateconfig
+      - check:shellcheck
       - check:yarn:dedupe
 
   fix:format:prettier:
