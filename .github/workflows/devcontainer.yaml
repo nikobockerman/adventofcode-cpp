@@ -22,6 +22,14 @@ env:
   REGISTRY: ghcr.io
 
 jobs:
+  debug:
+    name: Debug condition
+    runs-on: ubuntu-latest
+    steps:
+      - run: |
+          echo "${{ github.event_name }}"
+          echo "${{ toJSON(fromJSON('["workflow_call", "workflow_dispatch"]')) }}"
+          echo "${{ contains(fromJSON('["workflow_call", "workflow_dispatch"]'), github.event_name) }}"
   prebuild:
     if:
       contains(fromJSON('["workflow_call", "workflow_dispatch"]'),
