@@ -20,7 +20,9 @@ jobs:
   check-clang-tidy:
     uses: ./.github/workflows/check-clang-tidy.yaml
   check-devcontainer:
-    uses: ./.github/workflows/devcontainer-build-check.yaml
+    uses: ./.github/workflows/devcontainer.yaml
+    permissions:
+      packages: write
   check-github-actions:
     uses: nikobockerman/github-workflows/.github/workflows/check-github-actions.yaml@8cef1a279f360e3fe278d336a97e512d9f4a4306
   check-prettier:
