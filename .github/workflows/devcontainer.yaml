@@ -7,7 +7,7 @@ on:
       - "**/CMakeLists.txt"
       - ".devcontainer/**"
       - ".github/conan-profiles/**"
-      - ".github/workflows/devcontainer-build-check.yaml"
+      - ".github/workflows/devcontainer.yaml"
       - "aoc/**/input-*.txt"
       - "CMakePresets.json"
       - "conan.lock"
