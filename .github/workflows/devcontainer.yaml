@@ -22,14 +22,6 @@ env:
   REGISTRY: ghcr.io
 
 jobs:
-  debug:
-    name: Debug condition
-    runs-on: ubuntu-24.04-arm
-    steps:
-      - run: |
-          echo "${{ github.event_name }}"
-          echo "${{ toJSON(fromJSON('["push", "workflow_dispatch"]')) }}"
-          echo "${{ contains(fromJSON('["push", "workflow_dispatch"]'), github.event_name) }}"
   prebuild:
     if: contains(fromJSON('["push", "workflow_dispatch"]'), github.event_name)
     name: Prebuild devcontainer
