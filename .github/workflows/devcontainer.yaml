@@ -54,6 +54,8 @@ jobs:
         uses: devcontainers/ci@8bf61b26e9c3a98f69cb6ce2f88d24ff59b785c6 # v0.3.1900000417
         with:
           imageName: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME}}
+          cacheTo:
+            type=registry,ref=${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:cache
           push: always
 
   check:
@@ -74,4 +76,6 @@ jobs:
           runCmd: |
             cmake --workflow --preset dev-clang-release && \
               ./build/clang/Release/aoc/aoc/aoc
+          cacheFrom:
+            type=registry,ref=${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:cache
           push: never
