@@ -1,0 +1,23 @@
+name: CI + CD
+on:
+  push:
+    branches:
+      - main
+  schedule:
+    # Run every Monday at 00:30 UTC
+    - cron: "30 0 * * 1"
+  workflow_dispatch:
+
+jobs:
+  ci:
+    permissions:
+      contents: read
+    uses: ./.github/workflows/ci.yaml
+  deploy-devcontainer-cache:
+    needs: ci
+    permissions:
+      contents: read
+      packages: write
+    uses: nikobockerman/github-workflows/.github/workflows/devcontainer-cache.yaml@89629c1b4a9d93086ea77a7eb87d7db6ce73a00e
+    with:
+      cache-type: final
