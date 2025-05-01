@@ -1,13 +1,9 @@
 name: CI
 on:
-  push:
-    branches: ["main"]
   pull_request:
     paths:
       - ".github/workflows/ci.yaml"
-  schedule:
-    # Run every Monday at 00:30 UTC
-    - cron: "30 0 * * 1"
+  workflow_call:
   workflow_dispatch:
 permissions:
   contents: read
@@ -19,11 +15,6 @@ jobs:
     uses: ./.github/workflows/check-clang-format.yaml
   check-clang-tidy:
     uses: ./.github/workflows/check-clang-tidy.yaml
-  check-devcontainer:
-    uses: ./.github/workflows/devcontainer.yaml
-    permissions:
-      contents: read
-      packages: write
   check-github-actions:
     uses: nikobockerman/github-workflows/.github/workflows/check-github-actions.yaml@8cef1a279f360e3fe278d336a97e512d9f4a4306
   check-prettier:
@@ -34,3 +25,14 @@ jobs:
     uses: nikobockerman/github-workflows/.github/workflows/check-shellcheck.yaml@8cef1a279f360e3fe278d336a97e512d9f4a4306
   check-yarn:
     uses: nikobockerman/github-workflows/.github/workflows/check-yarn.yaml@8cef1a279f360e3fe278d336a97e512d9f4a4306
+
+  prebuild-devcontainer:
+    uses: nikobockerman/github-workflows/.github/workflows/devcontainer-cache.yaml@89629c1b4a9d93086ea77a7eb87d7db6ce73a00e
+    permissions:
+      contents: read
+      packages: write
+    with:
+      cache-type: intermediate
+  check-devcontainer:
+    needs: prebuild-devcontainer
+    uses: ./.github/workflows/check-devcontainer.yaml

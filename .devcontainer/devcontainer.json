@@ -2,7 +2,7 @@
   "name": "C++",
   "build": {
     "dockerfile": "Dockerfile",
-    "cacheFrom": "ghcr.io/nikobockerman/adventofcode-cpp-devcontainer:latest"
+    "cacheFrom": "ghcr.io/nikobockerman/adventofcode-cpp-devcontainer:cache"
   },
   "features": {
     "ghcr.io/devcontainers/features/node:1.6.1": {
