@@ -1,4 +1,4 @@
-name: Devcontainer
+name: Check - Devcontainer
 on:
   pull_request:
     paths:
