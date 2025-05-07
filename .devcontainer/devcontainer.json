@@ -7,7 +7,7 @@
   "features": {
     "ghcr.io/devcontainers/features/node:1.6.1": {
       "installYarnUsingApt": false,
-      "version": "22"
+      "version": "22.15.0"
     },
     "ghcr.io/devcontainers/features/python": {
       "toolsToInstall": ["conan"]
