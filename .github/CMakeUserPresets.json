@@ -59,12 +59,6 @@
       "configurePreset": "ci-msvc",
       "configuration": "Release",
       "inherits": ["output-on-failure"]
-    },
-    {
-      "name": "ci-debug-msvc",
-      "configurePreset": "ci-msvc",
-      "configuration": "Debug",
-      "inherits": ["output-on-failure"]
     }
   ],
   "workflowPresets": [
@@ -128,10 +122,6 @@
         },
         {
           "type": "build",
-          "name": "ci-debug-msvc"
-        },
-        {
-          "type": "test",
           "name": "ci-debug-msvc"
         }
       ]
