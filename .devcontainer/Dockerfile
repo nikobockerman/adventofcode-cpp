@@ -1,4 +1,4 @@
-FROM mcr.microsoft.com/devcontainers/cpp:noble@sha256:6493de2f97b96f46c61cedf3f31361c754337db912fd1fd5fc7660b331208df8
+FROM mcr.microsoft.com/devcontainers/cpp:noble@sha256:a74f174cf8541b418e50787382d0edb5cd2b817754da2eaf892bae3468a62264
 
 RUN apt-get update && apt-get install -y \
     libc++-dev \
