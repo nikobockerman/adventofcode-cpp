@@ -10,4 +10,4 @@ permissions:
 
 jobs:
   wf:
-    uses: nikobockerman/github-workflows/.github/workflows/check-renovate-config.yaml@7ec6b7a7ce6691586bf1ea6e15ad4f068f19d3c3
+    uses: nikobockerman/github-workflows/.github/workflows/check-renovate-config.yaml@a3ff11ed76f5e286d3a5e11ec6f6395ddbe6412d
