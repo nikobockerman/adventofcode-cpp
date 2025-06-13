@@ -16,18 +16,18 @@ jobs:
   check-clang-tidy:
     uses: ./.github/workflows/check-clang-tidy.yaml
   check-github-actions:
-    uses: nikobockerman/github-workflows/.github/workflows/check-github-actions.yaml@a3ff11ed76f5e286d3a5e11ec6f6395ddbe6412d
+    uses: nikobockerman/github-workflows/.github/workflows/check-github-actions.yaml@065515a366665df781d8c7939c05dee79a30d31e
   check-prettier:
-    uses: nikobockerman/github-workflows/.github/workflows/check-prettier.yaml@a3ff11ed76f5e286d3a5e11ec6f6395ddbe6412d
+    uses: nikobockerman/github-workflows/.github/workflows/check-prettier.yaml@065515a366665df781d8c7939c05dee79a30d31e
   check-renovate-config:
-    uses: nikobockerman/github-workflows/.github/workflows/check-renovate-config.yaml@a3ff11ed76f5e286d3a5e11ec6f6395ddbe6412d
+    uses: nikobockerman/github-workflows/.github/workflows/check-renovate-config.yaml@065515a366665df781d8c7939c05dee79a30d31e
   check-shellcheck:
-    uses: nikobockerman/github-workflows/.github/workflows/check-shellcheck.yaml@a3ff11ed76f5e286d3a5e11ec6f6395ddbe6412d
+    uses: nikobockerman/github-workflows/.github/workflows/check-shellcheck.yaml@065515a366665df781d8c7939c05dee79a30d31e
   check-yarn:
-    uses: nikobockerman/github-workflows/.github/workflows/check-yarn.yaml@a3ff11ed76f5e286d3a5e11ec6f6395ddbe6412d
+    uses: nikobockerman/github-workflows/.github/workflows/check-yarn.yaml@065515a366665df781d8c7939c05dee79a30d31e
 
   prebuild-devcontainer:
-    uses: nikobockerman/github-workflows/.github/workflows/devcontainer-cache.yaml@a3ff11ed76f5e286d3a5e11ec6f6395ddbe6412d
+    uses: nikobockerman/github-workflows/.github/workflows/devcontainer-cache.yaml@065515a366665df781d8c7939c05dee79a30d31e
     permissions:
       contents: read
       packages: write
