@@ -5,7 +5,7 @@
     "cacheFrom": "ghcr.io/nikobockerman/adventofcode-cpp-devcontainer:cache"
   },
   "features": {
-    "ghcr.io/devcontainers/features/node:1.6.2": {
+    "ghcr.io/devcontainers/features/node:1.6.3": {
       "installYarnUsingApt": false,
       "version": "22.16.0"
     },
