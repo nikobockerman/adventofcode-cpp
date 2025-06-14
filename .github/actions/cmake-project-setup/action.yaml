@@ -10,7 +10,7 @@ runs:
   using: composite
   steps:
     - name: Install CMake
-      uses: lukka/get-cmake@ea004816823209b8d1211e47b216185caee12cc5 # v4.0.2
+      uses: lukka/get-cmake@6b3e96a9bc9976b8b546346fdd102effedae0ca8 # v4.0.3
     - name: Setup Conan Client
       id: setup-conan
       uses: conan-io/setup-conan@593e0b5bf725f7a0fbf8ba6c249c78e09141cd85 # v1.0.0
