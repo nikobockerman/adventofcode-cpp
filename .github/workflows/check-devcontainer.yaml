@@ -19,7 +19,7 @@ permissions:
 
 jobs:
   wf:
-    uses: nikobockerman/github-workflows/.github/workflows/check-devcontainer.yaml@1d0ee1b00422598a785e5620925ce2ec0de2b6d3
+    uses: nikobockerman/github-workflows/.github/workflows/check-devcontainer.yaml@cefbbbefc1216ea1d0a822149b313c725c5f820b
     with:
       runCmd: |
         cmake --workflow --preset dev-clang-release && \
