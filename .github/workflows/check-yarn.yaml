@@ -11,4 +11,4 @@ permissions:
 
 jobs:
   wf:
-    uses: nikobockerman/github-workflows/.github/workflows/check-yarn.yaml@cefbbbefc1216ea1d0a822149b313c725c5f820b
+    uses: nikobockerman/github-workflows/.github/workflows/check-yarn.yaml@55864979db2fac18cce2945b11b50e5e06fea565
