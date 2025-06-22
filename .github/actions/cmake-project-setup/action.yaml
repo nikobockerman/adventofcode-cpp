@@ -13,7 +13,7 @@ runs:
       uses: lukka/get-cmake@6b3e96a9bc9976b8b546346fdd102effedae0ca8 # v4.0.3
     - name: Setup Conan Client
       id: setup-conan
-      uses: conan-io/setup-conan@593e0b5bf725f7a0fbf8ba6c249c78e09141cd85 # v1.0.0
+      uses: conan-io/setup-conan@434f093a557d1ee6972c4ed78693c3191653537b # v1.1.0
       with:
         cache_packages: true
     - name: Prepare Conan profiles - non-windows
