@@ -16,6 +16,6 @@ jobs:
     uses: ./.github/workflows/ci.yaml
   deploy-devcontainer-cache:
     needs: ci
-    uses: nikobockerman/github-workflows/.github/workflows/devcontainer-cache.yaml@261e8683f0b52b7f6a9d91e2ea639a46f168ce8a
+    uses: nikobockerman/github-workflows/.github/workflows/devcontainer-cache.yaml@f966254950c57f16c84f0f5a8f34728f50d19965
     with:
       cache-type: final
