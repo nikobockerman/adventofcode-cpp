@@ -12,4 +12,4 @@ permissions:
 
 jobs:
   wf:
-    uses: nikobockerman/github-workflows/.github/workflows/check-github-actions.yaml@88efa388aef31b038ce87b84fa64378482af888c
+    uses: nikobockerman/github-workflows/.github/workflows/check-github-actions.yaml@2cf25ef6b41c3eb97a1e61e328bdc34dc6c9b762
