@@ -4,7 +4,6 @@
 /.task/
 /CMakeConanPresets.json
 /CMakeUserPresets*.json
-/compile_commands.json
 
 
 # Yarn

@@ -25,14 +25,3 @@ jobs:
     uses: nikobockerman/github-workflows/.github/workflows/check-shellcheck.yaml@88efa388aef31b038ce87b84fa64378482af888c
   check-yarn:
     uses: nikobockerman/github-workflows/.github/workflows/check-yarn.yaml@88efa388aef31b038ce87b84fa64378482af888c
-
-  prebuild-devcontainer:
-    uses: nikobockerman/github-workflows/.github/workflows/devcontainer-cache.yaml@88efa388aef31b038ce87b84fa64378482af888c
-    permissions:
-      contents: read
-      packages: write
-    with:
-      cache-type: intermediate
-  check-devcontainer:
-    needs: prebuild-devcontainer
-    uses: ./.github/workflows/check-devcontainer.yaml
