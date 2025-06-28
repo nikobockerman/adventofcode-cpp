@@ -13,24 +13,20 @@ jobs:
       matrix:
         include:
           - name: Clang Debug
-            conanProfileHost: ubuntu-clang-debug
             configurePreset: ci-clang-tidy-debug
-            binaryDir: build/Debug
           - name: Clang Release
-            conanProfileHost: ubuntu-clang-release
             configurePreset: ci-clang-tidy-release
-            binaryDir: build/Release
     name: ${{matrix.name}} - Clang tidy
     steps:
       - name: Checkout
         uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        with:
+          submodules: true
       - name: Setup CMake project
         uses: ./.github/actions/cmake-project-setup
-        with:
-          conanProfileHost: ${{matrix.conanProfileHost}}
       - name: Configure CMake project
         uses: lukka/run-cmake@af1be47fd7c933593f687731bc6fdbee024d3ff4 # v10.8
         with:
           configurePreset: "${{matrix.configurePreset}}"
       - name: Run clang-tidy
-        run: run-clang-tidy -p "${{matrix.binaryDir}}"
+        run: run-clang-tidy -p build

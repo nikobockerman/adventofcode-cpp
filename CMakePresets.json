@@ -2,11 +2,23 @@
   "version": 8,
   "configurePresets": [
     {
+      "name": "cmake-conan",
+      "hidden": true,
+      "cacheVariables": {
+        "CMAKE_PROJECT_TOP_LEVEL_INCLUDES": "${sourceDir}/cmake-conan/conan_provider.cmake"
+      }
+    },
+    {
       "name": "compile-commands-json",
       "hidden": true,
       "cacheVariables": {
         "CMAKE_EXPORT_COMPILE_COMMANDS": "ON"
       }
+    },
+    {
+      "name": "ninja",
+      "hidden": true,
+      "generator": "Ninja"
     },
     {
       "name": "msvc-flags",
