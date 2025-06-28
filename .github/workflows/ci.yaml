@@ -16,12 +16,12 @@ jobs:
   check-clang-tidy:
     uses: ./.github/workflows/check-clang-tidy.yaml
   check-github-actions:
-    uses: nikobockerman/github-workflows/.github/workflows/check-github-actions.yaml@88efa388aef31b038ce87b84fa64378482af888c
+    uses: nikobockerman/github-workflows/.github/workflows/check-github-actions.yaml@2cf25ef6b41c3eb97a1e61e328bdc34dc6c9b762
   check-prettier:
-    uses: nikobockerman/github-workflows/.github/workflows/check-prettier.yaml@88efa388aef31b038ce87b84fa64378482af888c
+    uses: nikobockerman/github-workflows/.github/workflows/check-prettier.yaml@2cf25ef6b41c3eb97a1e61e328bdc34dc6c9b762
   check-renovate-config:
-    uses: nikobockerman/github-workflows/.github/workflows/check-renovate-config.yaml@88efa388aef31b038ce87b84fa64378482af888c
+    uses: nikobockerman/github-workflows/.github/workflows/check-renovate-config.yaml@2cf25ef6b41c3eb97a1e61e328bdc34dc6c9b762
   check-shellcheck:
-    uses: nikobockerman/github-workflows/.github/workflows/check-shellcheck.yaml@88efa388aef31b038ce87b84fa64378482af888c
+    uses: nikobockerman/github-workflows/.github/workflows/check-shellcheck.yaml@2cf25ef6b41c3eb97a1e61e328bdc34dc6c9b762
   check-yarn:
-    uses: nikobockerman/github-workflows/.github/workflows/check-yarn.yaml@88efa388aef31b038ce87b84fa64378482af888c
+    uses: nikobockerman/github-workflows/.github/workflows/check-yarn.yaml@2cf25ef6b41c3eb97a1e61e328bdc34dc6c9b762
