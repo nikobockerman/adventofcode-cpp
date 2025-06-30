@@ -1,18 +1,5 @@
 name: Check - clang-tidy
 on:
-  pull_request:
-    paths:
-      - "**.cpp"
-      - "**.hpp"
-      - "**/CMakeLists.txt"
-      - ".clang-tidy"
-      - ".github/actions/cmake-project-setup/**"
-      - ".github/conan-profiles/**"
-      - ".github/workflows/check-clang-tidy.yaml"
-      - ".github/CMakeUserPresets.json"
-      - "CMakePresets.json"
-      - "conan.lock"
-      - "conanfile.txt"
   workflow_call:
   workflow_dispatch:
 permissions:

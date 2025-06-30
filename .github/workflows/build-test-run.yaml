@@ -1,18 +1,5 @@
 name: Build, test and run
 on:
-  pull_request:
-    paths:
-      - "**.cpp"
-      - "**.hpp"
-      - "**/CMakeLists.txt"
-      - ".github/actions/cmake-project-setup/**"
-      - ".github/conan-profiles/**"
-      - ".github/workflows/build-test-run.yaml"
-      - ".github/CMakeUserPresets.json"
-      - "aoc/**/input-*.txt"
-      - "CMakePresets.json"
-      - "conan.lock"
-      - "conanfile.txt"
   workflow_call:
   workflow_dispatch:
 permissions:
