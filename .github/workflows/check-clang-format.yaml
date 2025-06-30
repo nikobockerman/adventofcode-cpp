@@ -1,12 +1,5 @@
 name: Check - clang-format
 on:
-  pull_request:
-    paths:
-      - "**.cpp"
-      - "**.hpp"
-      - ".clang-format"
-      - ".github/workflows/check-clang-format.yaml"
-      - "taskfile.yaml"
   workflow_call:
   workflow_dispatch:
 permissions:
