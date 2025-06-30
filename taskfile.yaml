@@ -7,12 +7,6 @@ tasks:
     cmds:
       - clang-format -n -Werror --verbose $(git ls-files | grep -E
         '\.hpp$|\.cpp$')
-  check:github-actions:
-    desc: "Check - Github actions"
-    cmds:
-      - yarn run check:github-actions
-    deps:
-      - install:yarn
   check:prettier:
     desc: "Check - prettier"
     cmds:
@@ -37,7 +31,6 @@ tasks:
     desc: "All checks"
     deps:
       - check:clang-format
-      - check:github-actions
       - check:prettier
       - check:renovateconfig
       - check:shellcheck
