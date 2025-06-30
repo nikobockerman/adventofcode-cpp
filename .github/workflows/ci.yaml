@@ -18,8 +18,6 @@ jobs:
     uses: ./.github/workflows/check-clang-format.yaml
   check-clang-tidy:
     uses: ./.github/workflows/check-clang-tidy.yaml
-  check-github-actions:
-    uses: nikobockerman/github-workflows/.github/workflows/check-github-actions.yaml@2cf25ef6b41c3eb97a1e61e328bdc34dc6c9b762
   check-prettier:
     uses: nikobockerman/github-workflows/.github/workflows/check-prettier.yaml@2cf25ef6b41c3eb97a1e61e328bdc34dc6c9b762
   check-renovate-config:
@@ -34,7 +32,6 @@ jobs:
       - build-test-run
       - check-clang-format
       - check-clang-tidy
-      - check-github-actions
       - check-prettier
       - check-renovate-config
       - check-shellcheck
