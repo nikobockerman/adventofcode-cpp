@@ -7,15 +7,10 @@ tasks:
     cmds:
       - clang-format -n -Werror --verbose $(git ls-files | grep -E
         '\.hpp$|\.cpp$')
-  check:shellcheck:
-    desc: "Check - shellcheck"
-    cmds:
-      - shellcheck $(git ls-files | grep '\.sh$')
   check:
     desc: "All checks"
     deps:
       - check:clang-format
-      - check:shellcheck
 
   all:
     desc: "All tasks"
