@@ -4,11 +4,3 @@
 /.task/
 /CMakeConanPresets.json
 /CMakeUserPresets*.json
-
-
-# Yarn
-/.pnp.*
-/.yarn/*
-!/.yarn/patches
-!/.yarn/plugins
-!/.yarn/versions

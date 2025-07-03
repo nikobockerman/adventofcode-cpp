@@ -11,31 +11,11 @@ tasks:
     desc: "Check - shellcheck"
     cmds:
       - shellcheck $(git ls-files | grep '\.sh$')
-  check:yarn:dedupe:
-    desc: "Check - yarn dedupe"
-    cmds:
-      - yarn run check:yarn:dedupe
-    deps:
-      - install:yarn
   check:
     desc: "All checks"
     deps:
       - check:clang-format
       - check:shellcheck
-      - check:yarn:dedupe
-
-  install:yarn:
-    desc: "Install - yarn"
-    run: once
-    sources:
-      - package.json
-      - yarn.lock
-    cmds:
-      - yarn
-  install:
-    desc: "Install all dependencies"
-    deps:
-      - install:yarn
 
   all:
     desc: "All tasks"
