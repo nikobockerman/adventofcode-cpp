@@ -12,6 +12,12 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+      - name: DEBUG
+        run: |
+          set -x
+          set +e
+          which clang-format
+          clang-format --version
       - name: Setup task
         uses: arduino/setup-task@b91d5d2c96a56797b48ac1e0e89220bf64044611 # v2.0.0
       - name: Check with clang-format
