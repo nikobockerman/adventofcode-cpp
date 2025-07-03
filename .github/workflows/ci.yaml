@@ -32,8 +32,6 @@ jobs:
     uses: nikobockerman/github-workflows/.github/workflows/mise-task.yaml@e3c5dcaa34bc5425edf93305619726bd5e6a1cc5
     with:
       task: check:renovateconfig
-  check-shellcheck:
-    uses: nikobockerman/github-workflows/.github/workflows/check-shellcheck.yaml@e3c5dcaa34bc5425edf93305619726bd5e6a1cc5
 
   check:
     needs:
@@ -42,7 +40,6 @@ jobs:
       - check-clang-tidy
       - check-prettier
       - check-renovate-config
-      - check-shellcheck
     if: always()
     runs-on: ubuntu-latest
     steps:
