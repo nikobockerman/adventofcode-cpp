@@ -12,6 +12,10 @@ permissions:
   contents: read
 
 jobs:
+  mise-cache:
+    uses: nikobockerman/github-workflows/.github/workflows/mise-prepare-cache.yaml@e3c5dcaa34bc5425edf93305619726bd5e6a1cc5
+    with:
+      runner: ubuntu-latest
   build-test-run:
     uses: ./.github/workflows/build-test-run.yaml
   check-clang-format:
@@ -19,13 +23,17 @@ jobs:
   check-clang-tidy:
     uses: ./.github/workflows/check-clang-tidy.yaml
   check-prettier:
-    uses: nikobockerman/github-workflows/.github/workflows/check-prettier.yaml@e3c5dcaa34bc5425edf93305619726bd5e6a1cc5
+    needs: mise-cache
+    uses: nikobockerman/github-workflows/.github/workflows/mise-task.yaml@e3c5dcaa34bc5425edf93305619726bd5e6a1cc5
+    with:
+      task: check:prettier
   check-renovate-config:
-    uses: nikobockerman/github-workflows/.github/workflows/check-renovate-config.yaml@e3c5dcaa34bc5425edf93305619726bd5e6a1cc5
+    needs: mise-cache
+    uses: nikobockerman/github-workflows/.github/workflows/mise-task.yaml@e3c5dcaa34bc5425edf93305619726bd5e6a1cc5
+    with:
+      task: check:renovateconfig
   check-shellcheck:
     uses: nikobockerman/github-workflows/.github/workflows/check-shellcheck.yaml@e3c5dcaa34bc5425edf93305619726bd5e6a1cc5
-  check-yarn:
-    uses: nikobockerman/github-workflows/.github/workflows/check-yarn.yaml@e3c5dcaa34bc5425edf93305619726bd5e6a1cc5
 
   check:
     needs:
@@ -35,7 +43,6 @@ jobs:
       - check-prettier
       - check-renovate-config
       - check-shellcheck
-      - check-yarn
     if: always()
     runs-on: ubuntu-latest
     steps:

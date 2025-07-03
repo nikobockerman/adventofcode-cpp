@@ -7,64 +7,15 @@ tasks:
     cmds:
       - clang-format -n -Werror --verbose $(git ls-files | grep -E
         '\.hpp$|\.cpp$')
-  check:prettier:
-    desc: "Check - prettier"
-    cmds:
-      - yarn run check:prettier
-    deps:
-      - install:yarn
-  check:renovateconfig:
-    desc: "Check - Renovate config"
-    cmds:
-      - yarn run check:renovateconfig
   check:shellcheck:
     desc: "Check - shellcheck"
     cmds:
       - shellcheck $(git ls-files | grep '\.sh$')
-  check:yarn:dedupe:
-    desc: "Check - yarn dedupe"
-    cmds:
-      - yarn run check:yarn:dedupe
-    deps:
-      - install:yarn
   check:
     desc: "All checks"
     deps:
       - check:clang-format
-      - check:prettier
-      - check:renovateconfig
       - check:shellcheck
-      - check:yarn:dedupe
-
-  fix:format:prettier:
-    desc: "Fix - prettier"
-    cmds:
-      - yarn run fix:prettier
-    deps:
-      - install:yarn
-
-  fix:format:
-    desc: "All fixes"
-    deps:
-      - fix:format:prettier
-
-  fix:
-    desc: "All fixes"
-    deps:
-      - fix:format
-
-  install:yarn:
-    desc: "Install - yarn"
-    run: once
-    sources:
-      - package.json
-      - yarn.lock
-    cmds:
-      - yarn
-  install:
-    desc: "Install all dependencies"
-    deps:
-      - install:yarn
 
   all:
     desc: "All tasks"
