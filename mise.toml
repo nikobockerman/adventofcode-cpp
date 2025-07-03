@@ -1,0 +1,24 @@
+[tasks.check]
+depends = [
+    "check:prettier",
+    "check:renovateconfig"
+]
+
+[tasks."check:prettier"]
+run = "prettier --check ."
+
+[tasks."check:renovateconfig"]
+run = "renovate-config-validator --strict"
+tools."npm:renovate" = "latest"
+
+[tasks.fix]
+depends = [
+    "fix:prettier"
+]
+
+[tasks."fix:prettier"]
+run = "prettier --write --cache-location .prettiercache ."
+
+[tools]
+node = "22"
+"npm:prettier" = "3.6.2"
