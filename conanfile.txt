@@ -3,6 +3,9 @@ fmt/11.1.3
 spdlog/1.15.1
 gtest/1.16.0
 
+[options]
+spdlog/*:use_std_fmt=True
+
 [generators]
 CMakeDeps
 CMakeToolchain
