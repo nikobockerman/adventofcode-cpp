@@ -20,5 +20,6 @@ depends = [
 run = "prettier --write --cache-location .prettiercache ."
 
 [tools]
+cmake = "4.0.3"
 node = "22"
 "npm:prettier" = "3.6.2"

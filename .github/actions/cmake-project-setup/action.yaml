@@ -9,8 +9,8 @@ inputs:
 runs:
   using: composite
   steps:
-    - name: Install CMake
-      uses: lukka/get-cmake@6b3e96a9bc9976b8b546346fdd102effedae0ca8 # v4.0.3
+    - name: Setup mise
+      uses: nikobockerman/github-actions/.github/actions/mise-project-setup@9458b371163ad9a27aaeee85c611550519b6dd46
     - name: Setup Conan Client
       id: setup-conan
       uses: conan-io/setup-conan@434f093a557d1ee6972c4ed78693c3191653537b # v1.1.0
