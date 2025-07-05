@@ -1,4 +1,0 @@
-include(ubuntu-gcc-14)
-
-[settings]
-build_type = Release

@@ -11,40 +11,34 @@ jobs:
       matrix:
         include:
           # MSVC
-          - name: "MSVC Debug"
+          - name: MSVC Debug
             os: windows-2025
-            conanProfileHost: "msvc-debug"
-            workflowPreset: "ci-debug-msvc"
+            workflowPreset: ci-msvc-debug
             aocBinPath: ""
-          - name: "MSVC Release"
+          - name: MSVC Release
             os: windows-2025
-            conanProfileHost: "msvc-release"
-            workflowPreset: "ci-release-msvc"
-            aocBinPath: "build/aoc/aoc/Release/aoc.exe"
+            workflowPreset: ci-msvc-release
+            aocBinPath: build/aoc/aoc/Release/aoc.exe
 
           # Clang on Linux
           - name: Linux Clang Release
             os: ubuntu-24.04
-            conanProfileHost: ubuntu-clang-release
-            workflowPreset: ci-release-gcc-clang
-            aocBinPath: build/Release/aoc/aoc/aoc
+            workflowPreset: ci-clang-release
+            aocBinPath: build/aoc/aoc/aoc
           - name: Linux Clang Debug
             os: ubuntu-24.04
-            conanProfileHost: ubuntu-clang-debug
-            workflowPreset: ci-debug-gcc-clang
-            aocBinPath: build/Debug/aoc/aoc/aoc
+            workflowPreset: ci-clang-debug
+            aocBinPath: build/aoc/aoc/aoc
 
           # Gcc 14 on Linux
           - name: Linux GCC 14 Release
             os: ubuntu-24.04
-            conanProfileHost: ubuntu-gcc-14-release
-            workflowPreset: ci-release-gcc-clang
-            aocBinPath: build/Release/aoc/aoc/aoc
+            workflowPreset: ci-gcc-14-release
+            aocBinPath: build/aoc/aoc/aoc
           - name: Linux GCC 14 Debug
             os: ubuntu-24.04
-            conanProfileHost: ubuntu-gcc-14-debug
-            workflowPreset: ci-debug-gcc-clang
-            aocBinPath: build/Debug/aoc/aoc/aoc
+            workflowPreset: ci-gcc-14-debug
+            aocBinPath: build/aoc/aoc/aoc
 
     name: ${{matrix.name}} - Build + test + run
     runs-on: ${{matrix.os}}
@@ -53,10 +47,10 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        with:
+          submodules: true
       - name: Setup CMake project
         uses: ./.github/actions/cmake-project-setup
-        with:
-          conanProfileHost: ${{matrix.conanProfileHost}}
       - name: Run CMake workflow
         uses: lukka/run-cmake@af1be47fd7c933593f687731bc6fdbee024d3ff4 # v10.8
         with:

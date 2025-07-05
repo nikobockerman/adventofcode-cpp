@@ -1,10 +1,5 @@
 name: CMake project setup
-description: Setup cmake, vcpkg and CMakeUserPresets.json
-inputs:
-  conanProfileHost:
-    description: Conan host profile to use for installing dependencies
-    required: false
-    default: "default"
+description: Setup cmake, conan and CMakeUserPresets.json
 
 runs:
   using: composite
@@ -16,25 +11,6 @@ runs:
       uses: conan-io/setup-conan@434f093a557d1ee6972c4ed78693c3191653537b # v1.1.0
       with:
         cache_packages: true
-    - name: Prepare Conan profiles - non-windows
-      if: runner.os != 'Windows'
-      run: |
-        cp .github/conan-profiles/* ${{steps.setup-conan.outputs.conan-home}}/profiles/
-        conan profile list
-      shell: bash
-    - name: Prepare Conan profiles - windows
-      if: runner.os == 'Windows'
-      run: |
-        powershell Copy-Item .github\conan-profiles\* ${{steps.setup-conan.outputs.conan-home}}\profiles\
-        conan profile list
-      shell: pwsh
     - name: Prepare CMakeUserPresets.json
       run: cp .github/CMakeUserPresets.json CMakeUserPresets.json
-      shell: bash
-    - name: Conan install
-      run: |
-        conan install . \
-          --build=missing \
-          -pr:h ${{inputs.conanProfileHost}} \
-          -c:h tools.cmake.cmaketoolchain:user_presets="CMakeConanPresets.json"
       shell: bash

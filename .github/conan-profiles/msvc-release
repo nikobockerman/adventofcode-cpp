@@ -1,4 +1,0 @@
-include(msvc)
-
-[settings]
-build_type = Release

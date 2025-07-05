@@ -1,4 +1,0 @@
-include(ubuntu-clang)
-
-[settings]
-build_type = Debug
