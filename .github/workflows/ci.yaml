@@ -13,7 +13,7 @@ permissions:
 
 jobs:
   mise-cache:
-    uses: nikobockerman/github-workflows/.github/workflows/mise-prepare-cache.yaml@17c86b9cb2f805e215e9e0f6a8e79b57257dda41 # v1.0.12
+    uses: nikobockerman/github-workflows/.github/workflows/mise-prepare-cache.yaml@f58802bf24cc83cd02ea850b29995dc33c629f4e # v1.0.14
     with:
       runner: ubuntu-latest
   build-test-run:
@@ -24,12 +24,12 @@ jobs:
     uses: ./.github/workflows/check-clang-tidy.yaml
   check-prettier:
     needs: mise-cache
-    uses: nikobockerman/github-workflows/.github/workflows/mise-task.yaml@17c86b9cb2f805e215e9e0f6a8e79b57257dda41 # v1.0.12
+    uses: nikobockerman/github-workflows/.github/workflows/mise-task.yaml@f58802bf24cc83cd02ea850b29995dc33c629f4e # v1.0.14
     with:
       task: check:prettier
   check-renovate-config:
     needs: mise-cache
-    uses: nikobockerman/github-workflows/.github/workflows/mise-task.yaml@17c86b9cb2f805e215e9e0f6a8e79b57257dda41 # v1.0.12
+    uses: nikobockerman/github-workflows/.github/workflows/mise-task.yaml@f58802bf24cc83cd02ea850b29995dc33c629f4e # v1.0.14
     with:
       task: check:renovateconfig
 
