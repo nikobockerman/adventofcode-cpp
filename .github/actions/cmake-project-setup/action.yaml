@@ -8,7 +8,7 @@ runs:
       uses: lukka/get-cmake@6b3e96a9bc9976b8b546346fdd102effedae0ca8 # v4.0.3
     - name: Setup Conan Client
       id: setup-conan
-      uses: conan-io/setup-conan@434f093a557d1ee6972c4ed78693c3191653537b # v1.1.0
+      uses: conan-io/setup-conan@09566912d661de90608308897a4d513e850c04e8 # v1.2.0
       with:
         cache_packages: true
     - name: Prepare CMakeUserPresets.json
