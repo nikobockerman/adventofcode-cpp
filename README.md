@@ -1,6 +1,7 @@
 # Advent Of Code problem solutions with C++
 
-[![CI](https://github.com/nikobockerman/adventofcode-cpp/actions/workflows/ci.yml/badge.svg)](https://github.com/nikobockerman/adventofcode-cpp/actions/workflows/ci.yml)
+> [!NOTE]
+> Repository is merged into adventofcode-solutions
 
 ## The repository
 
